@@ -1,0 +1,1 @@
+<!-- BEGIN body -->			<div class="hpbox">				<blockquote>{QUOTE}</blockquote>				<div class="clearfix"><ul><li><a href="{matrix:TARGETPAGE}"><span>Read Story</span></a></li><li><a href="{PLINK}"><span>More Stories</span></a></li></ul></div>			</div><!-- END body -->

@@ -1,0 +1,56 @@
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteBase /
+	
+	RewriteRule ^about_us/contact_us/([a-z/_+]+)\.aspx$ contact [R=301,L]
+	RewriteRule ^about_us/sitemap.aspx$ home/sitemap [R=301,L]
+	RewriteRule ^default.aspx?pid=203$ about_us [R=301,L]
+	RewriteRule ^about_us/001_principal_introduction.aspx$ about_us [R=301,L]
+	RewriteRule ^about_us/alumni/([a-z/_+]+)\.aspx$ home [R=301,L]
+	RewriteRule ^_documents/([a-z/_+]+)\.doc$ home [R=301,L]
+	RewriteRule ^about_us/corporate_documents/([a-z/_+]+)\.aspx$ about_us/key_documents [R=301,L]
+	RewriteRule ^about_us/employers/about_employers.aspx$ employers/employers_training_solutions [R=301,L]
+	RewriteRule ^about_us/employers/faq_employers.aspx$ employers/faqs [R=301,L]
+	RewriteRule ^about_us/employers/([a-z/_+]+)\.aspx$ employers [R=301,L]
+	RewriteRule ^about_us/events/([a-z/_+]+)\.aspx$ news_events/event_calendar [R=301,L]
+	RewriteRule ^about_us/faq/how_do_i_apply.aspx$ courses/how_to_apply [R=301,L]
+	RewriteRule ^about_us/faq/qualifications_explained.aspx$ courses/course_levels_and_qualifications [R=301,L]
+	RewriteRule ^about_us/faq/([a-z/_+]+)\.aspx$ courses/faqs [R=301,L]
+	RewriteRule ^about_us/governors/([a-z0-9/_+.]+)\.aspx$ about_us/governors [R=301,L]
+	RewriteRule ^about_us/news/default.aspx$ news_events [R=301,L]
+	RewriteRule ^about_us/news/archive.aspx$ news_events/news_archive [R=301,L]
+	RewriteRule ^about_us/news/index.aspx$ news_events/news_archive [R=301,L]
+	RewriteRule ^about_us/partnerships/([a-z0-9/_+.]+)\.aspx$ about_us/partnerships [R=301,L]
+	RewriteRule ^about_us/staff_vacancies/equal_opportunities_policies.aspx$ staff/equality_and_diversity [R=301,L]
+	RewriteRule ^about_us/staff_vacancies/guidance_notes.aspx$ staff/guidance_notes [R=301,L]
+	RewriteRule ^about_us/staff_vacancies/([a-z0-9/_+.]+)\.aspx$ staff/vacancies [R=301,L]
+	RewriteRule ^courses/001_course_search.aspx$ courses/course_search [R=301,L]
+	RewriteRule ^courses/courses/applying_for_a_course.aspx$ courses/how_to_apply [R=301,L]
+	RewriteRule ^courses/([a-z0-9/_+.]+)\.aspx$ courses [R=301,L]
+	RewriteRule ^facilities/clc.aspx$ learners/service_and_support/centenary_learning_centre_library_services [R=301,L]
+	RewriteRule ^facilities/enrichment/default.aspx$ why_conel/enrichment_programme [R=301,L]
+	RewriteRule ^facilities/enrichment/enrichment_programme_form.aspx$ why_conel/enrichment_programme [R=301,L]
+	RewriteRule ^facilities/nursery.aspx$ learners/service_and_support/childcare_for_learners [R=301,L]
+	RewriteRule ^facilities/([a-z0-9/_+.]+)\.aspx$ why_conel/facilities [R=301,L]
+	RewriteRule ^finances/([a-z0-9/_+.]+)\.aspx$ learners/service_and_support/financial_support [R=301,L]
+	RewriteRule ^student_services/counselling_services.aspx$ learners/service_and_support/counselling_and_mental_health [R=301,L]
+	RewriteRule ^student_services/funding_support.aspx$ learners/service_and_support/financial_support [R=301,L]
+	RewriteRule ^student_services/learning_mentor_centre.aspx$ why_conel/mentoring_service [R=301,L]
+	RewriteRule ^student_services/mental_health_support.aspx$ learners/service_and_support/counselling_and_mental_health [R=301,L]
+	RewriteRule ^student_services/welfare_services.aspx$ learners/service_and_support/welfare_advice [R=301,L]
+	RewriteRule ^student_services/([a-z0-9/_+.]+)\.aspx$ learners/service_and_support [R=301,L]
+	RewriteRule ^opendays$ http://www.conel.ac.uk/news_events/events_calendar/february_2010/open_days_2010 [R=301,L]
+	RewriteRule ^2010$ /our_courses/courses_starting_early_2010 [R=301,L]
+	RewriteRule ^excellence$ http://www.conel.ac.uk/for_learners/excellence_awards [R=301,L]
+	RewriteRule ^employers$ /for_employers [R=301,L]
+	RewriteRule ^princestrust$ /news_events/news/2010/april_2010/increase_your_employability_with_the_prince_s_trust_team_programme [R=301,L]
+	RewriteRule ^football$ http://www.conel.ac.uk/for_learners/football_academy [R=301,L]
+
+	
+	
+	RewriteRule ^dynamic(.*)$ dynamic.php?url=$1 [QSA,L]
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+	
+</IfModule>

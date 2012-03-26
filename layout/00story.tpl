@@ -1,0 +1,1 @@
+<!-- BEGIN body -->{IMAGE}{STORY}<!-- END body -->

@@ -1,0 +1,1 @@
+<!-- BEGIN head --><ul id="faq"><!-- END head --><!-- BEGIN body --><li><a href="#answer_{matrix:ID}"><span>{HEADLINE}</span></a></li><!-- END body --><!-- BEGIN foot --></ul><!-- END foot -->

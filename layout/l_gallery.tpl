@@ -1,0 +1,1 @@
+<!-- BEGIN body --><div class="imgstrip"><div class="gallery1">	<div class="internal clearfix">					{IMAGES}		</div>		<div class="arrows clearfix">			</div>	</div></div><!-- END body -->

@@ -1,0 +1,305 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html>
+<head>
+	<title>Workmatrix: Developers</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+	<link rel="stylesheet" type="text/css" href="layout/css/layout.css" media="all">
+</head>
+
+<body>
+		<div id="header">&nbsp;</div>
+		<div id="shadow">&nbsp;</div>
+
+		<table id="main" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<td colspan="2"><img src="layout/images/blank.gif" width="1" height="5"></td>
+			</tr>
+			<tr>
+								<td id="sidebar"><img src="layout/images/sidebar_top.gif" id="sidebartop" width="171" height="8" alt=""><div id="navigation"><h3>Tags</h3>
+
+						<ul>
+
+							<li><a href="box.html">Box</a></li>
+
+							<li><a href="copytext.html">Copytext</a></li>
+
+							<li><a href="date.html">Date</a></li>
+
+							<li><a href="file.html">File</a></li>
+
+							<li><a href="image.html">Image</a></li>
+
+							<li><a href="include.html">Include</a></li>
+
+							<li><a href="link.html">Link</a></li>
+
+							<li><a href="linklist.html">Linklist</a></li>
+
+							<li><a href="listview.html">Listview</a></li>
+
+							<li><a href="text.html">Text</a></li>
+
+						</ul>
+						<div class="clearer">&nbsp;</div>
+
+						
+						<div class="clearer">&nbsp;</div>
+						<h3>Extra Tags</h3>
+						<ul>
+
+							<li><a href="dhtmltext.html">Dhtmltext</a></li>
+
+							<li><a href="alias.html">Alias</a></li>
+
+							<li><a href="bigmovie.html">Bigmovie</a></li>
+
+							<li class="active"><a href="cropimage.html">Cropimage</a>
+							<ul class="sub"><li><a href="#variables">Variables</a></li><li><a href="#parameters">Parameters</a></li></ul>
+							</li>
+
+							<li><a href="email.html">Email</a></li>
+
+							<li><a href="checkboxgroup.html">checkboxgroup</a></li>
+
+							<li><a href="subject_checkboxgroup.html">subject_checkboxgroup</a></li>
+
+							<li><a href="rowview.html">rowview</a></li>
+
+						</ul>
+						<div class="clearer">&nbsp;</div>
+
+					</div>
+					<img src="layout/images/sidebar_bottom.gif" id="sidebarbottom" width="171" height="11">
+				</td>
+				<td id="content" valign="top">
+					<img src="layout/images/blank.gif" width="1" height="14">
+					<h2>Cropimage</h2>
+					<p>This datatype provides a cropping functionality after the upload of an image. The cropped file is then saved and output.</p>
+					
+					<img src="layout/images/blank.gif" width="1" height="10">
+					
+					
+					
+					<!-- parameter headline -->
+					<img src="layout/images/blank.gif" width="1" height="20" alt="">
+					<a name="parameters"></a>
+					<h3>Parameters</h3>
+					<img src="layout/images/seperator.gif" width="403" height="1" alt="">
+					<!-- parameter headline -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>width</h4>
+								<h5>width="400"</h5>
+								<p>	<p>Defines which width the cropped image should be. Images that are uploaded with a smaller width will be rejected.</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>height</h4>
+								<h5>height="50"</h5>
+								<p>	<p>Defines which height the cropped image should be. Width and height can be used together or individually.</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>showalt</h4>
+								<h5>showalt="TRUE"</h5>
+								<p>	<p>Enables an alt tag input box.</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>thumb_width</h4>
+								<h5>thumb_width="200,100"</h5>
+								<p>	<p>Needs to be used in conjunction with thumb_height. Each entry in thumb_width / thumb_height prompts another cropping process. This way the user can be asked to provide several crops of the same image.</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>thumb_height</h4>
+								<h5>thumb_height="123,50"</h5>
+								<p>	<p>See thumb_width.</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					
+					
+					<!-- parameter headline -->
+					<img src="layout/images/blank.gif" width="1" height="20" alt="">
+					<a name="variables"></a>
+					<h3>Variables</h3>
+					<img src="layout/images/seperator.gif" width="403" height="1" alt="">
+					<!-- parameter headline -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>identifier.width</h4>
+								<h5></h5>
+								<p>	<p>Outputs the width of the image.</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>identifier.height</h4>
+								<h5></h5>
+								<p>	<p>Outputs the height of the image.</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>identifier.file</h4>
+								<h5></h5>
+								<p>	<p>Outputs a full path to the location of the image file and the file name.</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>identifier.filename</h4>
+								<h5></h5>
+								<p>	<p>Outputs the name of the file.</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>identifier</h4>
+								<h5></h5>
+								<p>	<p>Outputs a complete <span class="caps">HTML</span>-tag img for the image.</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>identifier.absolute</h4>
+								<h5></h5>
+								<p>	<p>Outputs to absolute path to the image</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>identifier.X</h4>
+								<h5></h5>
+								<p>	<p>Outputs the thumbnail X. The thumbnails are numbered from 1 depending on how many have been defined in the thumb_width / thumb_height parameters.</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+				
+					<img src="layout/images/blank.gif" width="1" height="40">
+				</td>
+			</tr>
+			<td colspan="2" id="bottom">
+				<img src="layout/images/blank.gif" width="1" height="19">
+			</td>
+		</tr>
+	</table>
+	
+	
+</body>
+</html>

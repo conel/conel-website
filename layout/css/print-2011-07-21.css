@@ -1,0 +1,91 @@
+/* print css */
+body{background:#f4f4f4;color:#464646;font-family:arial,sans-serif;font-size:100%;line-height:1.75em;}
+div.colcont3 div.col2 ul.extra li a span{padding-left:0px}
+div.info p{padding-left:0px}
+#header{margin-left:0px}
+#header #navigation div.fl ul{display:none}
+#header #navigation a.fl{display:none}
+#header #search{display:none}
+.colcont3 .col2{width:850px}
+div.colcont3 ul.col1,div.colcont2 ul.col1,#specialf{display:none;visibility:hidden}
+
+div.colcont3 div.col2 div.search{display:none}
+div.colcont3 div.col2 ul.tabs li a span{padding-left:0px}
+.colcont3 .col2 h3{width:650px}
+.colcont3 .col2 ul.pl26 li p span.title1,
+.colcont3 .col2 div.factgrey p span.title1,
+a.head span{padding-left:0px}
+ul#faq{display:none}
+
+div.colcont3 div.col2 ul.rel_courses li a span{float:none;padding-left:0px;width:650px}
+div.colcont3 div.col3 div.box{display:none}
+div.colcont3 div.col2 ul.results{display:none}
+ul.results{display:none}
+div.colcont2_inv div.col2 p.searchtop{padding-left:0px}
+div.colcont2_inv div.col2 ul.search li a{margin-bottom:20px}
+
+ul.search li a span,
+ul.search li a span.title,
+ul.search li a span.info{padding:0 0 0 0;width:650px;display:block;float: none !important}
+.colcont3 .col2 ul.fact li p span.info, .colcont3 .col2 ul.factgrey li p span.info{width:450px}
+
+div.colcont2 div.col2 div.intro img.fr{float:none}
+div.colcont2 div.col2 div.intro div.fl{float:none}
+div.colcont2 div.col2 div.intro div.fl p{width:650px}
+
+div.intro_c, div.intro_l{margin-left:0px}
+div.intro_c h1,div.intro_l h1,div.intro_c h2,div.intro_l h2{padding-left:0px}
+div.colcont3 div.col2,div.colcont3 div.col2 p{width:650px}
+
+p#footerh, div.col3, #footer_logos {display:none;visibility:hidden}
+#staff_bbq_registered td {
+	white-space:nowrap;
+}
+/* Course page printouts */
+body.our_courses div.col2 {
+	margin-left:25px;
+	font-size:1.2em;
+	width:100% !important;
+	color:#000;
+	height:auto;
+}
+body.our_courses div.col2 span.title1 {
+	font-weight:bold;
+	width:100% !important;
+	font-size:0.8em;
+	display:block;
+	padding:0;
+	margin-bottom:10px;
+}
+body.our_courses div.col2 a.HAcss1, body.our_courses #banner, body.our_courses .hrc2, body.our_courses #specialf{
+	display:none;
+}
+body.our_courses div.col2  span.info, body.our_courses li, body.our_courses p, body.our_courses h1 {
+	width:100% !important;
+}
+body.our_courses div.col2 p.clearfix, ody.our_courses div.col2 p {
+	margin:0;
+	padding:0;
+}
+body.our_courses ul, body.our_courses li {
+	background:none;
+	background-color:#fff;
+	width:100%;
+}
+body.our_courses li.clearfix {
+	margin-top:20px;
+}
+body.our_courses #canvas {
+	page-break-after:avoid;
+}
+body.our_courses {
+	height:auto;
+}
+div.col2 {
+	width:100% !important;
+	margin-left:20px;
+}
+div.col2 table {
+	width:100% !important;
+}
+/* Course page printouts */

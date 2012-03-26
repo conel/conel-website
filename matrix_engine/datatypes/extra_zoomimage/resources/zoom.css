@@ -1,0 +1,119 @@
+#zoom {
+	display: none;
+	position: absolute;
+	top: 327px;
+	left: 120px;
+	z-index: 100;
+}
+
+#zoom * {
+	display: block;
+	border-style: none;
+}
+
+#zoom .top, #zoom .bottom {
+	height: 13px;
+	margin-left: 13px;
+	background: url(ZoomShadow.png) 100% 0;
+}
+
+#zoom .top div, #zoom .bottom div {
+	width: 13px;
+	height: 13px;
+	position: relative;
+	left: -13px;
+	background: url(ZoomShadow.png) 0 0;
+}
+
+#zoom .bottom {
+	background-position: 100% 100%;
+}
+
+#zoom .bottom div {
+	background-position: 0 100%;
+}
+
+#zoom .i1 {
+	padding-left: 7px;
+	background: url(ZoomShadowSides.png) repeat-y;
+}
+
+#zoom .i2 {
+	padding-right: 7px;
+	background: url(ZoomShadowSides.png) repeat-y 100% 0;
+}
+
+#zoom .i3 {
+	padding: 1px;
+}
+
+#zoom-close {
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	top: -12px;
+	left: -15px;
+	background-image: url(ZoomClose.png);
+	text-indent: -1000em;
+	overflow: hidden;
+}
+
+#zoom-close:active {
+	background-position: 0 -30px;
+}
+
+#zoom-content {
+	margin: -9px -1px -5px;
+	background-color: #fff;
+	position: relative;
+	padding: 0;
+}
+
+#zoom-captioncontainer {
+	position: absolute;
+	color: #000;
+	top: 100%;
+	margin-top: 8px;
+	width: 100%;
+	font-weight: bold;
+	cursor: default;
+	text-align: left;
+}
+
+#zoom-captioncontainer * {
+	display: inline;
+}
+
+#zoom-captioncontainer div {
+	padding-top: 6px;
+	padding-bottom: 11px;
+	background: url(ZoomCaptionLeft.png) no-repeat;
+}
+
+#zoom-captioncontainer div div {
+	background: url(ZoomCaptionRight.png) no-repeat 100% 0;
+	margin-left: 11px;
+}
+
+#zoom-caption {
+	background: url(ZoomCaptionFill.png) repeat-x 100% 0;
+	margin-right: 11px;
+	padding: 6px 0 11px;
+}
+
+#zoom-load {
+	width: 48px;
+	height: 48px;
+	background-image: url(ZoomProgress.png);
+	display: none;
+}
+
+#overlay { background-image: url(ZoomOverlay.png); }
+
+* html #overlay{
+	background-color: #333;
+	back\ground-color: transparent;
+	background-image: url(blank.gif);
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="ZoomOverlay.png", sizingMethod="scale");
+}
+	

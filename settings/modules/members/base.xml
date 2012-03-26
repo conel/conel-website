@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object>
+<page name="Basic Information">	
+	<row name=" ">
+		<text identifier="username" name="Username" overview="true"></text>
+		<text identifier="password" name="Password"></text>
+	</row>
+	<row name="Session">	
+		<selectbox identifier="session" name="Session"></selectbox>
+	</row>	
+</page>
+
+</object>
+

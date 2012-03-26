@@ -1,0 +1,1 @@
+<!-- BEGIN head --><ul><!-- END head --><!-- BEGIN body --><li><a href="{LINK.link}" target="_blank"><span>{LINK.name}</span></a></li><!-- END body --><!-- BEGIN foot --></ul><!-- END foot -->

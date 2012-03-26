@@ -1,0 +1,33 @@
+body{font-family: verdana,helvetica,sans-serif;font-size: 10px;color: #000000;text-decoration:none;line-height:15px;padding: 0;margin: 0;}
+
+#wrap{position: relative;margin: 20px auto 0 auto;font-size: 95%;padding: 0;text-align: left;width: 824px;background: #fff;}
+
+.headline{font-family: "Lucida Grande",Trebuchet,"Trebuchet MS",verdana,arial,helvetica,sans-serif;font-size: 12px;font-weight: bold;color: #000;text-decoration: none;padding: 0px 0px 0px 6px;}
+
+.statistic_headline{font-family: "Lucida Grande",Trebuchet,"Trebuchet MS",verdana,arial,helvetica,sans-serif;font-size: 11px;font-weight: bold;color: #000;text-decoration: none;padding: 1px 0px 2px 6px;}
+.nextpage{font-family: "Lucida Grande",Trebuchet,"Trebuchet MS",verdana,arial,helvetica,sans-serif;font-size: 11px;font-weight: bold;color: #000;text-decoration: none;padding: 1px 0px 2px 0px;}
+
+#outline{border-color: #EEE;border-width: 1px;border-style: solid;}
+
+.norm{font-family: verdana,helvetica,sans-serif;font-size: 10px;line-height: 15px;color: #000;text-decoration: none;padding: 0px 0px 0px 6px;font-weight:normal;}
+.norm2{font-family: verdana,helvetica,sans-serif;font-size: 10px;line-height: 15px;color: #000;text-decoration: none;padding: 0px 0px 0px 0px;font-weight:normal;}
+
+.calendar_headline{font-family: "Lucida Grande",Trebuchet,"Trebuchet MS",verdana,arial,helvetica,sans-serif;font-size: 11px;font-weight: bold;color: #000;text-decoration: none;padding: 0px 0px 0px 0px;}
+.calendar_headline A{font-family: "Lucida Grande",Trebuchet,"Trebuchet MS",verdana,arial,helvetica,sans-serif;font-size: 11px;font-weight: bold;color: #000;text-decoration: none;padding: 0px 0px 0px 0px;}
+
+#dateselector{font-family: "Lucida Grande",Trebuchet,"Trebuchet MS",verdana,arial,helvetica,sans-serif;font-size: 11px;color: #000;font-weight: normal;text-decoration: underline;padding: 1px 1px 1px 1px;}
+
+#dateselector .dayname{background-color: #ffffff;color: #000;width:15px;text-align: right;padding:4px 3px 0px 4px;font-weight: bold;}
+
+#dateselector .day A{background-color: #ffffff;color: #000;width:13px;text-align: right;padding:0px 2px 0px 3px;display:block;margin:1px;}
+#dateselector .day A:hover{background-color:#dddddd;color: #000;}
+#dateselector .day_active A{background-color:#549de0;color: #000;}
+#dateselector .day_active A:hover{background-color:#4B8DC9;color: #000;}
+
+#dateselector .future A{background-color: #ffffff;color: #dddddd;width:13px;text-align: right;padding:0px 3px 0px 4px;display:block;margin:1px;}
+
+
+#dateselector .week A{background-color: #ffffff;color: #999999;width:15px;text-align: right;padding:0px 4px 0px 1px;display:block;margin:1px;}
+#dateselector .week A:hover{background-color:#dddddd;color: #000;}
+#dateselector .week_active A{background-color:#549de0;color: #000;}
+

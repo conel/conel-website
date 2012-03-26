@@ -1,0 +1,1 @@
+<!-- BEGIN body -->						<div class="box">							<h3>{HEADLINE} <a href="mailto:{EMAIL.link}" class="underline">{EMAIL.name}</a></h3>							<div class="box_bottom"><hr /></div>						</div><!-- END body -->

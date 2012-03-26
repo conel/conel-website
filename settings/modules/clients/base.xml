@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object>
+<page name="Basic Information">	
+	<row name=" ">
+		<id identifier="id" name="ID"></id>
+	</row>
+	<row name=" ">
+		<select identifier="newsletter" name="Newsletter" values=",all,learners,employers,staff" labels=",All,Learners,Employers,Staff"></select>
+	</row>	
+	<row name=" ">
+		<text identifier="email" name="E-Mail" overview="true"></text>
+	</row>	
+</page>
+
+</object>
+

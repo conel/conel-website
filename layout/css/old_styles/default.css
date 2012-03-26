@@ -1,0 +1,110 @@
+/*** default  ***/
+body,html{height:100%;margin:0;padding:0;}
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td{margin:0;padding:0}
+table{border-collapse:collapse;border-spacing:0;font-size:1em}
+fieldset,img{border:0}
+address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal}
+ul{list-style:none}
+li{margin:0px;padding:0px;list-style:none;list-style-position:outside}
+caption,th{text-align:left}
+h1,h2,h3,h4,h5,h6,code{font-size:100%;font-weight:normal;margin:0;padding:0}
+q:before,q:after{content:''}
+abbr,acronym{border:0}
+div{text-align:left;margin:0px;padding:0px;display:block}
+body{background:#f4f4f4;color:#464646;font-family:arial,sans-serif;font-size:75%;line-height:1.75em}
+a:link,a:visited,a:hover,a:active{text-decoration:none;margin:0;padding:0;color:#464646}
+a:hover{color:#009edb}
+
+/* ---- added 22/4/09, 6/5/09 */
+
+a.HAcss1:hover {
+	text-decoration: underline !important;
+}
+a.HAcss1 {
+	color: #FFFF00 !important;
+	text-decoration: none !important;
+}
+span.HAappFormFont {
+  font-size:.8em;
+}
+
+/* ---- end */
+
+p,ul{font-size:1em;/*12px*/line-height:1.5em}
+h2,h3,h4,h5{font-family:arial,sans-serif}
+h1{font-size:1.6667em;color:#464646;line-height:1.35em;/*17px*/}
+h2,h3,h4,h5{font-size:1.25em;/*15px*/}
+/*0.833333em;10px*/
+label{color:#464646;line-height:1.75em}
+input,textarea{font-family:arial,sans-serif;font-size:1em;color:#464646}
+blockquote{font-size:1.25em;color:#333;padding:12px;line-height:1.2em}
+/******* classes *******/
+.fr{float:right}
+.fl{float:left}
+.fn{float:none}
+.cb{clear:both}
+.db{display:block}
+.di{display:inline}
+.dn{display:none}
+.nm{margin:0}
+.noborder{border:0px}
+.clearfix:after{content:" ";display:block;height:0;clear:both;visibility:hidden;font-size:0}
+.clearfix{display:inline-block}
+* html .clearfix{height:1%}
+.clearfix{display:block}
+.mb-17{margin-bottom:-17px}
+.mt5{margin-top:5px}
+.mt15{margin-top:15px}
+.mt20{margin-top:20px}
+.mr8{margin-left:8px}
+.mr10{margin-right:10px}
+.mr13{margin-right:13px}
+.mb10{margin-bottom:10px}
+.mb20{margin-bottom:20px}
+.ml10{margin-left:10px}
+.ml26{margin-left:26px}
+.ml28{margin-left:28px}
+.ml90{margin-left:90px}
+.ml153{margin-left:148px}
+.ml358{margin-left:358px}
+.pl28{padding-left:28px}
+.w165{width:165px}
+.w170{width:170px}
+.w190{width:190px}
+.w195{width:195px}
+.w230{width:230px}
+.f15{font-size:1.25em}
+/********* HRs **********/
+DIV.hr{margin:0 0 0 20px;width:100%;height:1px;background:transparent url(../img/hr.gif) no-repeat}
+DIV.hrhp{margin:0 auto;width:975px;height:26px;background:transparent url(../img/hrhp.gif) no-repeat}
+DIV.hrhpe{margin:0 auto;width:975px; height:7px; margin-left:20px; background:transparent url(../img/home_bottom_border.gif) no-repeat left bottom;}
+DIV.hrhpbox{margin:0 0 35px 20px;width:318px;height:1px;background:transparent url(../img/hpbox_b.gif) no-repeat}
+DIV.hrsearch{margin:0;height:3px;background:transparent url(../img/search_jt.gif) no-repeat}
+DIV.box_bottom{margin:0;width:100%;height:1px;background:transparent url(../img/box_b.gif) no-repeat}
+DIV.box_bottom1{margin:-1px 0 0 0;width:100%;height:1px;background:transparent url(../img/box_b.gif) no-repeat}
+DIV.hrcol2{margin:12px 0;width:100%;height:1px;background:transparent url(../img/hrcol2.gif) no-repeat}
+DIV.hrcolhp{margin:12px 0;width:100%;height:1px; /*background:transparent url(../img/hr_hor.gif) repeat-x*/}
+/* nkowald - 2009-06-16: allow for more news articles on the home page */
+DIV.hrcolhp2{margin:5px 0;width:100%;height:1px;background:transparent url(../img/hr_hor.gif) repeat-x}
+DIV.hrcolhp2 hr {display:none;}
+DIV.hrc{margin:0;width:685px;height:20px;/*background:transparent url(../img/courses_b.gif) no-repeat*/}
+DIV.hrc1{margin:0 0 20px 0;width:440px;height:20px;/*background:transparent url(../img/rel_courses_b.gif) no-repeat*/}
+DIV.hrc2{margin:0 0 5px 0;width:440px;height:20px;background:transparent url(../img/coursef_b.gif) no-repeat}
+ul.fact li.break {background:none !important; border:none;}
+DIV.hrc3{margin:0 0 5px 0;width:440px;height:20px;background:transparent url(../img/coursef_gb.gif) no-repeat}
+DIV.hrc4{margin:0 0 6px 0;width:440px;height:7px;background:transparent url(../img/coursef_b.gif) bottom left no-repeat}
+DIV.hrb{margin:0;width:440px;height:1px;background:transparent url(../img/search_b.gif) no-repeat}
+DIV.hrd{margin:5px 0;width:402px;height:1px;background:transparent url(../img/hrd.gif) no-repeat}
+DIV.hrgrey{margin:12px 0 5px;width:100%;height:1px;background:#959595}
+DIV.hr_gb{margin:0 0 5px 0;width:440px;height:1px;background:transparent url(../img/hr_gb.gif) no-repeat}
+DIV.hrdash{margin:5px 0;width:100%;height:1px;background:transparent url(../img/dash.gif) repeat-x}
+DIV.hrdashl{margin:5px 0;width:439px;height:1px;background:transparent url(../img/hrdashl.gif) no-repeat}
+DIV.hr_error{margin:0;width:100%;height:1px;background:transparent url(../img/error_bottom.gif) no-repeat}
+DIV.hr_success{margin:0;width:100%;height:1px;background:transparent url(../img/success_bottom.gif) no-repeat}
+DIV.hr_nores{margin:0;width:100%;height:1px;background:transparent url(../img/nores_bottom.gif) no-repeat}
+DIV.nores{margin:0;width:100%;height:1px;background:transparent url(../img/nores685b.gif) no-repeat}
+DIV.hrsearch HR,DIV.hr HR,DIV.box_bottom HR,DIV.hrcol2 HR,DIV.hrhp HR,DIV.hrhpbox HR,DIV.hrcolhp HR,DIV.hrhpe HR,DIV.hrc HR,DIV.hrc1 HR,DIV.hrb HR,DIV.hrd HR,DIV.hrgrey HR,DIV.hrc2 HR,DIV.hrc3 HR,DIV.hr_gb HR,DIV.hrdash HR,DIV.hrdashl HR,DIV.box_bottom1 HR,DIV.hr_error HR,DIV.hr_success HR,DIV.hr_nores HR,DIV.nores HR,.hidden{display:none}
+div.padding-top {
+	display:block;
+	padding-top:5px;
+}

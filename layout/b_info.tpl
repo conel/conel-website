@@ -1,0 +1,1 @@
+<!-- BEGIN head --><div class="info"><!-- END head --><!-- BEGIN body --><p>{HEADLINE} {EMAIL}</p><!-- END body --><!-- BEGIN foot --></div><!-- END foot -->

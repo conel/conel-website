@@ -1,0 +1,1 @@
+<!-- BEGIN body --><p>{DATE}<br /><a href="{matrix:TARGETPAGE}" class="underline">{HEADLINE}</a></p><div class="hrcolhp"><hr /></div><!-- END body -->

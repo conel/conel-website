@@ -1,0 +1,42 @@
+@charset "utf-8";
+body {
+	margin:0;
+	padding:0;
+}
+#container {
+	width:800px; 
+	height:600px;
+	margin:0 auto;
+}
+br, ul, li {
+	margin:0;
+	padding:0;
+}
+#container a {
+	cursor:default !important;
+}
+html {
+    padding-top:0;
+}
+/* rotator in-page placement */
+div.rotator {
+	position:relative;
+	height:600px;
+	width:800px;
+	margin-left: 0;
+}
+/* rotator css */
+div.rotator ul li {
+	float:left;
+	position:absolute;
+	list-style: none;
+}
+/* rotator image style */	
+div.rotator ul li img {
+	border:1px solid #fff;
+	padding: 4px;
+	background: #FFF;
+}
+div.rotator ul li.show {
+	z-index:500;
+}

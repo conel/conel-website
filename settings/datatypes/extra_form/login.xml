@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<form name="login">
+	<prepareactions>
+		<action type="startsession" />
+	</prepareactions>
+	
+
+	<fields>
+		<text identifier="username" required="true"></text>
+		<password identifier="password" required="true"></password>
+	</fields>
+	<errors>&lt;div class="flash_alert" id="Flash"&gt;The username and/or password you entered is invalid.&lt;/div&gt;</errors>
+
+
+	<postactions>
+		<action type="login" target="members" structure="login">
+			<succeeded>
+				<action type="login_redirect" target_pageid="343"></action>
+			</succeeded>	
+			<failed>
+				<action type="error" structure="login" name="login:ERROR"></action>
+			</failed>						
+		</action>
+	</postactions>
+</form>
+

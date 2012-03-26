@@ -1,0 +1,1 @@
+<!-- BEGIN body --> | <a href="{matrix:TARGETPAGE}">{HEADLINE}</a><!-- END body -->

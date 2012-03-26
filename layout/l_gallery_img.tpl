@@ -1,0 +1,1 @@
+<!-- BEGIN head --><ul class="gallery"><!-- END head --><!-- BEGIN active --><li><a href="{matrix:TARGETPAGE}" class="active">{IMAGE.1}</a></li><!-- END active --><!-- BEGIN body --><li><a href="{matrix:TARGETPAGE}">{IMAGE.1}</a></li><!-- END body --><!-- BEGIN foot --></ul><!-- END foot -->

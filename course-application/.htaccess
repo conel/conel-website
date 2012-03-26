@@ -1,0 +1,5 @@
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteBase / 
+	RewriteRule ^forgot_login.php(.*)$ /course-application/forgotten.php [R=301,L]
+</IfModule>

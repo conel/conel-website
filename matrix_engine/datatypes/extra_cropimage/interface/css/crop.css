@@ -1,0 +1,28 @@
+
+
+
+
+
+/* cropper */
+
+#image {margin:0px 0 0 0px;background:#eee;overflow:hidden:width500px;height:500px;}
+#selection {position:absolute;z-index:100;zoom:1;}
+#selectionh .point
+{	
+	position:absolute;
+	background-color: transparent;
+	background-image: url(point.gif);
+	background-repeat: no-repeat;
+	z-index:600;
+}
+#selectionh .pointd
+{	
+	position:absolute;
+	z-index:1000;
+}
+#cropdiv { position:absolute;z-index:50;overflow:hidden;background:#fff; }
+#cropimg { position:relative; }
+div#canvas { display:none; }
+div#image { float:left; }
+div#info { float:left;margin-top:33px;margin-left:20px; }
+

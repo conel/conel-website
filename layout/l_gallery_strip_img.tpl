@@ -1,0 +1,1 @@
+<!-- BEGIN body --><a href="{matrix:TARGETPAGE}">{IMAGE.1}</a><!-- END body -->

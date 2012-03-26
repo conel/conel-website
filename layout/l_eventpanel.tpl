@@ -1,0 +1,1 @@
+<!-- BEGIN head --><div class="box"><h3>Events</h3><ul class="news"><!-- END head --><!-- BEGIN body --><li><a href="#">{HEADLINE}<span>{DATEV}, {LOCATION}</span></a></li><!-- END body --><!-- BEGIN foot --></ul><div class="box_bottom1"><hr/></div></div><!-- END foot -->

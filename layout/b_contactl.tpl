@@ -1,0 +1,1 @@
+<!-- BEGIN body -->				<h2>{HEADLINE}</h2>				<p>{DESC} {EMAIL}</p>				<div class="hrdashl"><hr /></div><!-- END body -->

@@ -1,0 +1,3 @@
+ul.courses li,ul.rel_courses li,ul.search li,.colcont3 .col2 ul.fact li,.colcont3 .col2 ul.factgrey li{display:inline}
+ul.courses li a,ul.rel_courses li a,ul.search li a,.colcont3 .col2 ul.fact li p,.colcont3 .col2 ul.factgrey li p{padding-bottom:0px}
+ul.courses li a span,ul.rel_courses li a span,ul.search li a span,.colcont3 .col2 ul.fact li p span,.colcont3 .col2 ul.factgrey li p span{padding-bottom:4px}

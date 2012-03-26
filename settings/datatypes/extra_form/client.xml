@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<form name="contact">
+	<fields>
+		<text identifier="id" unique="true"></text>
+		<text identifier="companyid"></text>
+		<text identifier="prefix" name="Prefix"></text>
+		
+		<text identifier="firstname" name="First Name" overview="true"></text>
+		<text identifier="lastname" name="Last Name" overview="true"></text>
+		<text identifier="title" name="Title"></text>
+		<select identifier="gender" name="Gender" values=",male,female" labels=",male,female"></select>
+		<text identifier="iata" name="IATA"></text>
+		<text identifier="email" name="E-Mail" overview="true"></text>
+		<select identifier="phone_type" name="Phone Type" values=",B,F,M" labels=",Business,Fax,Mobile"></select>
+		<text identifier="telephone" name="Telephone" overview="true"></text>		
+
+	</fields>
+	<errors>&lt;tr&gt;&lt;td colspan="2" class="error"&gt;&lt;b&gt;Bitte überprüfen Sie die markierten Felder.&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="2"&gt;&lt;img src="/layout/images/blank.gif" alt="" width="1" height="15" border="0"&gt;&lt;/td&gt;&lt;/tr&gt;</errors>
+
+
+
+	<postactions>
+		<action type="register" structure="client" target="clients" update="true"></action>
+		<action type="company_redirect"></action>
+	</postactions>
+</form>
+

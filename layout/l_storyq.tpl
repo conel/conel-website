@@ -1,0 +1,1 @@
+<!-- BEGIN body -->{STORY}<!-- END body --><!-- BEGIN empty -->{STORY}<!-- END empty -->

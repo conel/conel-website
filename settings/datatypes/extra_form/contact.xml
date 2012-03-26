@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<form name="contact">
+	<actions>
+		<action type="redirect" target_pageid="105"></action>
+		<action type="sendmail" template="mail" target="userid:stefan"></action>
+		<action type="store" target="clients"></action>
+		<action type="sendmail" template="mail" target="field:email"></action>
+	</actions>
+	<fields>
+		<text identifier="subject" required="true" validate="false">
+			<error name="STRING_TO_SHORT">1String to short</error>
+			<error name="STRING_TO_LONG">2String to long</error>
+		</text>
+		<text identifier="message"></text>
+		<text identifier="firstname"></text>
+		<text identifier="lastname"></text>
+		<text identifier="company"></text>
+		<text identifier="phone"></text>
+		<email identifier="email" required="true">
+			<error name="STRING_WRONG_FORMAT">wrong format</error>		
+		</email>
+	</fields>
+	<errors>&lt;tr&gt;&lt;td colspan="2" class="error"&gt;&lt;b&gt;Bitte überprüfen Sie die markierten Felder.&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="2"&gt;&lt;img src="/layout/images/blank.gif" alt="" width="1" height="15" border="0"&gt;&lt;/td&gt;&lt;/tr&gt;</errors>
+</form>
+

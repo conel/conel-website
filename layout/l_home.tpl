@@ -1,0 +1,1 @@
+<!-- BEGIN body --><a href="{matrix:TARGETPAGE}" class="fl">{AD}</a><!-- END body -->

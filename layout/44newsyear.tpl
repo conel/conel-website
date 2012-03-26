@@ -1,0 +1,1 @@
+<!-- BEGIN body -->{MONTH}<!-- END body -->

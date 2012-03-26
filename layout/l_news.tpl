@@ -1,0 +1,1 @@
+<!-- BEGIN head --><ul class="news"><!-- END head --><!-- BEGIN body --><li><a href="{matrix:TARGETPAGE}" class="clearfix"><span class="title">{HEADLINE}<br /><span class="small">{DATE}<br />{INTRO}</span></span>{IMG.1}</a></li><!-- END body --><!-- BEGIN foot --></ul><!-- END foot -->

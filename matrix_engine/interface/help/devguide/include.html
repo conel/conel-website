@@ -1,0 +1,169 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html>
+<head>
+	<title>Workmatrix: Developers</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+	<link rel="stylesheet" type="text/css" href="layout/css/layout.css" media="all">
+</head>
+
+<body>
+		<div id="header">&nbsp;</div>
+		<div id="shadow">&nbsp;</div>
+
+		<table id="main" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<td colspan="2"><img src="layout/images/blank.gif" width="1" height="5" alt=""></td>
+			</tr>
+			<tr>
+								<td id="sidebar"><img src="layout/images/sidebar_top.gif" id="sidebartop" width="171" height="8" alt=""><div id="navigation"><h3>Tags</h3>
+
+						<ul>
+
+							<li><a href="box.html">Box</a></li>
+
+							<li><a href="copytext.html">Copytext</a></li>
+
+							<li><a href="date.html">Date</a></li>
+
+							<li><a href="file.html">File</a></li>
+
+							<li><a href="image.html">Image</a></li>
+
+							<li class="active"><a href="include.html">Include</a>
+							<ul class="sub"><li><a href="#parameters">Parameters</a></li><li><a href="#variables">Variables</a></li></ul>
+							</li>
+
+							<li><a href="link.html">Link</a></li>
+
+							<li><a href="linklist.html">Linklist</a></li>
+
+							<li><a href="listview.html">Listview</a></li>
+
+							<li><a href="text.html">Text</a></li>
+
+						</ul>
+						<div class="clearer">&nbsp;</div>
+
+						
+						<div class="clearer">&nbsp;</div>
+						<h3>Extra Tags</h3>
+						<ul>
+
+							<li><a href="dhtmltext.html">Dhtmltext</a></li>
+
+							<li><a href="alias.html">Alias</a></li>
+
+							<li><a href="bigmovie.html">Bigmovie</a></li>
+
+							<li><a href="cropimage.html">Cropimage</a></li>
+
+							<li><a href="email.html">Email</a></li>
+
+							<li><a href="checkboxgroup.html">checkboxgroup</a></li>
+
+							<li><a href="subject_checkboxgroup.html">subject_checkboxgroup</a></li>
+
+							<li><a href="rowview.html">rowview</a></li>
+
+						</ul>
+						<div class="clearer">&nbsp;</div>
+
+					</div>
+					<img src="layout/images/sidebar_bottom.gif" id="sidebarbottom" width="171" height="11" alt="">
+				</td>
+				<td id="content" valign="top">
+					<img src="layout/images/blank.gif" width="1" height="14" alt="">
+					<h2>Include</h2>
+					<p>Includes an external function from the file user_modules.php.</p>
+					
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					
+					
+					
+					<!-- parameter headline -->
+					<img src="layout/images/blank.gif" width="1" height="20" alt="">
+					<a name="parameters"></a>
+					<h3>Parameters</h3>
+					<img src="layout/images/seperator.gif" width="403" height="1" alt="">
+					<!-- parameter headline -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>function</h4>
+								<h5>function="myFunction"</h5>
+								<p>	<p>Defines the name of the function which is called.<br />
+The structure_id of the calling page is passed automatically as first argument. The second argument is an associative array.	</p>
+
+	<p><code>myFunction($structure_id,$parameter)
+$parameter = array(&#39;page_id&#39; =&#62; {page_id of the page})</code></p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>parameter</h4>
+								<h5>parameter="myVariable"</h5>
+								<p>	<p>Defines a variable which is added to a function call. Is the variable set then the argument $parameter contains the defined value.</p>
+
+	<p><code>$parameter = array(&#39;page_id&#39; =&#62; {page_id of the page}, &#39;parameter&#39; =&#62; {defined value}</code></p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					
+					
+					<!-- parameter headline -->
+					<img src="layout/images/blank.gif" width="1" height="20" alt="">
+					<a name="variables"></a>
+					<h3>Variables</h3>
+					<img src="layout/images/seperator.gif" width="403" height="1" alt="">
+					<!-- parameter headline -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>identifier</h4>
+								<h5></h5>
+								<p>	<p>Outputs the returned value of the called function.<br />
+If the function returns a associative array then the keys well be used as variables instead of the identifier.</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+				
+					<img src="layout/images/blank.gif" width="1" height="40" alt="">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" id="bottom">
+					<img src="layout/images/blank.gif" width="1" height="19" alt="">
+				</td>
+			</tr>
+		</table>
+	
+	
+</body>
+</html>

@@ -1,0 +1,52 @@
+img, div { behavior: url(/pop-up/styles/iepngfix.htc) }
+
+#slimbox {
+	width:100%;
+	height:100%;
+	background: transparent url(../images/overlay.png) repeat;
+	position:absolute;
+	top:0;
+	left:0;
+	z-index:150;
+	display:none;
+}
+#message {
+	width:396px;
+	padding:28px 22px 3px 22px;
+	background-color:#fff;
+	margin:0 auto;
+	z-index:151;
+	display:none;
+	color:#000;
+	font-family: arial; 
+	font-size: 14px;
+}
+#message_text {
+	margin-top:8px;
+	font-size: 14px;
+}
+#message_text strong {
+	font-weight:bold;
+}
+#message_text p {
+	margin-bottom:14px;
+}
+#message_text p.close_link a {
+	font-weight: bold; 
+	text-decoration: none; 
+	color: #959900;
+}
+#logo {
+	margin-bottom:35px;
+	text-align:center;
+}
+a#button_close {
+	outline:none;
+	border:none;
+}
+#button_close {
+	position:absolute;
+	top:0;
+	left:0;
+	display:none;
+}

@@ -1,0 +1,178 @@
+body
+{
+	font-family: Verdana,Arial,Geneva,Helvetica,sans-serif;
+	font-size: 14px;
+	color: black;
+}
+
+td
+{
+	font-family: Verdana,Arial,Geneva,Helvetica,sans-serif;
+	font-size: 10px;
+	color: black;
+}
+
+a
+{
+	font-family: Verdana,Arial,Geneva,Helvetica,sans-serif;
+	font-size: 10px;
+	color: black;
+	text-decoration: none;
+}
+
+a:HOVER
+{
+	color: black;
+	background: #888888;
+}
+
+.images_thumbnail
+{
+	width: 96px;
+	padding: 1px 1px 1px 1px;
+}
+
+.images_highlight
+{
+	width: 96px;
+	padding: 0px;
+	border-color: #000;
+	border-width: 1 1 1 1;
+	border-style: dotted dotted dotted dotted;
+}
+
+
+input
+{
+	font-family: Verdana,Arial,Geneva,Helvetica,sans-serif;
+	font-size: 10px;
+	color: black;
+}
+
+select
+{
+	font-family: Verdana,Arial,Geneva,Helvetica,sans-serif;
+	font-size: 10px;
+	color: black;
+}
+
+textarea
+{
+	font-family: Verdana,Arial,Geneva,Helvetica,sans-serif;
+	font-size: 10px;
+	color: black;
+}
+
+.login
+{
+	font-family: Verdana,Arial,Geneva,Helvetica,sans-serif;
+	font-size: 9px;
+	color: black;
+}
+
+.default
+{
+	font-family: Verdana,Arial,Geneva,Helvetica,sans-serif;
+	font-size: 10px;
+	color: black;
+}
+
+.active
+{
+	font-family: Verdana,Arial,Geneva,Helvetica,sans-serif;
+	font-size: 10px;
+	color: black;
+}
+
+.divider
+{
+	font-family: Verdana,Arial,Geneva,Helvetica,sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #4c8ad8;
+}
+
+.ghost
+{
+	font-family: Verdana,Arial,Geneva,Helvetica,sans-serif;
+	font-size: 10px;
+	color: #BBC1C7;
+}
+
+.passwd
+{
+	font-family: Verdana,Arial,Geneva,Helvetica,sans-serif;
+	font-size: 12px;
+	color: #666666;
+}
+.inactive
+{
+	font-family: Verdana,Arial,Geneva,Helvetica,sans-serif;
+	font-size: 10px;
+	color: #999999;
+}
+
+.headline
+{
+	font-family: Verdana,Arial,Geneva,Helvetica,sans-serif;
+	font-size: 14px;
+	color: black;
+}
+
+.headline_newsletter
+{
+	font-family: Verdana,Arial,Geneva,Helvetica,sans-serif;
+	font-size: 16px;
+	color: black;
+}
+
+.subheadline
+{
+	font-family: Verdana,Arial,Geneva,Helvetica,sans-serif;
+	font-size: 12px;
+	color: black;
+	font-weight: bold;
+}
+
+#content
+{
+	position: absolute;
+	left: 21;
+	top: 27;
+}
+
+.menu
+{
+	font-family: Verdana,Arial,Geneva,Helvetica,sans-serif;
+	font-size: 10px;
+	color: #000000;
+	width: 120px;
+	height: 16px;
+	text-decoration: none;
+	display: block;
+	vertical-align: middle;
+}
+
+a.menu:HOVER
+{
+	color: black;
+	background: #888888;
+}
+
+	.tab {
+	font-family: Trebuchet,Trebuchet MS,Verdana,Arial,Geneva,Helvetica,sans-serif;
+	font-size: 12px;
+	color: black;
+	font-weight: bold;
+	text-decoration: none;
+	}
+label {
+	cursor:pointer !important;
+}
+/* nkowald - 2009-10-06 - Added a new style to make the notification text stand out */
+p.notification {
+	font-weight:bold;
+	color:red;
+	padding:15px 15px 5px 15px;
+	margin:0;
+}

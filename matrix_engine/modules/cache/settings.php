@@ -1,0 +1,1 @@
+<?php $cache_config["MODULE_CACHE_ACTIVE"]=false;$cache_config["CACHE_SEND304"]=false;$cache_config["CACHE_TIME"]=140;?>

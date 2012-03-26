@@ -1,0 +1,164 @@
+/* print css */
+body{background:#f4f4f4;color:#464646;font-family:arial,sans-serif;font-size:100%;line-height:1.6em;}
+div.colcont3 div.col2 ul.extra li a span{padding-left:0px}
+div.info p{padding-left:0px}
+#header{margin-left:0px}
+#header #navigation div.fl ul{display:none}
+#header #navigation a.fl{display:none}
+#header #search{display:none}
+.colcont3 .col2{width:640px}
+div.colcont3 ul.col1,div.colcont2 ul.col1,#specialf{display:none;visibility:hidden}
+
+div.colcont3 div.col2 div.search{display:none}
+div.colcont3 div.col2 ul.tabs li a span{padding-left:0px}
+.colcont3 .col2 h3{width:630px}
+.colcont3 .col2 ul.pl26 li p span.title1,
+.colcont3 .col2 div.factgrey p span.title1,
+a.head span{padding-left:0px}
+ul#faq{display:none}
+
+div.colcont3 div.col2 ul.rel_courses li a span{float:none;padding-left:0px;width:100%;}
+div.colcont3 div.col3 div.box{display:none}
+div.colcont3 div.col2 ul.results{display:none}
+ul.results{display:none}
+div.colcont2_inv div.col2 p.searchtop{padding-left:0px}
+div.colcont2_inv div.col2 ul.search li a{margin-bottom:20px}
+
+ul.search li a span,
+ul.search li a span.title,
+ul.search li a span.info{padding:0 0 0 0;width:100%;display:block;float: none !important}
+.colcont3 .col2 ul.fact li p span.info, .colcont3 .col2 ul.factgrey li p span.info{width:100%}
+
+div.colcont2 div.col2 div.intro img.fr{float:none}
+div.colcont2 div.col2 div.intro div.fl{float:none}
+div.intro_c, div.intro_l{margin-left:0px}
+div.intro_c h1,div.intro_l h1,div.intro_c h2,div.intro_l h2{padding-left:0px}
+div.colcont3 div.col2,div.colcont3 div.col2 p {width:630px;}
+
+p#footerh, div.col3, #footer_logos {display:none;visibility:hidden}
+#staff_bbq_registered td {
+}
+/* Course page printouts */
+body.our_courses div.col2 {
+	margin-left:25px;
+	font-size:1em;
+	color:#000;
+}
+body.our_courses div.col2 span.title1 {
+	font-weight:bold;
+	font-size:0.8em;
+	display:block;
+	padding:0;
+	margin-bottom:7px;
+}
+body.our_courses div.col2 a.HAcss1, body.our_courses #banner, body.our_courses .hrc2, body.our_courses #specialf{
+	display:none;
+}
+body.our_courses div.col2  span.info, body.our_courses li, body.our_courses p, body.our_courses h1 {
+	width:640px;
+}
+body.our_courses div.col2 p.clearfix, ody.our_courses div.col2 p {
+	margin:0;
+	padding:0;
+}
+body.our_courses ul, body.our_courses li {
+	background:none;
+	background-color:#fff;
+}
+body.our_courses li.clearfix {
+	margin-top:20px;
+}
+body.our_courses #canvas {
+	page-break-after:avoid;
+}
+body.our_courses {
+	height:auto;
+}
+div.col2, div.col2 table, .colcont2, .colcont3, .colcont32 {
+	width:100%;
+	margin:0 !important;
+	padding:0 !important;
+	float:none;
+	display:block;
+}
+/* Course page printouts */
+#print_banner {
+	display:block;
+	padding-bottom:15px;
+	margin:0 auto;
+}
+#print_footer {
+	display:block;
+}
+.colcont3 {
+	background:none;
+}
+.clearfix, .intro_c, .intro_l, .hrc4, .hr {
+	background:none !important;
+	color:#000 !important;
+}
+.title1, .info, .lep, h1 {
+	color:#000 !important;
+}
+body {
+	background-color:#fff;
+	margin:0;
+	padding:0;
+}
+body.our_courses #canvas {
+	width:640px !important;
+	margin:0;
+	padding:0;
+}
+body.our_courses h1 {
+	font-size:1.4em;
+}
+.colcont3 .col2 ul.fact li p span.title1, 
+.colcont3 .col2 ul.factgrey li p span.title1, 
+ul.fact {
+	width:630px;
+}
+.clearfix {
+	float:none !important;
+	position:relative !important;
+	clear:none !important;
+}
+hr, #banner, .occurrences {
+	display:none;
+}
+body.our_courses .intro_c h1, body.our_courses .intro_c {
+	/*display:none;*/
+}
+* {
+	float:none !important;	
+	overflow:visible !important;
+	position:relative;
+}
+.intro, .fl, .col2, .colcont2, .colcont2 .intro p {
+	width:640px !important;
+}
+img.fr {
+	margin-bottom:15px;
+}
+span.info, span.title1 {
+	padding-left:1px !important;
+}
+ul li form, p.print_this {
+	display:none;
+}
+body.our_courses .intro_c {
+	margin:0 !important;
+	padding:0 !important;
+}
+.when_can_i_start  {
+	display:block;
+}
+/* removing occurrences from course printouts
+.occurrences ul.top_b {
+	margin-top:0 !important;
+	padding-top:0 !important;
+}
+.occurrences div.hrc4 {
+	display:none;
+}
+*/

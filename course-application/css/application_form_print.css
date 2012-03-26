@@ -1,0 +1,39 @@
+.print_hide, input.submit, input.submit_save, #steps { 
+	display:none;
+}
+body {
+	font-size:0.88em;
+	line-height:1.25em;
+	font-family:Arial, sans-serif;
+}
+input, select, textarea {
+	font-size:1em;
+}
+#reference_details_print {
+	display:block;
+	width:600px;
+	margin-bottom:30px;
+}
+#reference_details_print h2 {
+	margin-top:0;
+}
+#steps {
+	margin-bottom:15px;
+}
+#verify_info {
+	background-color:transparent;
+	padding:0;
+}
+div.section {
+	padding:0;
+	border:none;
+	background-color:transparent;
+}
+h1 {
+	font-size:1.6em !important;
+	margin-left:0 !important;
+	margin-bottom:25px;
+}
+.print_this, .hide_print {
+	display:none;
+}

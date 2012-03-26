@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<form name="contact">
+	<fields>
+		<text identifier="id" unique="true"></text>
+		<text identifier="ownerid" name="Owner" target="members" label="username"></text>
+		<text identifier="company_name" name="Name"></text>
+		<text identifier="address1"></text>
+		<text identifier="address2"></text>
+		<text identifier="city" name="City" overview="true"></text>
+		<text identifier="county" name="County" overview="true"></text>
+		<text identifier="state" name="State"></text>
+		<text identifier="zip" name="Zip Code"></text>
+		<select identifier="countrycode" name="Country" values=",B,F,M" labels=",Business,Fax,Mobile"></select>
+		<select identifier="phone_type" name="Phone Type" values=",B,F,M" labels=",Business,Fax,Mobile"></select>
+		<text identifier="telephone" name="Telephone" overview="true"></text>
+		<selectmenu identifier="session" name="Session"></selectmenu>
+	</fields>
+	<errors>&lt;tr&gt;&lt;td colspan="2" class="error"&gt;&lt;b&gt;Bitte überprüfen Sie die markierten Felder.&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="2"&gt;&lt;img src="/layout/images/blank.gif" alt="" width="1" height="15" border="0"&gt;&lt;/td&gt;&lt;/tr&gt;</errors>
+
+
+
+	<postactions>
+		<action type="register" structure="company" target="companies" update="true"></action>
+		<action type="session_redirect"></action>
+	</postactions>
+</form>
+

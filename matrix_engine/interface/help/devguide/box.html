@@ -1,0 +1,316 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html>
+<head>
+	<title>Workmatrix: Developers</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+	<link rel="stylesheet" type="text/css" href="layout/css/layout.css" media="all">
+</head>
+
+<body>
+		<div id="header">&nbsp;</div>
+		<div id="shadow">&nbsp;</div>
+
+		<table id="main" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<td colspan="2"><img src="layout/images/blank.gif" width="1" height="5" alt=""></td>
+			</tr>
+			<tr>
+				<td id="sidebar"><img src="layout/images/sidebar_top.gif" id="sidebartop" width="171" height="8" alt=""><div id="navigation"><h3>Tags</h3>
+						<ul>
+
+							<li class="active"><a href="box.html">Box</a>
+							<ul class="sub"><li><a href="#parameter">Parameter</a></li><li><a href="#output">Output</a></li><li><a href="#variables">Variables</a></li></ul>
+							</li>
+
+							<li><a href="copytext.html">Copytext</a></li>
+
+							<li><a href="date.html">Date</a></li>
+
+							<li><a href="file.html">File</a></li>
+
+							<li><a href="image.html">Image</a></li>
+
+							<li><a href="include.html">Include</a></li>
+
+							<li><a href="link.html">Link</a></li>
+
+							<li><a href="linklist.html">Linklist</a></li>
+
+							<li><a href="listview.html">Listview</a></li>
+
+							<li><a href="text.html">Text</a></li>
+
+						</ul>
+						<div class="clearer">&nbsp;</div>
+
+						
+						<div class="clearer">&nbsp;</div>
+						<h3>Extra Tags</h3>
+						<ul>
+
+							<li><a href="dhtmltext.html">Dhtmltext</a></li>
+
+							<li><a href="alias.html">Alias</a></li>
+
+							<li><a href="bigmovie.html">Bigmovie</a></li>
+
+							<li><a href="cropimage.html">Cropimage</a></li>
+
+							<li><a href="email.html">Email</a></li>
+
+							<li><a href="checkboxgroup.html">checkboxgroup</a></li>
+
+							<li><a href="subject_checkboxgroup.html">subject_checkboxgroup</a></li>
+
+							<li><a href="rowview.html">rowview</a></li>
+
+						</ul>
+						<div class="clearer">&nbsp;</div>
+
+					</div><img src="layout/images/sidebar_bottom.gif" id="sidebarbottom" width="171" height="11" alt="">
+
+					
+				</td>
+				<td id="content" valign="top">
+					<img src="layout/images/blank.gif" width="1" height="14" alt="">
+					<h2>Box</h2>
+					<p>Provides a "blackbox" for other datatypes. A box can hold an unlimited combination of different datatypes as a list.</p>
+					
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					
+					
+					
+					<!-- parameter headline -->
+					<img src="layout/images/blank.gif" width="1" height="20" alt="">
+					<a name="parameters"></a>
+					<h3>Parameters</h3>
+					<img src="layout/images/seperator.gif" width="403" height="1" alt="">
+					<!-- parameter headline -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>template</h4>
+								<h5>template="moreinfo,headline"</h5>
+								<p>	<p>Defines a list of selectable templates in a comma seperated list. There should be no spaces between the entries and the commas.</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>entry</h4>
+								<h5>entry="TEXT:title,TEXT:copy,TEXT:date"</h5>
+								<p>	<p>This attribute defines which element of the user selected template should be shown in the edit mode as information. The attribute can contain several elements as a comma seperated list. Again this list should not contain any spaces. </p>
+
+	<p>The format of an element entry is:<br />
+<span class="caps">DATATYPE</span>:name</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>maxcount</h4>
+								<h5>maxcount="5"</h5>
+								<p>	<p>This attribute defines the maximum number of elements which can be added to the box.</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>boxtemplate</h4>
+								<h5>boxtemplate="basename"</h5>
+								<p>	<p>This parameter is optional. The box template should contain the head, foot, empty, navigation blocks. </p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>slideshow</h4>
+								<h5>slideshow="true"</h5>
+								<p>	<p>If set the box will switch to slideshow mode. You should provide a boxtemplate. If set identifier.next and identifier.previous will be output.</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					
+					<!-- parameter headline -->
+					<img src="layout/images/blank.gif" width="1" height="20" alt="">
+					<a name="output"></a>
+					<h3>Output</h3>
+					<img src="layout/images/seperator.gif" width="403" height="1" alt="">
+					<!-- parameter headline -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>head</h4>
+								<h5>< !-- BEGIN head -- >...< !-- END head -- ></h5>
+								<p>The head element will only be output when boxtemplate is set and it is defined in the template. It will be output before all other elements.</p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>foot</h4>
+								<h5>< !-- BEGIN foot -- >...< !-- END foot -- ></h5>
+								<p>will only be output if boxtemplate is set. Will be output qat the end of all box elements.</p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>empty</h4>
+								<h5>< !-- BEGIN empty -- >...< !-- END empty -- ></h5>
+								<p>Requires boxtemplate to be set. Will be output if no box elements where created.</p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>navigation</h4>
+								<h5>< !-- BEGIN navigation -- >...< !-- END navigation -- ></h5>
+								<p>Requires boxtemplate to be set. Will be output if slideshow is set to true.</p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					
+					<!-- parameter headline -->
+					<img src="layout/images/blank.gif" width="1" height="20" alt="">
+					<a name="variables"></a>
+					<h3>Variables</h3>
+					<img src="layout/images/seperator.gif" width="403" height="1" alt="">
+					<!-- parameter headline -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>identifier</h4>
+								<h5></h5>
+								<p>	<p>Outputs the list of datatypes.</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>identifier.next</h4>
+								<h5></h5>
+								<p>	<p>Outputs the link to the next box.</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>identifier.previous</h4>
+								<h5></h5>
+								<p>	<p>outputs the link to the previous box.</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+				
+					<img src="layout/images/blank.gif" width="1" height="40" alt="">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" id="bottom">
+					<img src="layout/images/blank.gif" width="1" height="19" alt="">
+				</td>
+			</tr>
+		</table>
+	
+	
+</body>
+</html>

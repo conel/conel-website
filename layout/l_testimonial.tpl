@@ -1,0 +1,1 @@
+<!-- BEGIN rowstart --><div class="clearfix"><!-- END rowstart --><!-- BEGIN body --><div class="box">	<h3>Profile</h3>	<a href="{matrix:TARGETPAGE}">{IMAGE.1}</a>	<a class="chevron" href="{matrix:TARGETPAGE}"><span>{HEADLINE}<br />{INTRO}</span></a>	<div class="box_bottom"><hr /></div></div><!-- END body --><!-- BEGIN rowend --></div><!-- END rowend -->

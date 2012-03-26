@@ -1,0 +1,1 @@
+<!-- BEGIN head --><ul class="courses"><!-- END head --><!-- BEGIN body --><li class="clearfix"><a href="{matrix:TARGETPAGE}" class="clearfix"><span class="subject">{HEADLINE}</span><span class="subjectcrs">{COURSECNT}</span></a></li><!-- END body --><!-- BEGIN foot --></ul><!-- END foot -->

@@ -1,0 +1,2 @@
+<!-- BEGIN body --><td align="left" valign="top"><div style="margin:12px 0 5px 0;"><img src="http://www.conel.ac.uk/{IMAGE.file}" width="{IMAGE.width}" height="{IMAGE.height}" alt="{CAPTION}"></div><h2 style="margin:4px 0 0px 0;padding:0;font-family:Arial, Helvetica, sans-serif;font-size:10px;font-weight:normal;">{CAPTION}</h2></td>
+<!-- END body -->

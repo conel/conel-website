@@ -1,0 +1,416 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html>
+<head>
+	<title>Workmatrix: Developers</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+	<link rel="stylesheet" type="text/css" href="layout/css/layout.css" media="all">
+</head>
+
+<body>
+		<div id="header">&nbsp;</div>
+		<div id="shadow">&nbsp;</div>
+
+		<table id="main" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<td colspan="2"><img src="layout/images/blank.gif" width="1" height="5"></td>
+			</tr>
+			<tr>
+								<td id="sidebar"><img src="layout/images/sidebar_top.gif" id="sidebartop" width="171" height="8" alt=""><div id="navigation"><h3>Tags</h3>
+
+						<ul>
+
+							<li><a href="box.html">Box</a></li>
+
+							<li><a href="copytext.html">Copytext</a></li>
+
+							<li><a href="date.html">Date</a></li>
+
+							<li><a href="file.html">File</a></li>
+
+							<li><a href="image.html">Image</a></li>
+
+							<li><a href="include.html">Include</a></li>
+
+							<li><a href="link.html">Link</a></li>
+
+							<li><a href="linklist.html">Linklist</a></li>
+
+							<li><a href="listview.html">Listview</a></li>
+
+							<li><a href="text.html">Text</a></li>
+
+						</ul>
+						<div class="clearer">&nbsp;</div>
+
+						
+						<div class="clearer">&nbsp;</div>
+						<h3>Extra Tags</h3>
+						<ul>
+
+							<li><a href="dhtmltext.html">Dhtmltext</a></li>
+
+							<li><a href="alias.html">Alias</a></li>
+
+							<li><a href="bigmovie.html">Bigmovie</a></li>
+
+							<li><a href="cropimage.html">Cropimage</a></li>
+
+							<li><a href="email.html">Email</a></li>
+
+							<li><a href="checkboxgroup.html">checkboxgroup</a></li>
+
+							<li><a href="subject_checkboxgroup.html">subject_checkboxgroup</a></li>
+
+							<li class="active"><a href="rowview.html">rowview</a>
+							<ul class="sub"><li><a href="#parameters">Parameters</a></li><li><a href="#output">Output</a></li><li><a href="#variables">Variables</a></li></ul>
+							</li>
+
+						</ul>
+						<div class="clearer">&nbsp;</div>
+
+					</div>
+					<img src="layout/images/sidebar_bottom.gif" id="sidebarbottom" width="171" height="11">
+				</td>
+				<td id="content" valign="top">
+					<img src="layout/images/blank.gif" width="1" height="14">
+					<h2>rowview</h2>
+					<p>This datatype creates a list of documents. The rowview outputs this lists in rows or columns.</p>
+					
+					<img src="layout/images/blank.gif" width="1" height="10">
+					
+					
+					
+					<!-- parameter headline -->
+					<img src="layout/images/blank.gif" width="1" height="20" alt="">
+					<a name="parameters"></a>
+					<h3>Parameters</h3>
+					<img src="layout/images/seperator.gif" width="403" height="1" alt="">
+					<!-- parameter headline -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>category</h4>
+								<h5>category="basename"</h5>
+								<p>	<p>If you want to show pages with a a specific template you should use category. You can include several basenames / templates. They should be listed seperated by comma.</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>scope</h4>
+								<h5>scope="local"</h5>
+								<p>	<p>You should define this attibute in conjunction with category. Scope defines in which radius the search takes place. Possible values for scope are:<br />
+<ul><li><strong>level</strong> <br />
+Searches all pages which are on the same level as the current page.</li> <li><strong>local</strong> <br />
+Searches all pages which are on the level below the current page.</li> <li><strong>branch</strong><br />
+Searches all pages below the current level.</li> <li><strong>global</strong> <br />
+Searches all pages.</li> </ul></p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>template</h4>
+								<h5>template="example"</h5>
+								<p>	<p>This attribute defines the template which should be used to show the search results.</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>highlight</h4>
+								<h5>highlight="true"</h5>
+								<p>	<p>This attribute defines if the current page should be highlighted in the output. See active section of the template description.</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>sortby</h4>
+								<h5>sortby="date"</h5>
+								<p>	<p>This attribute defines which field should be used to order the results. Sortby is only available when the scope is global or local. The field to be sorted needs to be a text field.</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>orderdirection</h4>
+								<h5>orderdirection="asc"</h5>
+								<p>	<p>With this attribute you can define if the search results should be shown in ascending or descending order.<br />
+<ul><li><strong><span class="caps">ASC</span></strong><br />
+Ascending search</li><li><strong><span class="caps">DESC</span></strong><br />
+Descending search</li></ul></p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>itemcount</h4>
+								<h5>itemcount="3"</h5>
+								<p>	<p>This attribute defines how many elements are output ber row or column.</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					
+					<!-- parameter headline -->
+					<img src="layout/images/blank.gif" width="1" height="20" alt="">
+					<a name="output"></a>
+					<h3>Output</h3>
+					<img src="layout/images/seperator.gif" width="403" height="1" alt="">
+					<!-- parameter headline -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>body</h4>
+								<h5>< !-- BEGIN body -- >...< !-- END body -- ></h5>
+								<p>This section is returned for each result.</p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>head</h4>
+								<h5>< !-- BEGIN head -- >...< !-- END head -- ></h5>
+								<p>If the search returns result the section head will be output before any results.</p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>foot</h4>
+								<h5>< !-- BEGIN foot -- >...< !-- END foot -- ></h5>
+								<p>If the search returns result the section foot will be output after any results.</p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>empty</h4>
+								<h5>< !-- BEGIN empty -- >... < !-- END empty -- ></h5>
+								<p>If no results are found this section will be output.</p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>active</h4>
+								<h5>< !-- BEGIN active -- >...< !-- END active -- ></h5>
+								<p>If you set the attribute highlight to true the current page will be output using this section.</p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>rowstart</h4>
+								<h5>< !-- BEGIN rowstart -- >...< !-- END rowstart -- ></h5>
+								<p>This section is output before staring a new line of elements.</p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>rowstend</h4>
+								<h5>< !-- BEGIN rowend -- >...< !-- END rowend -- ></h5>
+								<p>This section is output after a line of elements is finished.</p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					
+					<!-- parameter headline -->
+					<img src="layout/images/blank.gif" width="1" height="20" alt="">
+					<a name="variables"></a>
+					<h3>Variables</h3>
+					<img src="layout/images/seperator.gif" width="403" height="1" alt="">
+					<!-- parameter headline -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>matrix:TARGETPAGE</h4>
+								<h5></h5>
+								<p>	<p>Returns the <span class="caps">URL</span> of the target page</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>matrix:PAGEID</h4>
+								<h5></h5>
+								<p>	<p>Returns the page id of the target page.</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>matrix:COUNTER</h4>
+								<h5></h5>
+								<p>	<p>Outputs the internal counter which starts with 0</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+					<!-- parameter -->
+					<img src="layout/images/blank.gif" width="1" height="5" alt="">
+					<table border="0" cellspacing="0" cellpadding="0" width="403">
+						<tr>
+							<td>
+								<h4>matrix:PAGENAME</h4>
+								<h5></h5>
+								<p>	<p>Returns the name of the target page.</p></p>
+							</td>
+						</tr>
+					</table>
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<img src="layout/images/seperator_light.gif" width="403" height="1" alt="">
+					<img src="layout/images/blank.gif" width="1" height="10" alt="">
+					<!-- parameter -->
+
+				
+					<img src="layout/images/blank.gif" width="1" height="40">
+				</td>
+			</tr>
+			<td colspan="2" id="bottom">
+				<img src="layout/images/blank.gif" width="1" height="19">
+			</td>
+		</tr>
+	</table>
+	
+	
+</body>
+</html>

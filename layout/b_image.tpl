@@ -1,0 +1,1 @@
+<!-- BEGIN body -->{IMAGE}<p class="caption">{CAPTION}&#xA0;</p><!-- END body -->

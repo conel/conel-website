@@ -1,0 +1,1 @@
+<!-- BEGIN body -->{NEWS}<!-- END body -->

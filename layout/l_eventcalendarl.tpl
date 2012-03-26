@@ -1,0 +1,1 @@
+<!-- BEGIN body --><a href="{matrix:TARGETPAGE}" class="btn"><span>{matrix:PAGENAME}</span></a><!-- END body -->

@@ -1,0 +1,1 @@
+<!-- BEGIN head --><!-- END head --><!-- BEGIN body --><li><a href="{matrix:TARGETPAGE}"><span>{HEADLINE}</span></a></li><!-- END body --><!-- BEGIN active --><li><a href="{matrix:TARGETPAGE}" class="active"><span>{HEADLINE}</span></a></li><!-- END active --><!-- BEGIN foot --><!-- END foot -->

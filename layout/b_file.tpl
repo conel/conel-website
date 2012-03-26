@@ -1,0 +1,1 @@
+<!-- BEGIN head --><ul class="chevron"><!-- END head --><!-- BEGIN body --><li><a href="/{LINK.absolutefile}"><span>{LINK.icon_img}{LINK.text}, {LINK.size}</span></a></li><!-- END body --><!-- BEGIN foot --></ul><!-- END foot -->

@@ -1,0 +1,1 @@
+<!-- BEGIN body -->						<div class="box">							<h3>{HEADLINE}</h3>							{SUBSCRIBE}						</div><!-- END body -->

@@ -1,0 +1,14 @@
+div.occurrences {
+	margin-top:10px;
+	margin-bottom:-17px;
+}
+div.occurrences p.clearfix, div.occurrences li.clearfix, div.occurrences span {
+	margin:0 !important;
+	padding:0 !important;
+	line-height:1em !important;
+	height:auto !important;
+}
+div.occurrences span.option {
+	margin-top:10px !important;
+	margin-bottom:15px !important;
+}

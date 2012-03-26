@@ -1,0 +1,1 @@
+<!-- BEGIN body --><div class="box"><h3>{HEADLINE}</h3><a href="{LINK}">{IMAGE}</a><a class="chevron" href="{LINK}"><span>{TEXT}</span></a><div class="box_bottom"><hr /></div></div><!-- END body -->
