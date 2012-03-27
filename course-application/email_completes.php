@@ -14,7 +14,8 @@
 	include_once('caf_functions.php'); // functions used in form
 	
 	// Check whether user is signed in
-	$qry = "SELECT * FROM tbl_course_application WHERE page_step = 9 and form_completed = 0";
+	//$qry = "SELECT * FROM tbl_course_application WHERE page_step = 9 and form_completed = 0";
+    $qry = "SELECT * FROM tbl_course_application WHERE datetime_submitted_first >= '2011-09-01 00:00:00' AND page_step = 9 AND form_completed = 0 ORDER BY email_address";
 	$sql->query($qry, $debug);
 	
 	$csv_columns = array('learning_difficulty','disability', 'benefits_receiving', 'how_heard_about_course');
@@ -24,6 +25,8 @@
 		// Set up session values for all non-blank fields
 		
 		unset($_SESSION['caf']);
+        $_SESSION['caf']['signed_in'] = TRUE;
+
 		foreach ($sql->Record as $key => $value) {
 			if (!is_numeric($key) && $value != '') {
 				// if key is from specified csv columns (see above $csv_columns array) then make the session key an array of its values
@@ -49,6 +52,7 @@
 		
 		// SEND THE EMAIL
 		//emailCompletedApplication($email_html);
+        //markApplicationComplete();
 		$c++;
 	}
 	echo '<p>'.$c.' emails sent!</p>';
