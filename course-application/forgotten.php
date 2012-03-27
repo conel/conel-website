@@ -208,6 +208,21 @@
 			$(e.target).closest('tr').children('td,th').css('background-color','#FFFF79');
 		});
 	});
+
+    
+    function isIE() {
+        return (navigator.appName == 'Microsoft Internet Explorer') ? true : false;
+    }
+        
+    function create_email(email, resume_link) {
+        resume_link = encodeURIComponent(resume_link);
+        var link = 'mailto:' + email + '&subject=Resume Your Online Application&Body=Dear Applicant,%0D%0DThe online application you submitted to the College of Haringey Enfield and North East London is incomplete.%0DTo resume your saved application visit: '+ resume_link +' then click \'Continue Application\'.%0D%0DYou may like to come along to our College Open Days in May to see our teaching facilities and speak with tutors about your course options, you can register your attendance on http://www.conel.ac.uk/for_learners/open_days %0D%0DPlease do not hesitate to contact us if you have any queries.%0D%0DKind regards,%0D%0DLearner Recruitment Team%0DE-mail: admissions@conel.ac.uk%0DTel: 020 8442 3055 / 020 8442 3103';
+        if (isIE()) {
+            window.open(link);
+        } else {
+            document.location.href = link;
+        }
+    }
 </script>
 
 <?php 
@@ -241,6 +256,7 @@
 				$page_step = (isset($sql->Record['page_step']) && $sql->Record['page_step'] != '')  ? $sql->Record['page_step'] : '';
 				$percent = ($page_step != '') ? round((($page_step / 9) * 100), 0) . '%' : '0%';
 				
+
 				echo '<tr class="'.$row_class.'">';
 					$person_no = $i + 1;
 					echo "<td style=\"text-align:center;\">$person_no</td>";
@@ -250,20 +266,21 @@
 					echo '<td>'. $surname . '</td>';
 					echo '<td style="text-align:center;">'.$percent.'</td>';
 					$resume_link = 'http://www.conel.ac.uk/course-application/index.php?email='.$sql->Record['email_address'].'&ref_id='.$sql->Record['reference_id'];
-					$resume_link = urlencode($resume_link);
-					echo '<td style="text-align:center;"><!--<a href="view-application.php?id='.$id.'" title="View Application"><img src="images/icon-view.png" width="16" height="16" alt="View User\'s Application" /></a>-->
-					<a href="mailto:'.$sql->Record['email_address'].'&amp;subject=Resume Your Online Application&amp;Body=Dear Applicant,%0D%0D
-					The online application you submitted to the College of Haringey Enfield and North East London is incomplete.%0D
-					To resume your saved application visit: '.$resume_link.' then click \'Continue Application\'.%0D
-					Once we receive a completed application from you, you will be invited for immediate interview with a tutor.%0D%0D%0D
-					You are invited to come along to the next College Open Days to see our teaching facilities and speak with tutors about your course options.%0D
-					Tottenham Centre: Saturday 12th May 2012, 10am-12pm%0D
-					Enfield Centre: Saturday 26th May 2012, 10am-12pm%0D%0D%0D
-					Please do not hesitate to contact us if you have any queries.%0D%0D
-					Kind regards,%0D%0D
-					Learner Recruitment Team%0D
-					E-mail: admissions@conel.ac.uk%0D
-					Tel: 020 8442 3055 / 020 8442 3103" title="Email User" class="email_user"><img src="images/icon-email.png" width="16" height="16" alt="Email User Reference ID" /></a></td>';
+					//$resume_link = urlencode($resume_link);
+                    //$open_days_link = 'http://www.conel.ac.uk/for_learners/open_days';
+                    //$open_days_link = urlencode($open_days_link);
+
+                    echo '<td style="text-align:center;"><!--<a href="view-application.php?id='.$id.'" title="View Application"><img src="images/icon-view.png" width="16" height="16" alt="View User\'s Application" /></a>-->';
+                    /* old
+                    <a href="mailto:'.$sql->Record['email_address'].'&amp;subject=Resume Your Online Application&amp;Body=Dear Applicant,%0D%0D
+                    The online application you submitted to the College of Haringey Enfield and North East London is incomplete.%0DTo resume your saved application visit: '.$resume_link.' then click \'Continue Application\'.%0DYou may like to come along to our College Open Days in May to see our teaching facilities and speak with tutors about your course options, you can register your attendance on '.$open_days_link.'%0D%0D
+                    Please do not hesitate to contact us if you have any queries.%0D%0D
+                    Kind regards,%0D%0D
+                    Learner Recruitment Team%0D
+                    E-mail: admissions@conel.ac.uk%0D
+                    Tel: 020 8442 3055 / 020 8442 3103" title="Email User" class="email_user" target="_blank">
+                    */
+                    echo '<a href="javascript:create_email(\''.$sql->Record['email_address'].'\', \''.$resume_link.'\');" title="Email User" class="email_user"><img src="images/icon-email.png" width="16" height="16" alt="Email User Reference ID" /></a></td>';
 				echo '</tr>';
 				$i++;
 			}
