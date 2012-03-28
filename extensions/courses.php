@@ -616,7 +616,7 @@
 		if ($params['page_id'] == 4424) {
 		
 			$db = new DB_Sql();
-			$query = "SELECT id, Description FROM tblunits WHERE ID LIKE ('AP%') ORDER BY Subject_ID, id, Description";
+            $query = "SELECT id, Description FROM tblunits WHERE (Description LIKE ('%Pre Apprenticeship%') AND id NOT LIKE ('AP%')) OR id LIKE ('AP%') ORDER BY Subject_ID, id, Description";
 			$rp = $db->query($query);
 			while($db->next_record(MYSQL_ASSOC)) {
 				$courses[] = $db->Record;        
