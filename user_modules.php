@@ -1281,7 +1281,7 @@ function _page_generatePage($page_id,$template) {
 		
 		// nkowald - 2012-04-20 - Add Apprenticeships value
 		$output .= "\t<option value=\"\">Select a subject area</option>\n";
-		$output .= "\t<option value=\"APPRENTICESHIPS\">Apprenticeships</option>\n";
+		$output .= "\t<option value=\"APPRENTICESHIPS\">Apprenticeships and Pre-Apprenticeships</option>\n";
 		foreach($topic as $key => $value) {
 			// nkowald - 2012-04-01 - Capitalise value
 			$output .= "\t<option label=\"$value\" value=\"$key\">$value</option>\n";

@@ -43,7 +43,7 @@
 			$output .= '<option label="Select a subject area" value="0">-- Select a subject area</option>';
 		}
 		// nkowald - 2012-03-26 - Adding apprenticeships to drop-down
-		$output .= '<option value="APPRENTICESHIPS">Apprenticeships</option>';
+		$output .= '<option value="APPRENTICESHIPS">Apprenticeships and Pre-Apprenticeships</option>';
 	
 		foreach($subjects as $key => $value) {
 			if(isset($_GET['interest']) && $_GET['interest'] == $key) {
