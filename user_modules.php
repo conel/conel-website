@@ -1396,7 +1396,7 @@ function _page_generatePage($page_id,$template) {
                     <li>Vast range of apprenticeships to choose from</li>
                 </ul>';
 		} else {
-			$facts_or_msg = '<span id="open_day">'.$important_msg.'</span>';
+			$facts_or_msg = '<span>'.$important_msg.'</span>';
 		}
 		
 		return $facts_or_msg;

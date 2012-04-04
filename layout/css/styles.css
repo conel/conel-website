@@ -1065,6 +1065,14 @@ body.home {
 	width:708px;
 	padding:7px 0 0 10px;
 }
+#key_fact span {
+	font-size:0.95em !important;
+	display:block;
+	padding-top:12px;
+    color:#0D547F;
+}
+#key_fact a {
+}
 #fact_holder{
 	padding:10px 0 0 12px;
 	display:block;
@@ -1117,16 +1125,6 @@ form#stewarding span.dob {
 	display:block;
 	padding-top:12px;
 	color:#B01541;
-}
-#key_fact span#open_day {
-	font-size:0.87em !important;
-	display:block;
-	padding-top:12px;
-	color:#626D0C;
-}
-#key_fact span#open_day em {
-	font-weight:bold;
-	font-style:italic;
 }
 #fb_like {
 	float:left;
