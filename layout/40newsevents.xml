@@ -1,1 +1,24 @@
-<?xml version="1.0"?><page>	<page_head>		<title>Conel</title>		<description> </description>		<creation_date>2008-09</creation_date>		<owner>Webmatrix</owner>	</page_head>	<page_body>		<include name="NAVIGATION" function="module_navigation" />		<include name="GLOBALS" function="module_getGlobals" />		<include name="SUBSCRIBE" function="module_handleSubscription" parameter="3" />		<text name="HEADLINE">			<tag>Headline</tag>			<description> </description>				</text>		<listview name="NEWS" category="42newsarchive" template="l_newsarchive" scope="branch" count="1"></listview>		<listview name="NEWSL" category="42newsarchive" template="l_newsarchivel" scope="branch" count="1"></listview>		<listview name="EVENTS" category="43eventcalendar" template="l_eventcalendar" scope="branch" count="1"></listview>		<listview name="EVENTSL" category="43eventcalendar" template="l_eventcalendarl" scope="branch" count="1"></listview>		<listview name="FOOTER" template="l_footerh" category="00home" highlight="true" scope="global" count="1"></listview>	</page_body></page>
+<?xml version="1.0"?>
+<page>
+	<page_head>
+		<title>Conel</title>
+		<description> </description>
+		<creation_date>2008-09</creation_date>
+		<owner>Webmatrix</owner>
+	</page_head>
+
+	<page_body>
+		<include name="NAVIGATION" function="module_navigation" />
+		<include name="GLOBALS" function="module_getGlobals" />
+		<include name="SUBSCRIBE" function="module_handleSubscription" parameter="3" />
+		<text name="HEADLINE">
+			<tag>Headline</tag>
+			<description> </description>		
+		</text>
+		<listview name="NEWS" category="42newsarchive" template="l_newsarchive" scope="branch" count="1"></listview>
+		<listview name="NEWSL" category="42newsarchive" template="l_newsarchivel" scope="branch" count="1"></listview>
+		<listview name="EVENTS" category="43eventcalendar" template="l_eventcalendar" scope="branch" count="1"></listview>
+		<listview name="EVENTSL" category="43eventcalendar" template="l_eventcalendarl" scope="branch" count="1"></listview>
+		<listview name="FOOTER" template="l_footerh" category="00home" highlight="true" scope="global" count="1"></listview>
+	</page_body>
+</page>
