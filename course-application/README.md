@@ -2,7 +2,6 @@
 
 * Allow re-applying (have to allow them to choose to continue old or start a new one).
 * Add progress bars to the website so you know how much you've got left
-* On the last page, Receive communications box - change this to a checkbox with 'No' - unticked by default (tick means NO)
 * Section 6 - 3 questions always show. If 'No' is selected then the rest appear, otherwise hide them.
 
 ### Change to College Website
