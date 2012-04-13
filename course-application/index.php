@@ -1,5 +1,11 @@
 <?php
 	session_start();
+	// Session security
+	if (!isset($_SESSION['caf']['initiated'])) {
+		session_regenerate_id();
+		$_SESSION['caf']['initiated'] = true;
+	}
+
 
 	include_once('../matrix_engine/config.php');
 	include_once('../matrix_engine/'.CLASSES_DIR.'db_mysql.php');
@@ -14,11 +20,11 @@
 	include_once('caf_functions.php'); // functions used in form
 	
 	// constant to hold this page url
-	$page_url = "http://" .$_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
-	define('THIS_URL', $page_url);
+	$page_url = "";
+	define('THIS_URL', SITE_ROOT . 'course-application/index.php');
 
 	$step = (isset($_GET['step'])) ? $_GET['step'] : 0;
-	$resume_url = '<a href="'.THIS_URL.'">'.THIS_URL.'</a>';
+	$resume_url = '<a href="'.THIS_URL.'">'.SITE_ROOT.'/course-application/</a>';
 	
 	// This session array holds steps "complete" status
 	if(!isset($_SESSION['caf']['step_complete'])) {
@@ -48,7 +54,13 @@
 	}
 	
 	// Check whether user is signed in
-	$qry = "SELECT * FROM tbl_course_application WHERE email_address = '".$_SESSION['caf']['email_address']."' AND reference_id = '".$_SESSION['caf']['reference_id']."'";
+	$qry = sprintf("SELECT id FROM tbl_course_application 
+		WHERE email_address = '%s' 
+		AND reference_id = '%s'",
+		mysql_real_escape_string($_SESSION['caf']['email_address'], $sql->Link_ID),
+		mysql_real_escape_string($_SESSION['caf']['reference_id'], $sql->Link_ID)
+	);
+
 	$sql->query($qry, $debug);
 	$_SESSION['caf']['signed_in'] = FALSE;
 	if ($sql->num_rows() > 0) {
@@ -63,13 +75,13 @@
 		switch($step) {
 		
 			case 0:
-				if ($_SESSION['caf']['signed_in']) { 
+				if ($_SESSION['caf']['signed_in'] === true) { 
 					securityStepCheck($step);
 				}
 				break;
 			
 			case 1:
-				if ($_SESSION['caf']['signed_in']) {
+				if ($_SESSION['caf']['signed_in'] === true) {
 					securityStepCheck($step);
 				}
 				break;
@@ -79,7 +91,10 @@
 				$required_fields = array('course_title_1', 'college_centre_1', 'course_entry_date_1');
 				$_SESSION['caf']['missing_fields'] = '';
 				foreach ($required_fields as $field) {
-					if (isset($_POST[$field]) && $_POST[$field] == '') {$_SESSION['caf']['missing_fields'][] = $field; $continue = FALSE;}
+					if (isset($_POST[$field]) && $_POST[$field] == '') {
+						$_SESSION['caf']['missing_fields'][] = $field; 
+						$continue = FALSE;
+					}
 				}
 				if (!$continue) {
 					$_SESSION['caf']['errors'][] = "Required fields missing";
@@ -137,6 +152,9 @@
 				break;
 			
 			case 5:
+				if (isset($_POST) && count($_POST) > 0) {
+					$_SESSION['caf']['step_complete'][4] = TRUE;
+				}
 				securityStepCheck($step);
 				break;
 			
@@ -165,7 +183,10 @@
 				$required_fields = array('nationality','permanent_right_to_live_in_uk','are_you_an_international_student');
 				$_SESSION['caf']['missing_fields'] = '';
 				foreach ($required_fields as $field) {
-					if (isset($_POST[$field]) && $_POST[$field] == '') {$continue = FALSE; $_SESSION['caf']['missing_fields'][] = $field;}
+					if (isset($_POST[$field]) && $_POST[$field] == '') {
+						$continue = FALSE; 
+						$_SESSION['caf']['missing_fields'][] = $field;
+					}
 				}
 				if (!$continue) {
 					$_SESSION['caf']['errors'][] = "Required fields missing";
@@ -195,13 +216,16 @@
 				} else {
 					if (isset($_POST) && count($_POST) > 0) {
 						$_SESSION['caf']['step_complete'][7] = TRUE;
+						$_SESSION['caf']['step_complete'][8] = TRUE;
 					}
 					securityStepCheck($step);
 				}
 				break;
 			
 			case 9:
-				$_SESSION['caf']['step_complete'][8] = TRUE;
+				if ($_SESSION['caf']['step_complete'][8] === true) {
+					$_SESSION['caf']['step_complete'][9] = TRUE;
+				}
 				securityStepCheck($step);
 				break;
 				
@@ -229,7 +253,7 @@
 	$sql_query = "";
 	
 	if ($step > 0 && $step != 10) {
-		if (isset($_POST) && $_SESSION['caf']['signed_in'] == TRUE) {
+		if (isset($_POST) && $_SESSION['caf']['signed_in'] === true) {
 			$sql_query = "UPDATE tbl_course_application SET ";
 			foreach ($_POST as $key => $value) {
 				if (!in_array($key, $not_columns)) {
@@ -266,12 +290,16 @@
 			}
 			
 			$datetime_sub = date('Y-m-d H:i:s'); // 2010-06-02 14:24:04 - MySQL timestamp format
-			$sql_query .= "datetime_submitted_last = '$datetime_sub', page_step = '".$_SESSION['caf']['page_step']."' ";
-			$sql_query .= " WHERE id = ".$_SESSION['caf']['id']."";
+			$sql_query .= sprintf("datetime_submitted_last = '%s', page_step = '%d' ", 
+				$datetime_sub,
+				$_SESSION['caf']['page_step']
+			);
+			$sql_query .= sprintf(" WHERE id = %d", mysql_real_escape_string($_SESSION['caf']['id'], $sql->Link_ID));
 			$_SESSION['caf']['datetime_submitted_last'] = $datetime_sub;
+
 			if ($_SESSION['caf']['id'] != 0) {
 				if (!$sql->query($sql_query, $debug)) {
-					$_SESSION['caf']['errors'][] = "Could not update the database - invalid query";
+					$_SESSION['caf']['errors'][] = "Error saving application - invalid query";
 					header('location:'.THIS_URL.'?step='.$_SESSION['caf']['page_step'].'&error=2');
 					exit;
 				}
@@ -299,6 +327,23 @@
 
 <div id="holder">
 <img src="../layout/img/banner_new.gif" width="955" height="84" alt="The College of Haringey, Enfield and North East London" id="banner" />
+<?php 
+	if (isset($_SESSION['caf']['page_step']) && $_SESSION['caf']['page_step'] != 0) {
+
+	// Get percentage from step
+	$up_to = ($_SESSION['caf']['page_step'] < $step) ? $step : $_SESSION['caf']['page_step'];
+	$width = ($up_to / 10) * 100;
+
+?>
+<div id="progress_holder">
+	<div id="progress_bar">
+		<div id="progress" style="width:<?php echo $width; ?>%;"></div>
+	</div>
+	<span class="percent"><?php echo $width; ?>%</span>
+	<br class="clear_both" />
+</div>
+<?php } ?>
+
 <h1>Course Application Form</h1>
 <?php
 if ($step != 0) {
@@ -330,27 +375,31 @@ if ($step != 0 && $step != 10) {
 
 if ($step > 0) {
 	//if (isset($_GET['logout']) && $_GET['logout'] == 1) {
+	/*
 	if ($step == 10) {
 		echo '<a href="logout.php" id="logout">Logout</a>';
 	}
+	 */
 	//}
 	// Set up breadcrumb navigation
 	$sections = array(
-		1 => '1. Course Details',
-		2 => '2. Personal Details', 
+		1 => '1. Course',
+		2 => '2. Personal', 
 		3 => '3. Support', 
 		4 => '4. Qualifications', 
 		5 => '5. Employment and Experience', 
 		6 => '6. Residence / Fee Status', 
 		7 => '7. How Heard', 
-		8 => '8. Reference'
+		8 => '8. Reference',
+		9 => '9. Verify Details'
 	);
 	$steps = '<ul>';
 	$class = '';
 	$section_txt = '';
 
 	// Step should use $_SESSION['caf']['page_step'] if it's set up
-	$step_is = (isset($_SESSION['caf']['page_step']) && $_SESSION['caf']['page_step'] != '') ? $_SESSION['caf']['page_step'] : $step;
+	$step_is = (isset($_SESSION['caf']['page_step']) && $_SESSION['caf']['page_step'] != '') ? 
+		$_SESSION['caf']['page_step'] : $step;
 
 	foreach ($sections as $key => $section) {
 		if ($key <= $step_is) {
@@ -375,6 +424,7 @@ if ($step > 0) {
 }
 
 	if ($step == 0) {
+		// If we've already started: redirect to step 1
 ?>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -433,7 +483,6 @@ if ($step > 0) {
 <?php
 
 		echo '<div class="section">';
-			
 
 
 		$email_address = (isset($_SESSION['caf']['email_address'])) ? $_SESSION['caf']['email_address'] : '';
@@ -462,7 +511,12 @@ if ($step > 0) {
 				$email_address = trim($email_address);
 				$ref_id = trim($ref_id);
 				
-				$query = "SELECT * FROM tbl_course_application WHERE email_address = '".$email_address."' AND reference_id = '".$ref_id."'";
+				$query = sprintf("SELECT * FROM tbl_course_application 
+					WHERE email_address = '%s' 
+					AND reference_id = '%s'",
+					mysql_real_escape_string($email_address, $sql->Link_ID),
+					mysql_real_escape_string($ref_id, $sql->Link_ID)
+				);
 				$sql->query($query, $debug);
 				
 				$completed = 0;
@@ -488,9 +542,10 @@ if ($step > 0) {
 							} else if ((!is_numeric($key) && $value != '') && $key == 'form_completed') {
 								$completed = $value;
 								if ($completed == 1) {
-									$_SESSION['caf']['errors'][] = "You have already completed your course application form.";
-									$_SESSION['caf']['step_complete'][0] = FALSE;
-									$_SESSION['caf']['email_address'] = '';
+									$_SESSION['caf']['errors'][] = "You have submitted this course application already.<br/><span class=\"error_black\">To start a new application please enter your email in the 'New Application' section below.</span>";
+									//$_SESSION['caf']['step_complete'][0] = FALSE;
+									//$_SESSION['caf']['email_address'] = '';
+									session_destroy();
 									break;
 								}
 							}
@@ -498,7 +553,7 @@ if ($step > 0) {
 					}
 					
 					if ($completed == 0) {
-						for ($i=0; $i <= $_SESSION['caf']['page_step']; $i++) {
+						for ($i=0; $i < $_SESSION['caf']['page_step']; $i++) {
 							$_SESSION['caf']['step_complete'][$i] = TRUE;
 						}
 						
@@ -513,14 +568,14 @@ if ($step > 0) {
 			} else {
 							
 				// Trim whitespace
-				$email_address = trim($email_address);
+				$email_address = trim(mysql_real_escape_string($email_address, $sql->Link_ID));
 				
 				// See if this email's already in use - probably won't ever occur, good to have it here anyway
-				$query = "SELECT * FROM tbl_course_application WHERE email_address = '".$email_address."'";
+				$query = "SELECT id FROM tbl_course_application WHERE email_address = '$email_address' AND form_completed = 0";
 				$sql->query($query, $debug);
 				if ($sql->num_rows() > 0) {
-					// Email address does, exist: redirect to home page
-					$_SESSION['caf']['errors'][] = "Email address already registered. <br />Please log in as a returning applicant or use a different email address.";
+					// Email address does exist: redirect to home page
+					$_SESSION['caf']['errors'][] = "An incomplete application exists for this email address already. <br />Please log in as a returning applicant to complete your application.";
 				} else {
 					$_SESSION['caf']['email_address'] = $email_address;
 					$_SESSION['caf']['step_complete'][0] = TRUE;
@@ -533,14 +588,27 @@ if ($step > 0) {
 		}
 		
 		
-		if (isset($_SESSION['caf']['email_address']) && $_SESSION['caf']['step_complete'][0] == TRUE) {
+		if (isset($_SESSION['caf']['email_address']) && $_SESSION['caf']['step_complete'][0] === TRUE) {
 			
 			/* Probably a bit annoying having it auto-print
-			
-			echo '<script type="text/javascript">
-				window.print();
-			</script>';
+			echo '<script type="text/javascript">window.print();</script>';
 			*/
+
+			$query = "SELECT reference_id FROM tbl_course_application WHERE email_address = '$email_address' AND form_completed = 1";
+			$sql->query($query, $debug);
+
+			$ref_ids = array();
+			if ($sql->num_rows() > 0) {
+				$no_completes = $sql->num_rows();
+				++$no_completes;
+				while($sql->next_record()) {
+					foreach ($sql->Record as $key => $value) {
+						$ref_ids[] = $value;
+					}
+				}
+			} else {
+				$no_completes = 1;
+			}
 			
 			echo '<h2>Your Reference Details</h2>';
 			$unique_ref = strtoupper(uniqid());
@@ -549,8 +617,12 @@ if ($step > 0) {
 			$unique_ref = str_replace('O', 'X', $unique_ref);
 			$unique_ref = substr($unique_ref,0,12);
 			$unique_ref = wordwrap($unique_ref, 4, "-", true);
+			// to avoid duplicate reference ids make the first two digits = V2 <-- where 2 = the second form they've submitted
+			$version = 'C' . $no_completes;
+			$unique_ref = $version . substr($unique_ref, 2);
 			
-			if (!isset($_SESSION['caf']['reference_id'])) {
+			// Set the reference id if not set or this reference ids exists already
+			if (!isset($_SESSION['caf']['reference_id']) || (count($ref_ids) > 0 && in_array($_SESSION['caf']['reference_id'], $ref_ids))) {
 				$_SESSION['caf']['reference_id'] = $unique_ref;
 			}
 			
@@ -609,8 +681,8 @@ if ($step > 0) {
 			$passed_refid = (isset($_GET['ref_id'])) ? $_GET['ref_id'] : '';
 			
 			echo '<div id="new_applicants">';
-			echo '<h2>New Applicant</h2>';
-			echo '<p style="line-height:1.25em;"><strong>Please complete your online form in one sitting.<br />It will take you just 15 minutes and then we will be able<br />to get back in touch shortly after you submit it.</strong></p>';
+			echo '<h2>New Application</h2>';
+			echo '<p style="line-height:1.35em;"><strong>Please complete your online application in one sitting.<br />It will take you just 15 minutes and then we will be able<br />to get in touch shortly after you submit it.</strong></p>';
 			echo '<p>You can save your progress at any time during your application.<br />';
 			echo 'Your email address and a unique reference ID are used to identify you.</p>';
 			
@@ -646,11 +718,18 @@ if ($step > 0) {
 		if(($_SESSION['security_code'] == $_POST['security_code']) && (!empty($_SESSION['security_code'])) ) {
 			// Insert your code for processing the form here, e.g emailing the submission, entering it into a database. 
 			unset($_SESSION['security_code']);
+			$_SESSION['caf']['page_step'] = 1;
 
 			// Create database record for current user
 			$datetime_sub = date('Y-m-d H:i:s'); // 2010-06-02 14:24:04 - MySQL timestamp format
-			$query = "INSERT INTO tbl_course_application (datetime_submitted_first, email_address, reference_id, form_completed) 
-					VALUES('$datetime_sub', '".$_SESSION['caf']['email_address']."','".$_SESSION['caf']['reference_id']."', '0')";
+			$query = sprintf("INSERT INTO tbl_course_application 
+				(datetime_submitted_first, email_address, reference_id, form_completed) 
+				VALUES('%s','%s','%s','%d')", 
+				$datetime_sub,
+				mysql_real_escape_string($_SESSION['caf']['email_address'], $sql->Link_ID),
+				mysql_real_escape_string($_SESSION['caf']['reference_id'], $sql->Link_ID),
+				0
+			);
 			$sql->query($query, $debug);
 			$row_id = $sql->db_insertid();
 			if ($row_id) {
@@ -726,13 +805,13 @@ if ($step > 0) {
 		</tr>
 		<tr class="<?php addMissingFieldClass('course_title_1'); ?>">
 			<?php if (isset($_SESSION['caf']['course_title_1']) && $_SESSION['caf']['course_title_1'] != '') { $readonly = ' readonly="readonly"'; } else { $readonly = ''; } ?>
-			<td width="110"><label for="s1_course_title_1">Course Title:<span class="required">*</span></label></td>
-			<td><input type="text" name="course_title_1" class="text" id="s1_course_title_1" maxlength="100" value="<?php outputValueFromSession('text', 'course_title_1'); ?>" <?php echo $readonly; ?> /></td>
+			<td width="145"><label for="s1_course_title_1">Course Title:<span class="required">*</span></label></td>
+			<td><input type="text" name="course_title_1" class="text" id="s1_course_title_1" maxlength="100" value="<?php getValue('text', 'course_title_1'); ?>" <?php echo $readonly; ?> /></td>
 		</tr>
 		<tr>
 			<?php if (isset($_SESSION['caf']['course_code_1']) && $_SESSION['caf']['course_code_1'] != '') { $readonly = ' readonly="readonly"'; } else { $readonly = ''; } ?>
 			<td><label for="s1_course_code_1">Course Code:</label></td>
-			<td><input type="text" name="course_code_1" class="text" id="s1_course_code_1" maxlength="15" value="<?php outputValueFromSession('text', 'course_code_1'); ?>" <?php echo $readonly; ?> /></td>
+			<td><input type="text" name="course_code_1" class="text" id="s1_course_code_1" maxlength="15" value="<?php getValue('text', 'course_code_1'); ?>" <?php echo $readonly; ?> /></td>
 		</tr>
 		<tr class="<?php addMissingFieldClass('college_centre_1'); ?>">
 			<td><label for="s1_college_centre_1">College Centre:<span class="required">*</span></label></td>
@@ -744,8 +823,8 @@ if ($step > 0) {
 				?>
 					<select name="college_centre_1" id="s1_college_centre_1">
 						<option value="">Choose centre...</option>
-						<option value="Enfield" <?php outputValueFromSession('select', 'college_centre_1', 'Enfield'); ?>>Enfield</option>
-						<option value="Tottenham" <?php outputValueFromSession('select', 'college_centre_1', 'Tottenham'); ?>>Tottenham</option>
+						<option value="Enfield" <?php getValue('select', 'college_centre_1', 'Enfield'); ?>>Enfield</option>
+						<option value="Tottenham" <?php getValue('select', 'college_centre_1', 'Tottenham'); ?>>Tottenham</option>
 					</select>
 				<?php
 					}
@@ -756,8 +835,42 @@ if ($step > 0) {
 			<td><label>Entry Date:<span class="required">*</span></label></td>
 			<td>
 				<?php if (isset($_SESSION['caf']['course_entry_date_1']) && $_SESSION['caf']['course_entry_date_1'] != '') { $readonly = ' readonly="readonly"'; } else { $readonly = ''; } ?>
-				<input type="text" name="course_entry_date_1" class="text" id="s1_course_entry_date_1" maxlength="60" value="<?php outputValueFromSession('text', 'course_entry_date_1'); ?>" <?php echo $readonly; ?> />
-				<br /><a href="#" id="clear_course_1">Clear Course 1</a>
+				<input type="text" name="course_entry_date_1" class="text" id="s1_course_entry_date_1" maxlength="60" value="<?php getValue('text', 'course_entry_date_1'); ?>" <?php echo $readonly; ?> />
+			</td>
+		</tr>
+		<tr>
+			<td><label>Preferred Entry Date:</label></td>
+			<td>
+<select id="s1_preferred_entry_month_1" name="preferred_entry_month_1" class="date">
+	<option value="">Month...</option>
+	<option value="January"<?php getValue('select', 'preferred_entry_month_1', 'January'); ?>>January</option>
+	<option value="February"<?php getValue('select', 'preferred_entry_month_1', 'February'); ?>>February</option>
+	<option value="March"<?php getValue('select', 'preferred_entry_month_1', 'March'); ?>>March</option>
+	<option value="April"<?php getValue('select', 'preferred_entry_month_1', 'April'); ?>>April</option>
+	<option value="May"<?php getValue('select', 'preferred_entry_month_1', 'May'); ?>>May</option>
+	<option value="June"<?php getValue('select', 'preferred_entry_month_1', 'June'); ?>>June</option>
+	<option value="July"<?php getValue('select', 'preferred_entry_month_1', 'July'); ?>>July</option>
+	<option value="August"<?php getValue('select', 'preferred_entry_month_1', 'August'); ?>>August</option>
+	<option value="September"<?php getValue('select', 'preferred_entry_month_1', 'September'); ?>>September</option>
+	<option value="October"<?php getValue('select', 'preferred_entry_month_1', 'October'); ?>>October</option>
+	<option value="November"<?php getValue('select', 'preferred_entry_month_1', 'November'); ?>>November</option>
+	<option value="December"<?php getValue('select', 'preferred_entry_month_1', 'December'); ?>>December</option>
+</select>
+			<?php
+				$this_year = date('Y');
+				$years[] = $this_year;
+				$years[] = ++$this_year;
+			
+				echo "<select id=\"s1_preferred_entry_year_1\" name=\"preferred_entry_year_1\" class=\"date\">\n";
+				echo "<option value=\"\">Year...</option>\n";
+				foreach ($years as $year) {
+					$year_saved = (isset($_SESSION['caf']['preferred_entry_year_1'])) ? $_SESSION['caf']['preferred_entry_year_1'] : '';
+					$selected = ($year_saved == $year) ? ' selected="selected"' : '';
+					echo "\t<option value=\"$year\"$selected>$year</option>\n";
+				}
+				echo "</select>";
+			?>
+			<br /><a href="#" id="clear_course_1">Clear Course 1</a>
 			</td>
 		</tr>
 	</table>
@@ -769,13 +882,13 @@ if ($step > 0) {
 		</tr>
 		<tr>
 			<?php if (isset($_SESSION['caf']['course_title_2']) && $_SESSION['caf']['course_title_2'] != '') { $readonly = ' readonly="readonly"'; } else { $readonly = ''; } ?>
-			<td width="110"><label for="s1_course_title_2">Course Title:</label></td>
-			<td><input type="text" name="course_title_2" class="text" id="s1_course_title_2" maxlength="100" value="<?php outputValueFromSession('text', 'course_title_2'); ?>" <?php echo $readonly; ?> /></td>
+			<td width="145"><label for="s1_course_title_2">Course Title:</label></td>
+			<td><input type="text" name="course_title_2" class="text" id="s1_course_title_2" maxlength="100" value="<?php getValue('text', 'course_title_2'); ?>" <?php echo $readonly; ?> /></td>
 		</tr>
 		<tr>
 			<?php if (isset($_SESSION['caf']['course_code_2']) && $_SESSION['caf']['course_code_2'] != '') { $readonly = ' readonly="readonly"'; } else { $readonly = ''; } ?>
 			<td><label for="s1_course_code_2">Course Code:</label></td>
-			<td><input type="text" name="course_code_2" class="text" id="s1_course_code_2" maxlength="15" value="<?php outputValueFromSession('text', 'course_code_2'); ?>" <?php echo $readonly; ?> /></td>
+			<td><input type="text" name="course_code_2" class="text" id="s1_course_code_2" maxlength="15" value="<?php getValue('text', 'course_code_2'); ?>" <?php echo $readonly; ?> /></td>
 		</tr>
 		<tr>
 			<td><label for="s1_college_centre_2">College Centre:</label></td>
@@ -787,10 +900,9 @@ if ($step > 0) {
 			?>
 				<select name="college_centre_2" id="s1_college_centre_2">
 					<option value="">Choose centre...</option>
-					<option value="Enfield" <?php outputValueFromSession('select', 'college_centre_2', 'Enfield'); ?>>Enfield</option>
-					<option value="Tottenham" <?php outputValueFromSession('select', 'college_centre_2', 'Tottenham'); ?>>Tottenham</option>
+					<option value="Enfield" <?php getValue('select', 'college_centre_2', 'Enfield'); ?>>Enfield</option>
+					<option value="Tottenham" <?php getValue('select', 'college_centre_2', 'Tottenham'); ?>>Tottenham</option>
 				</select>
-
 			<?php
 				}
 			?>
@@ -800,7 +912,37 @@ if ($step > 0) {
 			<td><label>Entry Date:</label></td>
 			<td>
 				<?php if (isset($_SESSION['caf']['course_entry_date_2']) && $_SESSION['caf']['course_entry_date_2'] != '') { $readonly = ' readonly="readonly"'; } else { $readonly = ''; } ?>
-				<input type="text" name="course_entry_date_2" class="text" id="s1_course_entry_date_2" maxlength="60" value="<?php outputValueFromSession('text', 'course_entry_date_2'); ?>" <?php echo $readonly; ?> />
+				<input type="text" name="course_entry_date_2" class="text" id="s1_course_entry_date_2" maxlength="60" value="<?php getValue('text', 'course_entry_date_2'); ?>" <?php echo $readonly; ?> />
+			</td>
+		</tr>
+		<tr>
+			<td><label>Preferred Entry Date:</label></td>
+			<td>
+<select id="s1_preferred_entry_month_2" name="preferred_entry_month_2" class="date">
+	<option value="">Month...</option>
+	<option value="January"<?php getValue('select', 'preferred_entry_month_2', 'January'); ?>>January</option>
+	<option value="February"<?php getValue('select', 'preferred_entry_month_2', 'February'); ?>>February</option>
+	<option value="March"<?php getValue('select', 'preferred_entry_month_2', 'March'); ?>>March</option>
+	<option value="April"<?php getValue('select', 'preferred_entry_month_2', 'April'); ?>>April</option>
+	<option value="May"<?php getValue('select', 'preferred_entry_month_2', 'May'); ?>>May</option>
+	<option value="June"<?php getValue('select', 'preferred_entry_month_2', 'June'); ?>>June</option>
+	<option value="July"<?php getValue('select', 'preferred_entry_month_2', 'July'); ?>>July</option>
+	<option value="August"<?php getValue('select', 'preferred_entry_month_2', 'August'); ?>>August</option>
+	<option value="September"<?php getValue('select', 'preferred_entry_month_2', 'September'); ?>>September</option>
+	<option value="October"<?php getValue('select', 'preferred_entry_month_2', 'October'); ?>>October</option>
+	<option value="November"<?php getValue('select', 'preferred_entry_month_2', 'November'); ?>>November</option>
+	<option value="December"<?php getValue('select', 'preferred_entry_month_2', 'December'); ?>>December</option>
+</select>
+		<?php
+			echo "<select id=\"s1_preferred_entry_year_2\" name=\"preferred_entry_year_2\" class=\"date\">\n";
+			echo "<option value=\"\">Year...</option>\n";
+			foreach ($years as $year) {
+				$year_saved = (isset($_SESSION['caf']['preferred_entry_year_2'])) ? $_SESSION['caf']['preferred_entry_year_2'] : '';
+				$selected = ($year_saved == $year) ? ' selected="selected"' : '';
+				echo "\t<option value=\"$year\"$selected>$year</option>\n";
+			}
+			echo "</select>";
+		?>
 				<br /><a href="#" id="clear_course_2">Clear Course 2</a>
 			</td>
 		</tr>
@@ -933,101 +1075,101 @@ if ($step == 2) {
 		</tr>
 		<tr class="<?php addMissingFieldClass('firstname'); ?>">
 			<td><label for="s2_firstname">First name(s):<span class="required">*</span></label></td>
-			<td><input type="text" name="firstname" class="text capitalise" id="s2_firstname" maxlength="30" value="<?php outputValueFromSession('text', 'firstname'); ?>" /></td>
+			<td><input type="text" name="firstname" class="text capitalise" id="s2_firstname" maxlength="30" value="<?php getValue('text', 'firstname'); ?>" /></td>
 		</tr>
 		<tr class="<?php addMissingFieldClass('surname'); ?>">
 			<td><label for="s2_surname">Family name / surname:<span class="required">*</span></label></td>
-			<td><input type="text" name="surname" class="text capitalise" id="s2_surname" maxlength="40" value="<?php outputValueFromSession('text', 'surname'); ?>" /></td>
+			<td><input type="text" name="surname" class="text capitalise" id="s2_surname" maxlength="40" value="<?php getValue('text', 'surname'); ?>" /></td>
 		</tr>
 		<tr class="<?php addMissingFieldClass('gender'); ?>">
 			<td><label>Gender:<span class="required">*</span></label></td>
 			<td>
 				<input type="hidden" name="gender" value="" />
-				<input type="radio" name="gender" value="Male" id="s2_male" <?php outputValueFromSession('radio', 'gender', 'Male'); ?> class="radio" /> <label for="s2_male">Male</label> 
-				<input type="radio" name="gender" value="Female" id="s2_female" <?php outputValueFromSession('radio', 'gender', 'Female'); ?> class="radio" /> <label for="s2_female">Female</label>
+				<input type="radio" name="gender" value="Male" id="s2_male" <?php getValue('radio', 'gender', 'Male'); ?> class="radio" /> <label for="s2_male">Male</label> 
+				<input type="radio" name="gender" value="Female" id="s2_female" <?php getValue('radio', 'gender', 'Female'); ?> class="radio" /> <label for="s2_female">Female</label>
 			</td>
 		</tr>
 		<tr class="<?php addMissingFieldClass('date_of_birth'); ?>">
 			<td><label for="s2_dob">Date of Birth:<span class="required">*</span></label></td>
 			<td>
-				<input type="text" name="date_of_birth" class="date" id="s2_dob" maxlength="10" value="<?php outputValueFromSession('text', 'date_of_birth'); ?>" /> <span class="note">(dd/mm/yyyy)</span>
+				<input type="text" name="date_of_birth" class="date" id="s2_dob" maxlength="10" value="<?php getValue('text', 'date_of_birth'); ?>" /> <span class="note">(dd/mm/yyyy)</span>
 				<input type="hidden" name="age_at_31_aug_2010" value="" />
 			</td>
 		</tr>
 		<tr class="<?php addMissingFieldClass('home_address'); ?>">
 			<td><label for="s2_home_address">Home Address:<span class="required">*</span></label></td>
-			<td><textarea name="home_address" id="s2_home_address" cols="40" rows="2" maxlength="200" class="capitalise"><?php outputValueFromSession('textarea', 'home_address'); ?></textarea></td>
+			<td><textarea name="home_address" id="s2_home_address" cols="40" rows="2" maxlength="200" class="capitalise"><?php getValue('textarea', 'home_address'); ?></textarea></td>
 		</tr>
 		<tr class="<?php addMissingFieldClass('postcode'); ?>">
 			<td><label for="s2_postcode">Postcode:<span class="required">*</span></label></td>
-			<td><input type="text" name="postcode" class="text uppercase" id="s2_postcode" maxlength="10" value="<?php outputValueFromSession('text', 'postcode'); ?>" /></td>
+			<td><input type="text" name="postcode" class="text uppercase" id="s2_postcode" maxlength="10" value="<?php getValue('text', 'postcode'); ?>" /></td>
 		</tr>
 		<tr>
 			<td colspan="2"><label>Telephone<span class="required">*</span></label> (At least one phone number required)</td>
 		</tr>
 		<tr>
 			<td><label for="s2_tel_home_work">Home/Work telephone:</label></td>
-			<td><input type="text" name="telephone_home_work" class="text" id="s2_tel_home_work" maxlength="20" value="<?php outputValueFromSession('text', 'telephone_home_work'); ?>" /></td>
+			<td><input type="text" name="telephone_home_work" class="text" id="s2_tel_home_work" maxlength="20" value="<?php getValue('text', 'telephone_home_work'); ?>" /></td>
 		</tr>
 		<tr>
 			<td><label for="s2_tel_mob">Mobile telephone:</label></td>
 			<td>
-				<input type="text" name="telephone_mobile" class="text" id="s2_tel_mob" maxlength="20" value="<?php outputValueFromSession('text', 'telephone_mobile'); ?>" />
+				<input type="text" name="telephone_mobile" class="text" id="s2_tel_mob" maxlength="20" value="<?php getValue('text', 'telephone_mobile'); ?>" />
 			</td>
 		</tr>
 		<tr>
 			<td><label for="s2_email">Email address:</label></td>
-			<td><input type="text" name="email_address" class="text" disabled="disabled" id="s2_email" value="<?php outputValueFromSession('text', 'email_address'); ?>" /><br /><br /></td>
+			<td><input type="text" name="email_address" class="text" disabled="disabled" id="s2_email" value="<?php getValue('text', 'email_address'); ?>" /><br /><br /></td>
 		</tr>
 		<tr class="<?php addMissingFieldClass('ethnic_group'); ?>">
 			<td><label for="s2_ethnic_group">Your ethnic group:<span class="required">*</span></label></td>
 			<td>
 				<select name="ethnic_group" id="s2_ethnic_group">
-					<option value="" <?php outputValueFromSession('select', 'ethnic_group', ''); ?>>Please Select...</option>
+					<option value="" <?php getValue('select', 'ethnic_group', ''); ?>>Please Select...</option>
 					<optgroup label="White">
-						<option value="English/Welsh/Scottish/Northern Irish/British" <?php outputValueFromSession('select', 'ethnic_group', 'English/Welsh/Scottish/Northern Irish/British'); ?>>English/Welsh/Scottish/Northern Irish/British</option>
-						<option value="Irish" <?php outputValueFromSession('select', 'ethnic_group', 'Irish'); ?>>Irish</option>
-						<option value="Gypsy or Irish Traveller" <?php outputValueFromSession('select', 'ethnic_group', 'Gypsy or Irish Traveller'); ?>>Gypsy or Irish Traveller</option>
-						<option value="Any other white background" <?php outputValueFromSession('select', 'ethnic_group', 'Any other white background'); ?>>Any other white background</option>
+						<option value="English/Welsh/Scottish/Northern Irish/British" <?php getValue('select', 'ethnic_group', 'English/Welsh/Scottish/Northern Irish/British'); ?>>English/Welsh/Scottish/Northern Irish/British</option>
+						<option value="Irish" <?php getValue('select', 'ethnic_group', 'Irish'); ?>>Irish</option>
+						<option value="Gypsy or Irish Traveller" <?php getValue('select', 'ethnic_group', 'Gypsy or Irish Traveller'); ?>>Gypsy or Irish Traveller</option>
+						<option value="Any other white background" <?php getValue('select', 'ethnic_group', 'Any other white background'); ?>>Any other white background</option>
 					</optgroup>
 					<optgroup label="Mixed/Multiple ethnic group">
-						<option value="White and Black Caribbean" <?php outputValueFromSession('select', 'ethnic_group', 'White and Black Caribbean'); ?>>White and Black Caribbean</option>
-						<option value="White and Black African" <?php outputValueFromSession('select', 'ethnic_group', 'White and Black African'); ?>>White and Black African</option>
-						<option value="White and Asian" <?php outputValueFromSession('select', 'ethnic_group', 'White and Asian'); ?>>White and Asian</option>
-						<option value="Any other Mixed/multiple ethnic background" <?php outputValueFromSession('select', 'ethnic_group', 'Any other Mixed/multiple ethnic background'); ?>>Any other Mixed/multiple ethnic background</option>
+						<option value="White and Black Caribbean" <?php getValue('select', 'ethnic_group', 'White and Black Caribbean'); ?>>White and Black Caribbean</option>
+						<option value="White and Black African" <?php getValue('select', 'ethnic_group', 'White and Black African'); ?>>White and Black African</option>
+						<option value="White and Asian" <?php getValue('select', 'ethnic_group', 'White and Asian'); ?>>White and Asian</option>
+						<option value="Any other Mixed/multiple ethnic background" <?php getValue('select', 'ethnic_group', 'Any other Mixed/multiple ethnic background'); ?>>Any other Mixed/multiple ethnic background</option>
 					</optgroup>
 					<optgroup label="Asian/Asian British">
-						<option value="Indian" <?php outputValueFromSession('select', 'ethnic_group', 'Indian'); ?>>Indian</option>
-						<option value="Pakistani" <?php outputValueFromSession('select', 'ethnic_group', 'Pakistani'); ?>>Pakistani</option>
-						<option value="Bangladeshi" <?php outputValueFromSession('select', 'ethnic_group', 'Bangladeshi'); ?>>Bangladeshi</option>
-						<option value="Chinese" <?php outputValueFromSession('select', 'ethnic_group', 'Chinese'); ?>>Chinese</option>
-						<option value="Any other Asian Background" <?php outputValueFromSession('select', 'ethnic_group', 'Any other Asian Background'); ?>>Any other Asian Background</option>
+						<option value="Indian" <?php getValue('select', 'ethnic_group', 'Indian'); ?>>Indian</option>
+						<option value="Pakistani" <?php getValue('select', 'ethnic_group', 'Pakistani'); ?>>Pakistani</option>
+						<option value="Bangladeshi" <?php getValue('select', 'ethnic_group', 'Bangladeshi'); ?>>Bangladeshi</option>
+						<option value="Chinese" <?php getValue('select', 'ethnic_group', 'Chinese'); ?>>Chinese</option>
+						<option value="Any other Asian Background" <?php getValue('select', 'ethnic_group', 'Any other Asian Background'); ?>>Any other Asian Background</option>
 					</optgroup>
 					<optgroup label="Black/African/Caribbean/Black British">
-						<option value="African" <?php outputValueFromSession('select', 'ethnic_group', 'African'); ?>>African</option>
-						<option value="Caribbean" <?php outputValueFromSession('select', 'ethnic_group', 'Caribbean'); ?>>Caribbean</option>
-						<option value="Any other Black/African/Caribbean background" <?php outputValueFromSession('select', 'ethnic_group', 'Any other Black/African/Caribbean background'); ?>>Any other Black/African/Caribbean background</option>
+						<option value="African" <?php getValue('select', 'ethnic_group', 'African'); ?>>African</option>
+						<option value="Caribbean" <?php getValue('select', 'ethnic_group', 'Caribbean'); ?>>Caribbean</option>
+						<option value="Any other Black/African/Caribbean background" <?php getValue('select', 'ethnic_group', 'Any other Black/African/Caribbean background'); ?>>Any other Black/African/Caribbean background</option>
 					</optgroup>
 					<optgroup label="Other ethnic group">
-						<option value="Arab" <?php outputValueFromSession('select', 'ethnic_group', 'Arab'); ?>>Arab</option>
-						<option value="Any other ethnic group" <?php outputValueFromSession('select', 'ethnic_group', 'Any other ethnic group'); ?>>Any other ethnic group</option>
+						<option value="Arab" <?php getValue('select', 'ethnic_group', 'Arab'); ?>>Arab</option>
+						<option value="Any other ethnic group" <?php getValue('select', 'ethnic_group', 'Any other ethnic group'); ?>>Any other ethnic group</option>
 					</optgroup>
 				</select>
 			</td>
 		</tr>
 		<tr>
 			<td><label for="s2_ethnic_group_other">Any other:</label></td>
-			<td><input type="text" name="enthic_group_other" maxlength="40" value="<?php outputValueFromSession('text', 'enthic_group_other'); ?>" id="s2_ethnic_group_other" class="text" /></td>
+			<td><input type="text" name="enthic_group_other" maxlength="40" value="<?php getValue('text', 'enthic_group_other'); ?>" id="s2_ethnic_group_other" class="text" /></td>
 		</tr>
 		<tr>
 			<td><label for="s2_language_at_home">What language do you speak at home?</label></td>
-			<td><input type="text" name="language_spoken_at_home" maxlength="40" class="text capitalise" id="s2_language_at_home" value="<?php outputValueFromSession('text', 'language_spoken_at_home'); ?>" /><br /><br /></td>
+			<td><input type="text" name="language_spoken_at_home" maxlength="40" class="text capitalise" id="s2_language_at_home" value="<?php getValue('text', 'language_spoken_at_home'); ?>" /><br /><br /></td>
 		</tr>
 		<tr class="<?php addMissingFieldClass('why_want_to_do_course'); ?>">
 			<td colspan="2">
 				<h4><label for="s2_why_want_to">Why do you want to do this course?:<span class="required">*</span></label></h4>
 				<p>Please use this box to tell us about your reasons for doing the course, including your future job / career / university plans.</p>
-				<textarea name="why_want_to_do_course" cols="40" rows="10" maxlength="1500" style="width:800px;" id="s2_why_want_to"><?php outputValueFromSession('textarea', 'why_want_to_do_course'); ?></textarea>
+				<textarea name="why_want_to_do_course" cols="40" rows="10" maxlength="1500" style="width:800px;" id="s2_why_want_to"><?php getValue('textarea', 'why_want_to_do_course'); ?></textarea>
 			</td>
 		</tr>
 		<tr>
@@ -1116,8 +1258,8 @@ if ($step == 2) {
 			<td width="300"><label>Do you have a learning difficulty or disability?:<span class="required">*</span></label></td>
 			<td>
 				<input type="hidden" name="do_you_have_a_learning_difficulty_or_disability" value="" />
-				<input type="radio" name="do_you_have_a_learning_difficulty_or_disability" value="yes" id="s3_ldod_yes" <?php outputValueFromSession('radio', 'do_you_have_a_learning_difficulty_or_disability', 'yes'); ?> class="radio" /> <label for="s3_ldod_yes">Yes</label>
-				<input type="radio" name="do_you_have_a_learning_difficulty_or_disability" value="no" id="s3_ldod_no" <?php outputValueFromSession('radio', 'do_you_have_a_learning_difficulty_or_disability', 'no'); ?> class="radio" /> <label for="s3_ldod_no">No</label>
+				<input type="radio" name="do_you_have_a_learning_difficulty_or_disability" value="yes" id="s3_ldod_yes" <?php getValue('radio', 'do_you_have_a_learning_difficulty_or_disability', 'yes'); ?> class="radio" /> <label for="s3_ldod_yes">Yes</label>
+				<input type="radio" name="do_you_have_a_learning_difficulty_or_disability" value="no" id="s3_ldod_no" <?php getValue('radio', 'do_you_have_a_learning_difficulty_or_disability', 'no'); ?> class="radio" /> <label for="s3_ldod_no">No</label>
 			</td>
 		</tr>
 		<tr class="toggle_disability">
@@ -1135,15 +1277,15 @@ if ($step == 2) {
 							<input type="hidden" name="learning_difficulty" value="" />
 						</td>
 					</tr>
-					<tr><td><input type="checkbox" name="learning_difficulty[]" value="Autism spectrum disorder (20)" id="s3_ld_autismsd" <?php outputValueFromSession('checkbox', 'learning_difficulty', 'Autism spectrum disorder (20)'); ?> class="checkbox" /> <label for="s3_ld_autismsd">Autism spectrum disorder</label></td></tr>
-					<tr><td><input type="checkbox" name="learning_difficulty[]" value="Dyscalculia (11)" id="s3_ld_dyscalculia" <?php outputValueFromSession('checkbox', 'learning_difficulty', 'Dyscalculia (11)'); ?> class="checkbox" /> <label for="s3_ld_dyscalculia">Dyscalculia</label></td></tr>
-					<tr><td><input type="checkbox" name="learning_difficulty[]" value="Dyslexia (10)" id="s3_ld_dyslexia" <?php outputValueFromSession('checkbox', 'learning_difficulty', 'Dyslexia (10)'); ?> class="checkbox" /> <label for="s3_ld_dyslexia">Dyslexia</label></td></tr>
-					<tr><td><input type="checkbox" name="learning_difficulty[]" value="Moderate learning difficulty (01)" id="s3_ld_mld" <?php outputValueFromSession('checkbox', 'learning_difficulty', 'Moderate learning difficulty (01)'); ?> class="checkbox" /> <label for="s3_ld_mld">Moderate learning difficulty</label></td></tr>
-					<tr><td><input type="checkbox" name="learning_difficulty[]" value="Multiple learning difficulties (90)" id="s3_ld_multld" <?php outputValueFromSession('checkbox', 'learning_difficulty', 'Multiple learning difficulties (90)'); ?> class="checkbox" /> <label for="s3_ld_multld">Multiple learning difficulties</label></td></tr>
-					<tr><td><input type="checkbox" name="learning_difficulty[]" value="Severe learning difficulty (02)" id="s3_ld_sldiff" <?php outputValueFromSession('checkbox', 'learning_difficulty', 'Severe learning difficulty (02)'); ?> class="checkbox" /> <label for="s3_ld_sldiff">Severe learning difficulty</label></td></tr>
-					<tr><td><input type="checkbox" name="learning_difficulty[]" value="Other specific learning difficulty (19)" id="s3_ld_osldiff" <?php outputValueFromSession('checkbox', 'learning_difficulty', 'Other specific learning difficulty (19)'); ?> class="checkbox" /> <label for="s3_ld_osldiff">Other specific learning difficulty</label></td></tr>
-					<tr><td><input type="checkbox" name="learning_difficulty[]" value="Other (97)" id="s3_ld_other" <?php outputValueFromSession('checkbox', 'learning_difficulty', 'Other (97)'); ?> class="checkbox" /> <label for="s3_ld_other">Other - please specify below</label></td></tr>
-					<tr><td><br /><label for="s3_ld_other_difficulty">Other learning difficulty:</label> <input type="text" maxlength="60" name="other_learning_difficulty" class="text" id="s3_ld_other_difficulty" value="<?php outputValueFromSession('text', 'other_learning_difficulty'); ?>" /></td></tr>
+					<tr><td><input type="checkbox" name="learning_difficulty[]" value="Autism spectrum disorder (20)" id="s3_ld_autismsd" <?php getValue('checkbox', 'learning_difficulty', 'Autism spectrum disorder (20)'); ?> class="checkbox" /> <label for="s3_ld_autismsd">Autism spectrum disorder</label></td></tr>
+					<tr><td><input type="checkbox" name="learning_difficulty[]" value="Dyscalculia (11)" id="s3_ld_dyscalculia" <?php getValue('checkbox', 'learning_difficulty', 'Dyscalculia (11)'); ?> class="checkbox" /> <label for="s3_ld_dyscalculia">Dyscalculia</label></td></tr>
+					<tr><td><input type="checkbox" name="learning_difficulty[]" value="Dyslexia (10)" id="s3_ld_dyslexia" <?php getValue('checkbox', 'learning_difficulty', 'Dyslexia (10)'); ?> class="checkbox" /> <label for="s3_ld_dyslexia">Dyslexia</label></td></tr>
+					<tr><td><input type="checkbox" name="learning_difficulty[]" value="Moderate learning difficulty (01)" id="s3_ld_mld" <?php getValue('checkbox', 'learning_difficulty', 'Moderate learning difficulty (01)'); ?> class="checkbox" /> <label for="s3_ld_mld">Moderate learning difficulty</label></td></tr>
+					<tr><td><input type="checkbox" name="learning_difficulty[]" value="Multiple learning difficulties (90)" id="s3_ld_multld" <?php getValue('checkbox', 'learning_difficulty', 'Multiple learning difficulties (90)'); ?> class="checkbox" /> <label for="s3_ld_multld">Multiple learning difficulties</label></td></tr>
+					<tr><td><input type="checkbox" name="learning_difficulty[]" value="Severe learning difficulty (02)" id="s3_ld_sldiff" <?php getValue('checkbox', 'learning_difficulty', 'Severe learning difficulty (02)'); ?> class="checkbox" /> <label for="s3_ld_sldiff">Severe learning difficulty</label></td></tr>
+					<tr><td><input type="checkbox" name="learning_difficulty[]" value="Other specific learning difficulty (19)" id="s3_ld_osldiff" <?php getValue('checkbox', 'learning_difficulty', 'Other specific learning difficulty (19)'); ?> class="checkbox" /> <label for="s3_ld_osldiff">Other specific learning difficulty</label></td></tr>
+					<tr><td><input type="checkbox" name="learning_difficulty[]" value="Other (97)" id="s3_ld_other" <?php getValue('checkbox', 'learning_difficulty', 'Other (97)'); ?> class="checkbox" /> <label for="s3_ld_other">Other - please specify below</label></td></tr>
+					<tr><td><br /><label for="s3_ld_other_difficulty">Other learning difficulty:</label> <input type="text" maxlength="60" name="other_learning_difficulty" class="text" id="s3_ld_other_difficulty" value="<?php getValue('text', 'other_learning_difficulty'); ?>" /></td></tr>
 				</table>			
 			</td>
 			<td>
@@ -1154,34 +1296,34 @@ if ($step == 2) {
 							<input type="hidden" name="disability" value="" />
 						</td>
 					</tr>
-					<tr><td><input type="checkbox" name="disability[]" value="Aspergers syndrome (10)" id="s3_d_as" <?php outputValueFromSession('checkbox', 'disability', 'Aspergers syndrome (10)'); ?> class="checkbox" /> <label for="s3_d_as">Aspergers syndrome</label></td></tr>
-					<tr><td><input type="checkbox" name="disability[]" value="Blind / serious visual impairment (01)" id="s3_d_blind" <?php outputValueFromSession('checkbox', 'disability', 'Blind / serious visual impairment (01)'); ?> class="checkbox" /> <label for="s3_d_blind">Blind / serious visual impairment</label></td></tr>
-					<tr><td><input type="checkbox" name="disability[]" value="Deaf / hearing impairment (02)" id="s3_d_deaf" <?php outputValueFromSession('checkbox', 'disability', 'Deaf / hearing impairment (02)'); ?> class="checkbox" /> <label for="s3_d_deaf">Deaf / hearing impairment</label></td></tr>
-					<tr><td><input type="checkbox" name="disability[]" value="Emotional, behavioural difficulties (06)" id="s3_d_emot_behav" <?php outputValueFromSession('checkbox', 'disability', 'Emotional, behavioural difficulties (06)'); ?> class="checkbox" /> <label for="s3_d_emot_behav">Emotional, behavioural difficulties</label></td></tr>
-					<tr><td><input type="checkbox" name="disability[]" value="Mental health difficulty, e.g. depression, serious anxiety (07)" id="s3_d_mhd" <?php outputValueFromSession('checkbox', 'disability', 'Mental health difficulty, e.g. depression, serious anxiety (07)'); ?> class="checkbox" /> <label for="s3_d_mhd">Mental health difficulty, e.g. depression, serious anxiety</label></td></tr>
-					<tr><td><input type="checkbox" name="disability[]" value="Mobility difficulty (03)" id="s3_d_mobility" <?php outputValueFromSession('checkbox', 'disability', 'Mobility difficulty (03)'); ?> class="checkbox" /> <label for="s3_d_mobility">Mobility difficulty</label></td></tr>
-					<tr><td><input type="checkbox" name="disability[]" value="Multiple disabilities (90)" id="s3_d_mult_disab" <?php outputValueFromSession('checkbox', 'disability', 'Multiple disabilities (90)'); ?> class="checkbox" /> <label for="s3_d_mult_disab">Multiple disabilites</label></td></tr>
-					<tr><td><input type="checkbox" name="disability[]" value="Profound complex disabilities (09)" id="s3_d_pcd" <?php outputValueFromSession('checkbox', 'disability', 'Profound complex disabilities (09)'); ?> class="checkbox" /> <label for="s3_d_pcd">Profound complex disabilities</label></td></tr>
-					<tr><td><input type="checkbox" name="disability[]" value="Other physical disability (04)" id="s3_d_opd" <?php outputValueFromSession('checkbox', 'disability', 'Other physical disability (04)'); ?> class="checkbox" /> <label for="s3_d_opd">Other physical disability</label></td></tr>
-					<tr><td><input type="checkbox" name="disability[]" value="Other medical condition, e.g. asthma, diabetes, epilepsy, sickle cell (05)" id="s3_d_omc" <?php outputValueFromSession('checkbox', 'disability', 'Other medical condition, e.g. asthma, diabetes, epilepsy, sickle cell (05)'); ?> class="checkbox" /> <label for="s3_d_omc">Other medical condition, e.g. asthma, diabetes, epilepsy, sickle cell</label></td></tr>
-					<tr><td><input type="checkbox" name="disability[]" value="Temporary disability after illness, e.g. post viral or accident (08)" id="s3_d_temp_disab" <?php outputValueFromSession('checkbox', 'disability', 'Temporary disability after illness, e.g. post viral or accident (08)'); ?> class="checkbox" /> <label for="s3_d_temp_disab">Temporary disability after illness, e.g. post viral or accident - please describe below</label></td></tr>
-					<tr><td><input type="checkbox" name="disability[]" value="Other (97)" id="s3_d_other" <?php outputValueFromSession('checkbox', 'disability', 'Other (97)'); ?> class="checkbox" /> <label for="s3_d_other">Other - please specify below</label></td></tr>
-					<tr><td><br /><label for="s3_d_other_text">Other disability:</label> <input type="text" maxlength="60" name="other_disability" class="text" id="s3_d_other_text" value="<?php outputValueFromSession('text', 'other_disability'); ?>" /></td></tr>
+					<tr><td><input type="checkbox" name="disability[]" value="Aspergers syndrome (10)" id="s3_d_as" <?php getValue('checkbox', 'disability', 'Aspergers syndrome (10)'); ?> class="checkbox" /> <label for="s3_d_as">Aspergers syndrome</label></td></tr>
+					<tr><td><input type="checkbox" name="disability[]" value="Blind / serious visual impairment (01)" id="s3_d_blind" <?php getValue('checkbox', 'disability', 'Blind / serious visual impairment (01)'); ?> class="checkbox" /> <label for="s3_d_blind">Blind / serious visual impairment</label></td></tr>
+					<tr><td><input type="checkbox" name="disability[]" value="Deaf / hearing impairment (02)" id="s3_d_deaf" <?php getValue('checkbox', 'disability', 'Deaf / hearing impairment (02)'); ?> class="checkbox" /> <label for="s3_d_deaf">Deaf / hearing impairment</label></td></tr>
+					<tr><td><input type="checkbox" name="disability[]" value="Emotional, behavioural difficulties (06)" id="s3_d_emot_behav" <?php getValue('checkbox', 'disability', 'Emotional, behavioural difficulties (06)'); ?> class="checkbox" /> <label for="s3_d_emot_behav">Emotional, behavioural difficulties</label></td></tr>
+					<tr><td><input type="checkbox" name="disability[]" value="Mental health difficulty, e.g. depression, serious anxiety (07)" id="s3_d_mhd" <?php getValue('checkbox', 'disability', 'Mental health difficulty, e.g. depression, serious anxiety (07)'); ?> class="checkbox" /> <label for="s3_d_mhd">Mental health difficulty, e.g. depression, serious anxiety</label></td></tr>
+					<tr><td><input type="checkbox" name="disability[]" value="Mobility difficulty (03)" id="s3_d_mobility" <?php getValue('checkbox', 'disability', 'Mobility difficulty (03)'); ?> class="checkbox" /> <label for="s3_d_mobility">Mobility difficulty</label></td></tr>
+					<tr><td><input type="checkbox" name="disability[]" value="Multiple disabilities (90)" id="s3_d_mult_disab" <?php getValue('checkbox', 'disability', 'Multiple disabilities (90)'); ?> class="checkbox" /> <label for="s3_d_mult_disab">Multiple disabilites</label></td></tr>
+					<tr><td><input type="checkbox" name="disability[]" value="Profound complex disabilities (09)" id="s3_d_pcd" <?php getValue('checkbox', 'disability', 'Profound complex disabilities (09)'); ?> class="checkbox" /> <label for="s3_d_pcd">Profound complex disabilities</label></td></tr>
+					<tr><td><input type="checkbox" name="disability[]" value="Other physical disability (04)" id="s3_d_opd" <?php getValue('checkbox', 'disability', 'Other physical disability (04)'); ?> class="checkbox" /> <label for="s3_d_opd">Other physical disability</label></td></tr>
+					<tr><td><input type="checkbox" name="disability[]" value="Other medical condition, e.g. asthma, diabetes, epilepsy, sickle cell (05)" id="s3_d_omc" <?php getValue('checkbox', 'disability', 'Other medical condition, e.g. asthma, diabetes, epilepsy, sickle cell (05)'); ?> class="checkbox" /> <label for="s3_d_omc">Other medical condition, e.g. asthma, diabetes, epilepsy, sickle cell</label></td></tr>
+					<tr><td><input type="checkbox" name="disability[]" value="Temporary disability after illness, e.g. post viral or accident (08)" id="s3_d_temp_disab" <?php getValue('checkbox', 'disability', 'Temporary disability after illness, e.g. post viral or accident (08)'); ?> class="checkbox" /> <label for="s3_d_temp_disab">Temporary disability after illness, e.g. post viral or accident - please describe below</label></td></tr>
+					<tr><td><input type="checkbox" name="disability[]" value="Other (97)" id="s3_d_other" <?php getValue('checkbox', 'disability', 'Other (97)'); ?> class="checkbox" /> <label for="s3_d_other">Other - please specify below</label></td></tr>
+					<tr><td><br /><label for="s3_d_other_text">Other disability:</label> <input type="text" maxlength="60" name="other_disability" class="text" id="s3_d_other_text" value="<?php getValue('text', 'other_disability'); ?>" /></td></tr>
 				</table>						
 			</td>
 		</tr>
 		<tr class="toggle_disability">
 			<td><label>Will you need support for your learning difficulty / disability?</label></td>
 			<td>
-				<input type="radio" name="support_needed" value="yes" id="s3_sup_needed_yes" <?php outputValueFromSession('radio', 'support_needed', 'yes'); ?> class="radio" /> <label for="s3_sup_needed_yes">Yes</label> 
-				<input type="radio" name="support_needed" value="no" id="s3_sup_needed_no" <?php outputValueFromSession('radio', 'support_needed', 'no'); ?> class="radio"/> <label for="s3_sup_needed_no">No</label>
+				<input type="radio" name="support_needed" value="yes" id="s3_sup_needed_yes" <?php getValue('radio', 'support_needed', 'yes'); ?> class="radio" /> <label for="s3_sup_needed_yes">Yes</label> 
+				<input type="radio" name="support_needed" value="no" id="s3_sup_needed_no" <?php getValue('radio', 'support_needed', 'no'); ?> class="radio"/> <label for="s3_sup_needed_no">No</label>
 			</td>
 		</tr>
 		<tr class="toggle_disability">
 			<td><label>Do you have a statement of special educational needs?</label></td>
 			<td>
-				<input type="radio" name="statement_special_ed_needs" value="yes" id="s3_state_special_ed_yes" <?php outputValueFromSession('radio', 'statement_special_ed_needs', 'yes'); ?> class="radio" /> <label for="s3_state_special_ed_yes">Yes</label>
-				<input type="radio" name="statement_special_ed_needs" value="no" id="s3_state_special_ed_no" <?php outputValueFromSession('radio', 'statement_special_ed_needs', 'no'); ?> class="radio" /> <label for="s3_state_special_ed_no">No</label>
+				<input type="radio" name="statement_special_ed_needs" value="yes" id="s3_state_special_ed_yes" <?php getValue('radio', 'statement_special_ed_needs', 'yes'); ?> class="radio" /> <label for="s3_state_special_ed_yes">Yes</label>
+				<input type="radio" name="statement_special_ed_needs" value="no" id="s3_state_special_ed_no" <?php getValue('radio', 'statement_special_ed_needs', 'no'); ?> class="radio" /> <label for="s3_state_special_ed_no">No</label>
 			</td>
 		</tr>
 		<tr>
@@ -1225,27 +1367,27 @@ if ($step == 2) {
 				<table style="margin-bottom:15px;">
 					<tr>
 						<td><label for="s4_name_of_school_1">Name of school / college attended:</label>&nbsp;</td>
-						<td><input type="text" name="name_of_school_college_attended_1" maxlength="50" class="text" id="s4_name_of_school_1" value="<?php outputValueFromSession('text', 'name_of_school_college_attended_1'); ?>" /></td>
+						<td><input type="text" name="name_of_school_college_attended_1" maxlength="50" class="text" id="s4_name_of_school_1" value="<?php getValue('text', 'name_of_school_college_attended_1'); ?>" /></td>
 					</tr>
 					<tr>
 						<td><label>Year attended:</label></td>
 						<td><table>
 								<tr>
 									<td align="right"><label for="s4_yatt_from_1">From:</label>&nbsp;</td>
-									<td><input type="text" name="year_attended_from_1" maxlength="10" class="date" id="s4_yatt_from_1" value="<?php outputValueFromSession('text', 'year_attended_from_1'); ?>" /></td>
+									<td><input type="text" name="year_attended_from_1" maxlength="10" class="date" id="s4_yatt_from_1" value="<?php getValue('text', 'year_attended_from_1'); ?>" /></td>
 									<td align="right">&nbsp;&nbsp;<label for="s4_yatt_to_1">To:</label>&nbsp;</td>
-									<td><input type="text" name="year_attended_to_1" class="date" maxlength="10" id="s4_yatt_to_1" value="<?php outputValueFromSession('text', 'year_attended_to_1'); ?>" /></td>
+									<td><input type="text" name="year_attended_to_1" class="date" maxlength="10" id="s4_yatt_to_1" value="<?php getValue('text', 'year_attended_to_1'); ?>" /></td>
 								</tr>
 							</table>
 						</td>
 					</tr>
 					<tr>
 						<td><label for="s4_s_1">Subject:</label></td>
-						<td><input type="text" name="subject_1" class="text" id="s4_s_1" maxlength="40" value="<?php outputValueFromSession('text', 'subject_1'); ?>" /></td>
+						<td><input type="text" name="subject_1" class="text" id="s4_s_1" maxlength="40" value="<?php getValue('text', 'subject_1'); ?>" /></td>
 					</tr>
 					<tr>
 						<td><label for="s4_cgo_1">Course Grades Obtained:</label></td>
-						<td><input type="text" name="course_grades_obtained_1" class="text" maxlength="30" id="s4_cgo_1" value="<?php outputValueFromSession('text', 'course_grades_obtained_1'); ?>" /></td>
+						<td><input type="text" name="course_grades_obtained_1" class="text" maxlength="30" id="s4_cgo_1" value="<?php getValue('text', 'course_grades_obtained_1'); ?>" /></td>
 					</tr>
 				</table>
 			</td>
@@ -1262,27 +1404,27 @@ if ($step == 2) {
 				<table style="margin-bottom:15px;">
 					<tr>
 						<td><label for="s4_name_of_school_2">Name of school / college attended:</label>&nbsp;</td>
-						<td><input type="text" name="name_of_school_college_attended_2" maxlength="50" class="text" id="s4_name_of_school_2" value="<?php outputValueFromSession('text', 'name_of_school_college_attended_2'); ?>" /></td>
+						<td><input type="text" name="name_of_school_college_attended_2" maxlength="50" class="text" id="s4_name_of_school_2" value="<?php getValue('text', 'name_of_school_college_attended_2'); ?>" /></td>
 					</tr>
 					<tr>
 						<td><label>Year attended:</label></td>
 						<td><table>
 								<tr>
 									<td align="right"><label for="s4_yatt_from_2">From:</label>&nbsp;</td>
-									<td><input type="text" name="year_attended_from_2" maxlength="10" class="date" id="s4_yatt_from_2" value="<?php outputValueFromSession('text', 'year_attended_from_2'); ?>" /></td>
+									<td><input type="text" name="year_attended_from_2" maxlength="10" class="date" id="s4_yatt_from_2" value="<?php getValue('text', 'year_attended_from_2'); ?>" /></td>
 									<td align="right">&nbsp;&nbsp;<label for="s4_yatt_to_2">To:</label>&nbsp;</td>
-									<td><input type="text" name="year_attended_to_2" maxlength="10" class="date" id="s4_yatt_to_2" value="<?php outputValueFromSession('text', 'year_attended_to_2'); ?>" /></td>
+									<td><input type="text" name="year_attended_to_2" maxlength="10" class="date" id="s4_yatt_to_2" value="<?php getValue('text', 'year_attended_to_2'); ?>" /></td>
 								</tr>
 							</table>
 						</td>
 					</tr>
 					<tr>
 						<td><label for="s4_s_2">Subject:</label></td>
-						<td><input type="text" name="subject_2" class="text" id="s4_s_2" maxlength="40" value="<?php outputValueFromSession('text', 'subject_2'); ?>" /></td>
+						<td><input type="text" name="subject_2" class="text" id="s4_s_2" maxlength="40" value="<?php getValue('text', 'subject_2'); ?>" /></td>
 					</tr>
 					<tr>
 						<td><label for="s4_cgo_2">Course Grades Obtained:</label></td>
-						<td><input type="text" name="course_grades_obtained_2" class="text" maxlength="30" id="s4_cgo_2" value="<?php outputValueFromSession('text', 'course_grades_obtained_2'); ?>" /></td>
+						<td><input type="text" name="course_grades_obtained_2" class="text" maxlength="30" id="s4_cgo_2" value="<?php getValue('text', 'course_grades_obtained_2'); ?>" /></td>
 					</tr>
 				</table>
 			</td>
@@ -1299,27 +1441,27 @@ if ($step == 2) {
 				<table style="margin-bottom:15px;">
 					<tr>
 						<td><label for="s4_name_of_school_3">Name of school / college attended:</label>&nbsp;</td>
-						<td><input type="text" name="name_of_school_college_attended_3" maxlength="50" class="text" id="s4_name_of_school_3" value="<?php outputValueFromSession('text', 'name_of_school_college_attended_3'); ?>" /></td>
+						<td><input type="text" name="name_of_school_college_attended_3" maxlength="50" class="text" id="s4_name_of_school_3" value="<?php getValue('text', 'name_of_school_college_attended_3'); ?>" /></td>
 					</tr>
 					<tr>
 						<td><label>Year attended:</label></td>
 						<td><table>
 								<tr>
 									<td align="right"><label for="s4_yatt_from_3">From:</label>&nbsp;</td>
-									<td><input type="text" name="year_attended_from_3" maxlength="10" class="date" id="s4_yatt_from_3" value="<?php outputValueFromSession('text', 'year_attended_from_3'); ?>" /></td>
+									<td><input type="text" name="year_attended_from_3" maxlength="10" class="date" id="s4_yatt_from_3" value="<?php getValue('text', 'year_attended_from_3'); ?>" /></td>
 									<td align="right">&nbsp;&nbsp;<label for="s4_yatt_to_3">To:</label>&nbsp;</td>
-									<td><input type="text" name="year_attended_to_3" maxlength="10" class="date" id="s4_yatt_to_3" value="<?php outputValueFromSession('text', 'year_attended_to_3'); ?>" /></td>
+									<td><input type="text" name="year_attended_to_3" maxlength="10" class="date" id="s4_yatt_to_3" value="<?php getValue('text', 'year_attended_to_3'); ?>" /></td>
 								</tr>
 							</table>
 						</td>
 					</tr>
 					<tr>
 						<td><label for="s4_s_3">Subject:</label></td>
-						<td><input type="text" name="subject_3" class="text" id="s4_s_3" maxlength="40" value="<?php outputValueFromSession('text', 'subject_3'); ?>" /></td>
+						<td><input type="text" name="subject_3" class="text" id="s4_s_3" maxlength="40" value="<?php getValue('text', 'subject_3'); ?>" /></td>
 					</tr>
 					<tr>
 						<td><label for="s4_cgo_3">Course Grades Obtained:</label></td>
-						<td><input type="text" name="course_grades_obtained_3" class="text" maxlength="30" id="s4_cgo_3" value="<?php outputValueFromSession('text', 'course_grades_obtained_3'); ?>" /></td>
+						<td><input type="text" name="course_grades_obtained_3" class="text" maxlength="30" id="s4_cgo_3" value="<?php getValue('text', 'course_grades_obtained_3'); ?>" /></td>
 					</tr>
 				</table>
 			</td>
@@ -1336,27 +1478,27 @@ if ($step == 2) {
 				<table style="margin-bottom:15px;">
 					<tr>
 						<td><label for="s4_name_of_school_4">Name of school / college attended:</label>&nbsp;</td>
-						<td><input type="text" name="name_of_school_college_attended_4" maxlength="50" class="text" id="s4_name_of_school_4" value="<?php outputValueFromSession('text', 'name_of_school_college_attended_4'); ?>" /></td>
+						<td><input type="text" name="name_of_school_college_attended_4" maxlength="50" class="text" id="s4_name_of_school_4" value="<?php getValue('text', 'name_of_school_college_attended_4'); ?>" /></td>
 					</tr>
 					<tr>
 						<td><label>Year attended:</label></td>
 						<td><table>
 								<tr>
 									<td align="right"><label for="s4_yatt_from_4">From:</label>&nbsp;</td>
-									<td><input type="text" name="year_attended_from_4" maxlength="10" class="date" id="s4_yatt_from_4" value="<?php outputValueFromSession('text', 'year_attended_from_4'); ?>" /></td>
+									<td><input type="text" name="year_attended_from_4" maxlength="10" class="date" id="s4_yatt_from_4" value="<?php getValue('text', 'year_attended_from_4'); ?>" /></td>
 									<td align="right">&nbsp;&nbsp;<label for="s4_yatt_to_4">To:</label>&nbsp;</td>
-									<td><input type="text" name="year_attended_to_4" maxlength="10" class="date" id="s4_yatt_to_4" value="<?php outputValueFromSession('text', 'year_attended_to_4'); ?>" /></td>
+									<td><input type="text" name="year_attended_to_4" maxlength="10" class="date" id="s4_yatt_to_4" value="<?php getValue('text', 'year_attended_to_4'); ?>" /></td>
 								</tr>
 							</table>
 						</td>
 					</tr>
 					<tr>
 						<td><label for="s4_s_4">Subject:</label></td>
-						<td><input type="text" name="subject_4" class="text" id="s4_s_4" maxlength="40" value="<?php outputValueFromSession('text', 'subject_4'); ?>" /></td>
+						<td><input type="text" name="subject_4" class="text" id="s4_s_4" maxlength="40" value="<?php getValue('text', 'subject_4'); ?>" /></td>
 					</tr>
 					<tr>
 						<td><label for="s4_cgo_4">Course Grades Obtained:</label></td>
-						<td><input type="text" name="course_grades_obtained_4" class="text" maxlength="30" id="s4_cgo_4" value="<?php outputValueFromSession('text', 'course_grades_obtained_4'); ?>" /></td>
+						<td><input type="text" name="course_grades_obtained_4" class="text" maxlength="30" id="s4_cgo_4" value="<?php getValue('text', 'course_grades_obtained_4'); ?>" /></td>
 					</tr>
 				</table>
 			</td>
@@ -1373,27 +1515,27 @@ if ($step == 2) {
 				<table style="margin-bottom:15px;">
 					<tr>
 						<td><label for="s4_name_of_school_5">Name of school / college attended:</label>&nbsp;</td>
-						<td><input type="text" name="name_of_school_college_attended_5" maxlength="50" class="text" id="s4_name_of_school_5" value="<?php outputValueFromSession('text', 'name_of_school_college_attended_5'); ?>" /></td>
+						<td><input type="text" name="name_of_school_college_attended_5" maxlength="50" class="text" id="s4_name_of_school_5" value="<?php getValue('text', 'name_of_school_college_attended_5'); ?>" /></td>
 					</tr>
 					<tr>
 						<td><label>Year attended:</label></td>
 						<td><table>
 								<tr>
 									<td align="right"><label for="s4_yatt_from_5">From:</label>&nbsp;</td>
-									<td><input type="text" name="year_attended_from_5" maxlength="10" class="date" id="s4_yatt_from_5" value="<?php outputValueFromSession('text', 'year_attended_from_5'); ?>" /></td>
+									<td><input type="text" name="year_attended_from_5" maxlength="10" class="date" id="s4_yatt_from_5" value="<?php getValue('text', 'year_attended_from_5'); ?>" /></td>
 									<td align="right">&nbsp;&nbsp;<label for="s4_yatt_to_5">To:</label>&nbsp;</td>
-									<td><input type="text" name="year_attended_to_5" maxlength="10" class="date" id="s4_yatt_to_5" value="<?php outputValueFromSession('text', 'year_attended_to_5'); ?>" /></td>
+									<td><input type="text" name="year_attended_to_5" maxlength="10" class="date" id="s4_yatt_to_5" value="<?php getValue('text', 'year_attended_to_5'); ?>" /></td>
 								</tr>
 							</table>
 						</td>
 					</tr>
 					<tr>
 						<td><label for="s4_s_5">Subject:</label></td>
-						<td><input type="text" name="subject_5" class="text" id="s4_s_5" maxlength="40" value="<?php outputValueFromSession('text', 'subject_5'); ?>" /></td>
+						<td><input type="text" name="subject_5" class="text" id="s4_s_5" maxlength="40" value="<?php getValue('text', 'subject_5'); ?>" /></td>
 					</tr>
 					<tr>
 						<td><label for="s4_cgo_5">Course Grades Obtained:</label></td>
-						<td><input type="text" name="course_grades_obtained_5" maxlength="30" class="text" id="s4_cgo_5" value="<?php outputValueFromSession('text', 'course_grades_obtained_5'); ?>" /></td>
+						<td><input type="text" name="course_grades_obtained_5" maxlength="30" class="text" id="s4_cgo_5" value="<?php getValue('text', 'course_grades_obtained_5'); ?>" /></td>
 					</tr>
 				</table>
 			</td>
@@ -1410,27 +1552,27 @@ if ($step == 2) {
 				<table style="margin-bottom:15px;">
 					<tr>
 						<td><label for="s4_name_of_school_6">Name of school / college attended:</label>&nbsp;</td>
-						<td><input type="text" name="name_of_school_college_attended_6" maxlength="50" class="text" id="s4_name_of_school_6" value="<?php outputValueFromSession('text', 'name_of_school_college_attended_6'); ?>" /></td>
+						<td><input type="text" name="name_of_school_college_attended_6" maxlength="50" class="text" id="s4_name_of_school_6" value="<?php getValue('text', 'name_of_school_college_attended_6'); ?>" /></td>
 					</tr>
 					<tr>
 						<td><label>Year attended:</label></td>
 						<td><table>
 								<tr>
 									<td align="right"><label for="s4_yatt_from_6">From:</label>&nbsp;</td>
-									<td><input type="text" name="year_attended_from_6" maxlength="10" class="date" id="s4_yatt_from_6" value="<?php outputValueFromSession('text', 'year_attended_from_6'); ?>" /></td>
+									<td><input type="text" name="year_attended_from_6" maxlength="10" class="date" id="s4_yatt_from_6" value="<?php getValue('text', 'year_attended_from_6'); ?>" /></td>
 									<td align="right">&nbsp;&nbsp;<label for="s4_yatt_to_6">To:</label>&nbsp;</td>
-									<td><input type="text" name="year_attended_to_6" maxlength="10" class="date" id="s4_yatt_to_6" value="<?php outputValueFromSession('text', 'year_attended_to_6'); ?>" /></td>
+									<td><input type="text" name="year_attended_to_6" maxlength="10" class="date" id="s4_yatt_to_6" value="<?php getValue('text', 'year_attended_to_6'); ?>" /></td>
 								</tr>
 							</table>
 						</td>
 					</tr>
 					<tr>
 						<td><label for="s4_s_6">Subject:</label></td>
-						<td><input type="text" name="subject_6" class="text" maxlength="40" id="s4_s_6" value="<?php outputValueFromSession('text', 'subject_6'); ?>" /></td>
+						<td><input type="text" name="subject_6" class="text" maxlength="40" id="s4_s_6" value="<?php getValue('text', 'subject_6'); ?>" /></td>
 					</tr>
 					<tr>
 						<td><label for="s4_cgo_6">Course Grades Obtained:</label></td>
-						<td><input type="text" name="course_grades_obtained_6" maxlength="30" class="text" id="s4_cgo_6" value="<?php outputValueFromSession('text', 'course_grades_obtained_6'); ?>" /></td>
+						<td><input type="text" name="course_grades_obtained_6" maxlength="30" class="text" id="s4_cgo_6" value="<?php getValue('text', 'course_grades_obtained_6'); ?>" /></td>
 					</tr>
 				</table>
 			</td>
@@ -1447,27 +1589,27 @@ if ($step == 2) {
 				<table style="margin-bottom:15px;">
 					<tr>
 						<td><label for="s4_name_of_school_7">Name of school / college attended:</label>&nbsp;</td>
-						<td><input type="text" name="name_of_school_college_attended_7" maxlength="50" class="text" id="s4_name_of_school_7" value="<?php outputValueFromSession('text', 'name_of_school_college_attended_7'); ?>" /></td>
+						<td><input type="text" name="name_of_school_college_attended_7" maxlength="50" class="text" id="s4_name_of_school_7" value="<?php getValue('text', 'name_of_school_college_attended_7'); ?>" /></td>
 					</tr>
 					<tr>
 						<td><label>Year attended:</label></td>
 						<td><table>
 								<tr>
 									<td align="right"><label for="s4_yatt_from_7">From:</label>&nbsp;</td>
-									<td><input type="text" name="year_attended_from_7" maxlength="10" class="date" id="s4_yatt_from_7" value="<?php outputValueFromSession('text', 'year_attended_from_7'); ?>" /></td>
+									<td><input type="text" name="year_attended_from_7" maxlength="10" class="date" id="s4_yatt_from_7" value="<?php getValue('text', 'year_attended_from_7'); ?>" /></td>
 									<td align="right">&nbsp;&nbsp;<label for="s4_yatt_to_7">To:</label>&nbsp;</td>
-									<td><input type="text" name="year_attended_to_7" maxlength="10" class="date" id="s4_yatt_to_7" value="<?php outputValueFromSession('text', 'year_attended_to_7'); ?>" /></td>
+									<td><input type="text" name="year_attended_to_7" maxlength="10" class="date" id="s4_yatt_to_7" value="<?php getValue('text', 'year_attended_to_7'); ?>" /></td>
 								</tr>
 							</table>
 						</td>
 					</tr>
 					<tr>
 						<td><label for="s4_s_7">Subject:</label></td>
-						<td><input type="text" name="subject_7" class="text" maxlength="40" id="s4_s_7" value="<?php outputValueFromSession('text', 'subject_7'); ?>" /></td>
+						<td><input type="text" name="subject_7" class="text" maxlength="40" id="s4_s_7" value="<?php getValue('text', 'subject_7'); ?>" /></td>
 					</tr>
 					<tr>
 						<td><label for="s4_cgo_7">Course Grades Obtained:</label></td>
-						<td><input type="text" name="course_grades_obtained_7" maxlength="30" class="text" id="s4_cgo_7" value="<?php outputValueFromSession('text', 'course_grades_obtained_7'); ?>" /></td>
+						<td><input type="text" name="course_grades_obtained_7" maxlength="30" class="text" id="s4_cgo_7" value="<?php getValue('text', 'course_grades_obtained_7'); ?>" /></td>
 					</tr>
 				</table>
 			</td>
@@ -1484,27 +1626,27 @@ if ($step == 2) {
 				<table style="margin-bottom:15px;">
 					<tr>
 						<td><label for="s4_name_of_school_8">Name of school / college attended:</label>&nbsp;</td>
-						<td><input type="text" name="name_of_school_college_attended_8" maxlength="50" class="text" id="s4_name_of_school_8" value="<?php outputValueFromSession('text', 'name_of_school_college_attended_8'); ?>" /></td>
+						<td><input type="text" name="name_of_school_college_attended_8" maxlength="50" class="text" id="s4_name_of_school_8" value="<?php getValue('text', 'name_of_school_college_attended_8'); ?>" /></td>
 					</tr>
 					<tr>
 						<td><label>Year attended:</label></td>
 						<td><table>
 								<tr>
 									<td align="right"><label for="s4_yatt_from_8">From:</label>&nbsp;</td>
-									<td><input type="text" name="year_attended_from_8" maxlength="10" class="date" id="s4_yatt_from_8" value="<?php outputValueFromSession('text', 'year_attended_from_8'); ?>" /></td>
+									<td><input type="text" name="year_attended_from_8" maxlength="10" class="date" id="s4_yatt_from_8" value="<?php getValue('text', 'year_attended_from_8'); ?>" /></td>
 									<td align="right">&nbsp;&nbsp;<label for="s4_yatt_to_8">To:</label>&nbsp;</td>
-									<td><input type="text" name="year_attended_to_8" maxlength="10" class="date" id="s4_yatt_to_8" value="<?php outputValueFromSession('text', 'year_attended_to_8'); ?>" /></td>
+									<td><input type="text" name="year_attended_to_8" maxlength="10" class="date" id="s4_yatt_to_8" value="<?php getValue('text', 'year_attended_to_8'); ?>" /></td>
 								</tr>
 							</table>
 						</td>
 					</tr>
 					<tr>
 						<td><label for="s4_s_8">Subject:</label></td>
-						<td><input type="text" name="subject_8" class="text" maxlength="40" id="s4_s_8" value="<?php outputValueFromSession('text', 'subject_8'); ?>" /></td>
+						<td><input type="text" name="subject_8" class="text" maxlength="40" id="s4_s_8" value="<?php getValue('text', 'subject_8'); ?>" /></td>
 					</tr>
 					<tr>
 						<td><label for="s4_cgo_8">Course Grades Obtained:</label></td>
-						<td><input type="text" name="course_grades_obtained_8" maxlength="30" class="text" id="s4_cgo_8" value="<?php outputValueFromSession('text', 'course_grades_obtained_8'); ?>" /></td>
+						<td><input type="text" name="course_grades_obtained_8" maxlength="30" class="text" id="s4_cgo_8" value="<?php getValue('text', 'course_grades_obtained_8'); ?>" /></td>
 					</tr>
 				</table>
 			</td>
@@ -1521,27 +1663,27 @@ if ($step == 2) {
 				<table style="margin-bottom:15px;">
 					<tr>
 						<td><label for="s4_name_of_school_9">Name of school / college attended:</label>&nbsp;</td>
-						<td><input type="text" name="name_of_school_college_attended_9" maxlength="50" class="text" id="s4_name_of_school_9" value="<?php outputValueFromSession('text', 'name_of_school_college_attended_9'); ?>" /></td>
+						<td><input type="text" name="name_of_school_college_attended_9" maxlength="50" class="text" id="s4_name_of_school_9" value="<?php getValue('text', 'name_of_school_college_attended_9'); ?>" /></td>
 					</tr>
 					<tr>
 						<td><label>Year attended:</label></td>
 						<td><table>
 								<tr>
 									<td align="right"><label for="s4_yatt_from_9">From:</label>&nbsp;</td>
-									<td><input type="text" name="year_attended_from_9" maxlength="10" class="date" id="s4_yatt_from_9" value="<?php outputValueFromSession('text', 'year_attended_from_9'); ?>" /></td>
+									<td><input type="text" name="year_attended_from_9" maxlength="10" class="date" id="s4_yatt_from_9" value="<?php getValue('text', 'year_attended_from_9'); ?>" /></td>
 									<td align="right">&nbsp;&nbsp;<label for="s4_yatt_to_9">To:</label>&nbsp;</td>
-									<td><input type="text" name="year_attended_to_9" maxlength="10" class="date" id="s4_yatt_to_9" value="<?php outputValueFromSession('text', 'year_attended_to_9'); ?>" /></td>
+									<td><input type="text" name="year_attended_to_9" maxlength="10" class="date" id="s4_yatt_to_9" value="<?php getValue('text', 'year_attended_to_9'); ?>" /></td>
 								</tr>
 							</table>
 						</td>
 					</tr>
 					<tr>
 						<td><label for="s4_s_9">Subject:</label></td>
-						<td><input type="text" name="subject_9" class="text" maxlength="40" id="s4_s_9" value="<?php outputValueFromSession('text', 'subject_9'); ?>" /></td>
+						<td><input type="text" name="subject_9" class="text" maxlength="40" id="s4_s_9" value="<?php getValue('text', 'subject_9'); ?>" /></td>
 					</tr>
 					<tr>
 						<td><label for="s4_cgo_9">Course Grades Obtained:</label></td>
-						<td><input type="text" name="course_grades_obtained_9" maxlength="30" class="text" id="s4_cgo_9" value="<?php outputValueFromSession('text', 'course_grades_obtained_9'); ?>" /></td>
+						<td><input type="text" name="course_grades_obtained_9" maxlength="30" class="text" id="s4_cgo_9" value="<?php getValue('text', 'course_grades_obtained_9'); ?>" /></td>
 					</tr>
 				</table>
 			</td>
@@ -1558,27 +1700,27 @@ if ($step == 2) {
 				<table style="margin-bottom:15px;">
 					<tr>
 						<td><label for="s4_name_of_school_10">Name of school / college attended:</label>&nbsp;</td>
-						<td><input type="text" name="name_of_school_college_attended_10" maxlength="50" class="text" id="s4_name_of_school_10" value="<?php outputValueFromSession('text', 'name_of_school_college_attended_10'); ?>" /></td>
+						<td><input type="text" name="name_of_school_college_attended_10" maxlength="50" class="text" id="s4_name_of_school_10" value="<?php getValue('text', 'name_of_school_college_attended_10'); ?>" /></td>
 					</tr>
 					<tr>
 						<td><label>Year attended:</label></td>
 						<td><table>
 								<tr>
 									<td align="right"><label for="s4_yatt_from_10">From:</label>&nbsp;</td>
-									<td><input type="text" name="year_attended_from_10" maxlength="10" class="date" id="s4_yatt_from_10" value="<?php outputValueFromSession('text', 'year_attended_from_10'); ?>" /></td>
+									<td><input type="text" name="year_attended_from_10" maxlength="10" class="date" id="s4_yatt_from_10" value="<?php getValue('text', 'year_attended_from_10'); ?>" /></td>
 									<td align="right">&nbsp;&nbsp;<label for="s4_yatt_to_10">To:</label>&nbsp;</td>
-									<td><input type="text" name="year_attended_to_10" maxlength="10" class="date" id="s4_yatt_to_10" value="<?php outputValueFromSession('text', 'year_attended_to_10'); ?>" /></td>
+									<td><input type="text" name="year_attended_to_10" maxlength="10" class="date" id="s4_yatt_to_10" value="<?php getValue('text', 'year_attended_to_10'); ?>" /></td>
 								</tr>
 							</table>
 						</td>
 					</tr>
 					<tr>
 						<td><label for="s4_s_10">Subject:</label></td>
-						<td><input type="text" name="subject_10" class="text" id="s4_s_10" maxlength="40" value="<?php outputValueFromSession('text', 'subject_10'); ?>" /></td>
+						<td><input type="text" name="subject_10" class="text" id="s4_s_10" maxlength="40" value="<?php getValue('text', 'subject_10'); ?>" /></td>
 					</tr>
 					<tr>
 						<td><label for="s4_cgo_10">Course Grades Obtained:</label></td>
-						<td><input type="text" name="course_grades_obtained_10" class="text" maxlength="30" id="s4_cgo_10" value="<?php outputValueFromSession('text', 'course_grades_obtained_10'); ?>" /></td>
+						<td><input type="text" name="course_grades_obtained_10" class="text" maxlength="30" id="s4_cgo_10" value="<?php getValue('text', 'course_grades_obtained_10'); ?>" /></td>
 					</tr>
 				</table>
 			</td>
@@ -1658,40 +1800,40 @@ if ($step == 2) {
 			<td width="270"><label>Are you employed?:<span class="required">*</span></label></td>
 			<td>
 				<input type="hidden" name="are_you_employed" value="" />
-				<input type="radio" name="are_you_employed" value="yes" id="s5_ru_employed_yes" <?php outputValueFromSession('radio', 'are_you_employed', 'yes'); ?> class="radio"/> <label for="s5_ru_employed_yes">Yes</label>
-				<input type="radio" name="are_you_employed" value="no" id="s5_ru_employed_no" <?php outputValueFromSession('radio', 'are_you_employed', 'no'); ?> class="radio"/> <label for="s5_ru_employed_no">No</label>
+				<input type="radio" name="are_you_employed" value="yes" id="s5_ru_employed_yes" <?php getValue('radio', 'are_you_employed', 'yes'); ?> class="radio"/> <label for="s5_ru_employed_yes">Yes</label>
+				<input type="radio" name="are_you_employed" value="no" id="s5_ru_employed_no" <?php getValue('radio', 'are_you_employed', 'no'); ?> class="radio"/> <label for="s5_ru_employed_no">No</label>
 			</td>
 		</tr>
 		<tr class="<?php addMissingFieldClass('are_you_working_as_a_volunteer'); ?>">
 			<td><label>Are you working as a volunteer?:<span class="required">*</span></label></td>
 			<td>
 				<input type="hidden" name="are_you_working_as_a_volunteer" value="" />
-				<input type="radio" name="are_you_working_as_a_volunteer" value="yes" id="s5_ru_volunteer_yes" <?php outputValueFromSession('radio', 'are_you_working_as_a_volunteer', 'yes'); ?> class="radio" /> <label for="s5_ru_volunteer_yes">Yes</label>
-				<input type="radio" name="are_you_working_as_a_volunteer" value="no" id="s5_ru_volunteer_no" <?php outputValueFromSession('radio', 'are_you_working_as_a_volunteer', 'no'); ?> class="radio" /> <label for="s5_ru_volunteer_no">No</label>
+				<input type="radio" name="are_you_working_as_a_volunteer" value="yes" id="s5_ru_volunteer_yes" <?php getValue('radio', 'are_you_working_as_a_volunteer', 'yes'); ?> class="radio" /> <label for="s5_ru_volunteer_yes">Yes</label>
+				<input type="radio" name="are_you_working_as_a_volunteer" value="no" id="s5_ru_volunteer_no" <?php getValue('radio', 'are_you_working_as_a_volunteer', 'no'); ?> class="radio" /> <label for="s5_ru_volunteer_no">No</label>
 			</td>
 		</tr>
 		<tr>
 			<td><label for="s5_job_title">Job Title:</label></td>
-			<td><input type="text" name="job_title" class="text capitalise" maxlength="50" id="s5_job_title" value="<?php outputValueFromSession('text', 'job_title'); ?>" /></td>
+			<td><input type="text" name="job_title" class="text capitalise" maxlength="50" id="s5_job_title" value="<?php getValue('text', 'job_title'); ?>" /></td>
 		</tr>
 		<tr>
 			<td><label for="s5_employer">Employer:</label></td>
-			<td><input type="text" name="employer" class="text capitalise" maxlength="100" id="s5_employer" value="<?php outputValueFromSession('text', 'employer'); ?>" /></td>
+			<td><input type="text" name="employer" class="text capitalise" maxlength="100" id="s5_employer" value="<?php getValue('text', 'employer'); ?>" /></td>
 		</tr>
 		<tr>
 			<td><label for="s5_job_address">Address:</label></td>
-			<td><textarea name="job_address" id="s5_job_address" maxlength="200" class="capitalise"><?php outputValueFromSession('text', 'job_address'); ?></textarea></td>
+			<td><textarea name="job_address" id="s5_job_address" maxlength="200" class="capitalise"><?php getValue('text', 'job_address'); ?></textarea></td>
 		</tr>
 		<tr>
 			<td><label for="s5_job_postcode uppercase">Postcode:</label></td>
-			<td><input type="text" name="job_postcode" class="text uppercase" maxlength="10" id="s5_job_postcode" value="<?php outputValueFromSession('textarea', 'job_postcode'); ?>" /><br /><br /></td>
+			<td><input type="text" name="job_postcode" class="text uppercase" maxlength="10" id="s5_job_postcode" value="<?php getValue('textarea', 'job_postcode'); ?>" /><br /><br /></td>
 		</tr>
 		<tr class="<?php addMissingFieldClass('relevant_skills_and_experience'); ?>">
 			<td  width="300">
 				<label for="s5_relevant_skills">What experience and skills do you have that are relevant to your course?:<span class="required">*</span><br /><br />
 				Include any paid / voluntary work and any responsibilites you have had.</label>
 			</td>
-			<td><textarea name="relevant_skills_and_experience" cols="40" maxlength="1000" rows="10" id="s5_relevant_skills" style="width:630px;"><?php outputValueFromSession('textarea', 'relevant_skills_and_experience'); ?></textarea></td>
+			<td><textarea name="relevant_skills_and_experience" cols="40" maxlength="1000" rows="10" id="s5_relevant_skills" style="width:630px;"><?php getValue('textarea', 'relevant_skills_and_experience'); ?></textarea></td>
 		</tr>
 		<tr>
 			<td colspan="2">
@@ -1719,6 +1861,12 @@ if ($step == 2) {
 <script type="text/javascript">
 	$(document).ready(function() {
 
+		// If NO selected on permanent right to live in UK: show extra questions
+		if ($('#s6_settled_no').is(':checked') == true) {
+			$('#residence_questions').show();
+		} else {
+			$('#residence_questions').hide();
+		}
 		// New applicant form check
 		$("#s6_residence_fee_status").submit(function(e) {
 
@@ -1766,105 +1914,110 @@ if ($step == 2) {
 		</tr>
 		<tr class="<?php addMissingFieldClass('nationality'); ?>">
 			<td width="350"><label for="s6_nationality">What is your nationality?:<span class="required">*</span></label></td>
-			<td><input type="text" name="nationality" class="text capitalise" maxlength="40" id="s6_nationality" value="<?php outputValueFromSession('text', 'nationality'); ?>" /></td>
+			<td><input type="text" name="nationality" class="text capitalise" maxlength="40" id="s6_nationality" value="<?php getValue('text', 'nationality'); ?>" /></td>
 		</tr>
 		<tr class="<?php addMissingFieldClass('permanent_right_to_live_in_uk'); ?>">
 			<td><label>Do you have the permanent right to live in the UK?:<span class="required">*</span><br /><span class="note">(e.g. British citizen, settled status, indefinite leave)</span></label></td>
 			<td>
-				<input type="radio" name="permanent_right_to_live_in_uk" value="yes" id="s6_settled_yes" <?php outputValueFromSession('radio', 'permanent_right_to_live_in_uk', 'yes'); ?> class="radio"/><label for="s6_settled_yes">Yes</label>
-				<input type="radio" name="permanent_right_to_live_in_uk" value="no" id="s6_settled_no" <?php outputValueFromSession('radio', 'permanent_right_to_live_in_uk', 'no'); ?> class="radio"/><label for="s6_settled_no">No</label>
+				<input type="radio" name="permanent_right_to_live_in_uk" value="yes" id="s6_settled_yes" <?php getValue('radio', 'permanent_right_to_live_in_uk', 'yes'); ?> class="radio"/><label for="s6_settled_yes">Yes</label>
+				<input type="radio" name="permanent_right_to_live_in_uk" value="no" id="s6_settled_no" <?php getValue('radio', 'permanent_right_to_live_in_uk', 'no'); ?> class="radio"/><label for="s6_settled_no">No</label>
 			</td>
 		</tr>
 		<tr>
 			<td><label>If yes, have you been resident in the UK for the past three years?:</label></td>
 			<td>
-				<input type="radio" name="have_been_a_resident_past_3_years" value="yes" id="s6_res_past3yrs_yes" <?php outputValueFromSession('radio', 'have_been_a_resident_past_3_years', 'yes'); ?> class="radio" /><label for="s6_res_past3yrs_yes">Yes</label>  
-				<input type="radio" name="have_been_a_resident_past_3_years" value="no" id="s6_res_past3yrs_no" <?php outputValueFromSession('radio', 'have_been_a_resident_past_3_years', 'no'); ?> class="radio" /><label for="s6_res_past3yrs_no">No</label>  
+				<input type="radio" name="have_been_a_resident_past_3_years" value="yes" id="s6_res_past3yrs_yes" <?php getValue('radio', 'have_been_a_resident_past_3_years', 'yes'); ?> class="radio" /><label for="s6_res_past3yrs_yes">Yes</label>  
+				<input type="radio" name="have_been_a_resident_past_3_years" value="no" id="s6_res_past3yrs_no" <?php getValue('radio', 'have_been_a_resident_past_3_years', 'no'); ?> class="radio" /><label for="s6_res_past3yrs_no">No</label>  
 			</td>
 		</tr>
+	</table>
+	<table id="residence_questions">
 		<tr>
-			<td><label for="s6_cour">If not resident in the UK, please give your country of usual/permanent residence:</label></td>
-			<td><input type="text" name="country_of_usual_residence" maxlength="50" class="text capitalise" id="s6_cour" value="<?php outputValueFromSession('text', 'country_of_usual_residence'); ?>" /></td>
+			<td width="350"><label for="s6_cour">If not resident in the UK, please give your country of usual/permanent residence:</label></td>
+			<td><input type="text" name="country_of_usual_residence" maxlength="50" class="text capitalise" id="s6_cour" value="<?php getValue('text', 'country_of_usual_residence'); ?>" /></td>
 		</tr>
 		<tr>
 			<td><label>Are you an EU/EEA citizen?</label></td>
 			<td>
-				<input type="radio" name="EU_EAA_citizen" value="yes" id="s6_eu_eaa_citizen_yes" <?php outputValueFromSession('radio', 'EU_EAA_citizen', 'yes'); ?> class="radio" /><label for="s6_eu_eaa_citizen_yes">Yes</label>  
-				<input type="radio" name="EU_EAA_citizen" value="no" id="s6_eu_eaa_citizen_no" <?php outputValueFromSession('radio', 'EU_EAA_citizen', 'no'); ?> class="radio" /><label for="s6_eu_eaa_citizen_no">No</label>  
+				<input type="radio" name="EU_EAA_citizen" value="yes" id="s6_eu_eaa_citizen_yes" <?php getValue('radio', 'EU_EAA_citizen', 'yes'); ?> class="radio" /><label for="s6_eu_eaa_citizen_yes">Yes</label>  
+				<input type="radio" name="EU_EAA_citizen" value="no" id="s6_eu_eaa_citizen_no" <?php getValue('radio', 'EU_EAA_citizen', 'no'); ?> class="radio" /><label for="s6_eu_eaa_citizen_no">No</label>  
 			</td>
 		</tr>
 		<tr>
 			<td><label for="s6_date_of_uk_arrival">If born ouside the UK/EU/EEA, your date of arrival in the UK/EU/EEA:</label></td>
-			<td><input type="text" name="date_of_arrival_in_uk_eu_eea" maxlength="10" class="date" id="s6_date_of_uk_arrival" value="<?php outputValueFromSession('text', 'date_of_arrival_in_uk_eu_eea'); ?>" /> <span class="note">(dd/mm/yyyy)</span></td>
+			<td><input type="text" name="date_of_arrival_in_uk_eu_eea" maxlength="10" class="date" id="s6_date_of_uk_arrival" value="<?php getValue('text', 'date_of_arrival_in_uk_eu_eea'); ?>" /> <span class="note">(dd/mm/yyyy)</span></td>
 		</tr>
 		<tr>
 			<td><label>Are you a refugee with full refugee status/indefinite leave to remain?:</label></td>
 			<td>
-				<input type="radio" name="are_you_a_refugee" value="yes" id="s6_refugee_yes" <?php outputValueFromSession('radio', 'are_you_a_refugee', 'yes'); ?> class="radio" /><label for="s6_refugee_yes">Yes</label>  
-				<input type="radio" name="are_you_a_refugee" value="no" id="s6_refugee_no" <?php outputValueFromSession('radio', 'are_you_a_refugee', 'no'); ?> class="radio" /><label for="s6_refugee_no">No</label> 
+				<input type="radio" name="are_you_a_refugee" value="yes" id="s6_refugee_yes" <?php getValue('radio', 'are_you_a_refugee', 'yes'); ?> class="radio" /><label for="s6_refugee_yes">Yes</label>  
+				<input type="radio" name="are_you_a_refugee" value="no" id="s6_refugee_no" <?php getValue('radio', 'are_you_a_refugee', 'no'); ?> class="radio" /><label for="s6_refugee_no">No</label> 
 			</td>
 		</tr>
 		<tr>
 			<td><label>Do you have limited leave to enter/remain as a refugee including exceptional/discretionary leave, humanitarian protection?:</label></td>
 			<td>
-				<input type="radio" name="do_you_have_limited_leave_as_a_refugee" value="yes" id="s6_limited_leave_yes" <?php outputValueFromSession('radio', 'do_you_have_limited_leave_as_a_refugee', 'yes'); ?> class="radio" /><label for="s6_limited_leave_yes">Yes</label>  
-				<input type="radio" name="do_you_have_limited_leave_as_a_refugee" value="no" id="s6_limited_leave_no" <?php outputValueFromSession('radio', 'do_you_have_limited_leave_as_a_refugee', 'no'); ?> class="radio" /><label for="s6_limited_leave_no">No</label> 
+				<input type="radio" name="do_you_have_limited_leave_as_a_refugee" value="yes" id="s6_limited_leave_yes" <?php getValue('radio', 'do_you_have_limited_leave_as_a_refugee', 'yes'); ?> class="radio" /><label for="s6_limited_leave_yes">Yes</label>  
+				<input type="radio" name="do_you_have_limited_leave_as_a_refugee" value="no" id="s6_limited_leave_no" <?php getValue('radio', 'do_you_have_limited_leave_as_a_refugee', 'no'); ?> class="radio" /><label for="s6_limited_leave_no">No</label> 
 			</td>
 		</tr>
 		<tr>
 			<td><label>Are you an asylum seeker?:</label></td>
 			<td>
-				<input type="radio" name="asylum_seeker" value="yes" id="s6_asylum_skr_yes" <?php outputValueFromSession('radio', 'asylum_seeker', 'yes'); ?> class="radio" /><label for="s6_asylum_skr_yes">Yes</label> 
-				<input type="radio" name="asylum_seeker" value="no" id="s6_asylum_skr_no" <?php outputValueFromSession('radio', 'asylum_seeker', 'no'); ?> class="radio" /><label for="s6_asylum_skr_no">No</label>
+				<input type="radio" name="asylum_seeker" value="yes" id="s6_asylum_skr_yes" <?php getValue('radio', 'asylum_seeker', 'yes'); ?> class="radio" /><label for="s6_asylum_skr_yes">Yes</label> 
+				<input type="radio" name="asylum_seeker" value="no" id="s6_asylum_skr_no" <?php getValue('radio', 'asylum_seeker', 'no'); ?> class="radio" /><label for="s6_asylum_skr_no">No</label>
 			</td>
 		</tr>
 		<tr>
 			<td><label for="s6_asylum_when_app">If yes, when did you apply for asylum?</label></td>
-			<td><input type="text" name="application_for_asylum_date" maxlength="10" class="date" id="s6_asylum_when_app" value="<?php outputValueFromSession('text', 'application_for_asylum_date'); ?>" /> <span class="note">(dd/mm/yyyy)</span></td>
+			<td><input type="text" name="application_for_asylum_date" maxlength="10" class="date" id="s6_asylum_when_app" value="<?php getValue('text', 'application_for_asylum_date'); ?>" /> <span class="note">(dd/mm/yyyy)</span></td>
 		</tr>
 		<tr>
 			<td><label>Are you receiving support from the UK Border Agency Asylum Support Service or Social Services?:</label></td>
 			<td>
-				<input type="radio" name="support_from_ukba_asylum_or_social_services" value="yes" id="s6_supp_from_as_or_ss_yes" <?php outputValueFromSession('radio', 'support_from_ukba_asylum_or_social_services', 'yes'); ?> class="radio" /><label for="s6_supp_from_as_or_ss_yes">Yes</label>
-				<input type="radio" name="support_from_ukba_asylum_or_social_services" value="no" id="s6_supp_from_as_or_ss_no" <?php outputValueFromSession('radio', 'support_from_ukba_asylum_or_social_services', 'no'); ?> class="radio" /><label for="s6_supp_from_as_or_ss_no">No</label>
+				<input type="radio" name="support_from_ukba_asylum_or_social_services" value="yes" id="s6_supp_from_as_or_ss_yes" <?php getValue('radio', 'support_from_ukba_asylum_or_social_services', 'yes'); ?> class="radio" /><label for="s6_supp_from_as_or_ss_yes">Yes</label>
+				<input type="radio" name="support_from_ukba_asylum_or_social_services" value="no" id="s6_supp_from_as_or_ss_no" <?php getValue('radio', 'support_from_ukba_asylum_or_social_services', 'no'); ?> class="radio" /><label for="s6_supp_from_as_or_ss_no">No</label>
 			</td>
 		</tr>
 		<tr>
 			<td><label>Do you have a visa to stay in the UK?:</label></td>
 			<td>
-				<input type="radio" name="do_you_have_a_visa_to_stay_in_uk" value="yes" id="s6_visa_to_stay_yes" <?php outputValueFromSession('radio', 'do_you_have_a_visa_to_stay_in_uk', 'yes'); ?> class="radio" /><label for="s6_visa_to_stay_yes">Yes</label>
-				<input type="radio" name="do_you_have_a_visa_to_stay_in_uk" value="no" id="s6_visa_to_stay_no" <?php outputValueFromSession('radio', 'do_you_have_a_visa_to_stay_in_uk', 'no'); ?> class="radio" /><label for="s6_visa_to_stay_no">No</label>
+				<input type="radio" name="do_you_have_a_visa_to_stay_in_uk" value="yes" id="s6_visa_to_stay_yes" <?php getValue('radio', 'do_you_have_a_visa_to_stay_in_uk', 'yes'); ?> class="radio" /><label for="s6_visa_to_stay_yes">Yes</label>
+				<input type="radio" name="do_you_have_a_visa_to_stay_in_uk" value="no" id="s6_visa_to_stay_no" <?php getValue('radio', 'do_you_have_a_visa_to_stay_in_uk', 'no'); ?> class="radio" /><label for="s6_visa_to_stay_no">No</label>
 			</td>
 		</tr>
 		<tr>
 			<td>If yes, please tick one of the boxes:</td>
 			<td>
-				<input type="radio" name="visa_type" value="Spouse visa" id="s6_spouse_visa" <?php outputValueFromSession("radio", "visa_type", "Spouse visa"); ?> class="radio" /> <label for="s6_spouse_visa">Spouse visa</label>
-				<input type="radio" name="visa_type" value="Student visa" id="s6_student_visa" <?php outputValueFromSession("radio", "visa_type", "Student visa"); ?> class="radio" /> <label for="s6_student_visa">Student visa</label>
-				<input type="radio" name="visa_type" value="Visitor's visa" id="s6_visitors_visa" <?php outputValueFromSession("radio", "visa_type", "Visitor's visa"); ?> class="radio" /> <label for="s6_visitors_visa">Visitor's visa</label>
-				<input type="radio" name="visa_type" value="Other visa" id="s6_other_visa" <?php outputValueFromSession("radio", "visa_type", "Other visa"); ?> class="radio" /> <label for="s6_other_visa">Other visa<span class="note"> - please describe:</span></label>
+				<input type="radio" name="visa_type" value="Spouse visa" id="s6_spouse_visa" <?php getValue("radio", "visa_type", "Spouse visa"); ?> class="radio" /> <label for="s6_spouse_visa">Spouse visa</label>
+				<input type="radio" name="visa_type" value="Student visa" id="s6_student_visa" <?php getValue("radio", "visa_type", "Student visa"); ?> class="radio" /> <label for="s6_student_visa">Student visa</label>
+				<input type="radio" name="visa_type" value="Visitor's visa" id="s6_visitors_visa" <?php getValue("radio", "visa_type", "Visitor's visa"); ?> class="radio" /> <label for="s6_visitors_visa">Visitor's visa</label>
+				<input type="radio" name="visa_type" value="Other visa" id="s6_other_visa" <?php getValue("radio", "visa_type", "Other visa"); ?> class="radio" /> <label for="s6_other_visa">Other visa<span class="note"> - please describe:</span></label>
 			</td>
 		</tr>
 		<tr>
 			<td><label for="s6_visa_type_other">Other visa:</label></td>
-			<td><input type="text" name="visa_type_other" class="text" maxlength="40" id="s6_visa_type_other" value="<?php outputValueFromSession('text', 'visa_type_other'); ?>" /></td>
+			<td><input type="text" name="visa_type_other" class="text" maxlength="40" id="s6_visa_type_other" value="<?php getValue('text', 'visa_type_other'); ?>" /></td>
 		</tr>
 		<tr>
 			<td><label for="s6_visa_issue_date">Visa issue date:</label></td>
-			<td><input type="text" name="visa_issue_date" class="text" maxlength="10" id="s6_visa_issue_date" value="<?php outputValueFromSession('text', 'visa_issue_date'); ?>" /></td>
+			<td><input type="text" name="visa_issue_date" class="text" maxlength="10" id="s6_visa_issue_date" value="<?php getValue('text', 'visa_issue_date'); ?>" /></td>
 		</tr>
 		<tr>
 			<td><label for="s6_visa_exp_date">Visa expiry date:</label></td>
-			<td><input type="text" name="visa_expiry_date" class="text" maxlength="10" id="s6_visa_exp_date" value="<?php outputValueFromSession('text', 'visa_expiry_date'); ?>" /></td>
+			<td><input type="text" name="visa_expiry_date" class="text" maxlength="10" id="s6_visa_exp_date" value="<?php getValue('text', 'visa_expiry_date'); ?>" /></td>
 		</tr>
+		</table>
+		
+		<table>
 		<tr>
-			<td colspan="2"><h2>Fee status</h2></td>
+			<td colspan="2"><h2 class="fee_status">Fee status</h2></td>
 		</tr>
 		<tr class="<?php addMissingFieldClass('are_you_an_international_student'); ?>">
-			<td><label for="s6_international_stud">Are you an international student?:<span class="required">*</span></label></td>
+			<td width="350"><label for="s6_international_stud">Are you an international student?:<span class="required">*</span></label></td>
 			<td>
-				<input type="radio" name="are_you_an_international_student" value="yes" id="s6_international_stud_yes" <?php outputValueFromSession('radio', 'are_you_an_international_student', 'yes'); ?> class="radio" /><label for="s6_international_stud_yes">Yes</label>
-				<input type="radio" name="are_you_an_international_student" value="no" id="s6_international_stud_no" <?php outputValueFromSession('radio', 'are_you_an_international_student', 'no'); ?> class="radio" /><label for="s6_international_stud_no">No</label>
+				<input type="radio" name="are_you_an_international_student" value="yes" id="s6_international_stud_yes" <?php getValue('radio', 'are_you_an_international_student', 'yes'); ?> class="radio" /><label for="s6_international_stud_yes">Yes</label>
+				<input type="radio" name="are_you_an_international_student" value="no" id="s6_international_stud_no" <?php getValue('radio', 'are_you_an_international_student', 'no'); ?> class="radio" /><label for="s6_international_stud_no">No</label>
 			</td>
 		</tr>
 		<!--
@@ -1875,14 +2028,14 @@ if ($step == 2) {
 					<tr>
 						<td>
 							<input type="hidden" name="benefits_receiving" value="" />
-							<input type="checkbox" name="benefits_receiving[]" value="Employment and support allowance" id="s6_ben_rec_emp_supp_allow" <?php outputValueFromSession("checkbox", "benefits_receiving", "Employment and support allowance"); ?> class="checkbox" /> <label for="s6_ben_rec_emp_supp_allow">Employment and support allowance</label> <br />
-							<input type="checkbox" name="benefits_receiving[]" value="Council tax benefit" id="s6_ben_rec_ctax" <?php outputValueFromSession("checkbox", "benefits_receiving", "Council tax benefit"); ?> class="checkbox" /> <label for="s6_ben_rec_ctax">Council tax benefit</label> <br />
-							<input type="checkbox" name="benefits_receiving[]" value="Housing benefit" id="s6_ben_rec_housing" <?php outputValueFromSession("checkbox", "benefits_receiving", "Housing benefit"); ?> class="checkbox" /> <label for="s6_ben_rec_housing">Housing benefit</label> <br />
-							<input type="checkbox" name="benefits_receiving[]" value="Income support" id="s6_ben_rec_inc_supp" <?php outputValueFromSession("checkbox", "benefits_receiving", "Income support"); ?> class="checkbox" /> <label for="s6_ben_rec_inc_supp">Income support</label> <br />
-							<input type="checkbox" name="benefits_receiving[]" value="Jobseeker's allowance" id="s6_ben_rec_job_allow" <?php outputValueFromSession("checkbox", "benefits_receiving", "Jobseeker's allowance"); ?> class="checkbox" /> <label for="s6_ben_rec_job_allow">Jobseeker's allowance</label> <br />
-							<input type="checkbox" name="benefits_receiving[]" value="Pension credit (Guarantee Credit)" id="s6_ben_rec_pens_cred" <?php outputValueFromSession("checkbox", "benefits_receiving", "Pension credit (Guarantee Credit)"); ?> class="checkbox" /> <label for="s6_ben_rec_pens_cred">Pension credit (Guarantee Credit)</label> <br />
-							<input type="checkbox" name="benefits_receiving[]" value="Working tax credit (household income below 15,276)" id="s6_ben_rec_wtc" <?php outputValueFromSession("checkbox", "benefits_receiving", "Working tax credit (household income below 15,276)"); ?> class="checkbox" /> <label for="s6_ben_rec_wtc">Working tax credit (household income below &pound;15,276)</label> <br />
-							<input type="checkbox" name="benefits_receiving[]" value="Unwaged dependant of anyone on these benefits" id="s6_ben_rec_udoaotb" <?php outputValueFromSession("checkbox", "benefits_receiving", "Unwaged dependant of anyone on these benefits"); ?> class="checkbox" /> <label for="s6_ben_rec_udoaotb">Unwaged dependant of anyone on these benefits</label> <br />
+							<input type="checkbox" name="benefits_receiving[]" value="Employment and support allowance" id="s6_ben_rec_emp_supp_allow" <?php getValue("checkbox", "benefits_receiving", "Employment and support allowance"); ?> class="checkbox" /> <label for="s6_ben_rec_emp_supp_allow">Employment and support allowance</label> <br />
+							<input type="checkbox" name="benefits_receiving[]" value="Council tax benefit" id="s6_ben_rec_ctax" <?php getValue("checkbox", "benefits_receiving", "Council tax benefit"); ?> class="checkbox" /> <label for="s6_ben_rec_ctax">Council tax benefit</label> <br />
+							<input type="checkbox" name="benefits_receiving[]" value="Housing benefit" id="s6_ben_rec_housing" <?php getValue("checkbox", "benefits_receiving", "Housing benefit"); ?> class="checkbox" /> <label for="s6_ben_rec_housing">Housing benefit</label> <br />
+							<input type="checkbox" name="benefits_receiving[]" value="Income support" id="s6_ben_rec_inc_supp" <?php getValue("checkbox", "benefits_receiving", "Income support"); ?> class="checkbox" /> <label for="s6_ben_rec_inc_supp">Income support</label> <br />
+							<input type="checkbox" name="benefits_receiving[]" value="Jobseeker's allowance" id="s6_ben_rec_job_allow" <?php getValue("checkbox", "benefits_receiving", "Jobseeker's allowance"); ?> class="checkbox" /> <label for="s6_ben_rec_job_allow">Jobseeker's allowance</label> <br />
+							<input type="checkbox" name="benefits_receiving[]" value="Pension credit (Guarantee Credit)" id="s6_ben_rec_pens_cred" <?php getValue("checkbox", "benefits_receiving", "Pension credit (Guarantee Credit)"); ?> class="checkbox" /> <label for="s6_ben_rec_pens_cred">Pension credit (Guarantee Credit)</label> <br />
+							<input type="checkbox" name="benefits_receiving[]" value="Working tax credit (household income below 15,276)" id="s6_ben_rec_wtc" <?php getValue("checkbox", "benefits_receiving", "Working tax credit (household income below 15,276)"); ?> class="checkbox" /> <label for="s6_ben_rec_wtc">Working tax credit (household income below &pound;15,276)</label> <br />
+							<input type="checkbox" name="benefits_receiving[]" value="Unwaged dependant of anyone on these benefits" id="s6_ben_rec_udoaotb" <?php getValue("checkbox", "benefits_receiving", "Unwaged dependant of anyone on these benefits"); ?> class="checkbox" /> <label for="s6_ben_rec_udoaotb">Unwaged dependant of anyone on these benefits</label> <br />
 						</td>
 					</tr>
 				</table>
@@ -1990,7 +2143,7 @@ if ($step == 2) {
 			// Create a new table row ever three tds
 			if ($no_td == 0) { echo "<tr id=\"how_heard\">\n"; }
 			echo "\t<td><input type=\"checkbox\" name=\"how_heard_about_course[]\" value=\"$how\" id=\"s7_hh_$c\" ";
-			outputValueFromSession("checkbox", "how_heard_about_course", $how);
+			getValue("checkbox", "how_heard_about_course", $how);
 			echo " class=\"checkbox\" /> <label for=\"s7_hh_$c\">$how</label></td>\n";
 			++$no_td;
 			if ($no_td == 3) {
@@ -2003,25 +2156,23 @@ if ($step == 2) {
 		<tr>
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
-			<td><label for="s7_hh_other">Other:</label>&nbsp; <input type="text" name="how_heard_other" maxlength="40" id="s7_hh_other" class="text" value="<?php outputValueFromSession('text', 'how_heard_other'); ?>" /></td>
+			<td><label for="s7_hh_other">Other:</label>&nbsp; <input type="text" name="how_heard_other" maxlength="40" id="s7_hh_other" class="text" value="<?php getValue('text', 'how_heard_other'); ?>" /></td>
 		</tr>
 	
 	</table>
 	
 	<h2>Receive Communications?</h2>
 	<p style="line-height:1.5em;">We would like to send you information by email or text message from time to time on new courses or events that may be of interest to you.<br />We will not share your details with any third parties, and you will be able at any time to choose to stop receiving messages from us.
-	<br />If you don't want to receive this information, please choose 'No'.</label>
+	<br /><strong>If you don't want to receive this information, please tick 'No'.</strong></label>
 	</p>
 	<p>
-		<input type="radio" name="receive_communications" value="yes" checked="checked" id="s7_receive_comms_yes" <?php outputValueFromSession('radio', 'receive_communications', 'yes'); ?>/> <label for="s7_receive_comms_yes">Yes</label>
-		<input type="radio" name="receive_communications" value="no" id="s7_receive_comms_no"  <?php outputValueFromSession('radio', 'receive_communications', 'no'); ?>/> <label for="s7_receive_comms_no">No</label>
-	</p>
-	<br />
+<!-- Default to 'yes' --><input type="hidden" value="yes" name="receive_communications" />
+<input type="checkbox" value="no" name="receive_communications" id="s7_receive_comms_no" <?php getValue('checkbox_single', 'receive_communications', 'no'); ?>/> <label for="s7_receive_comms_no">No</label>
+</p>
 
-	<h2 style="float:left;">Correct Information</h2><span class="required">*</span>
-	<br class="clear_both" />
+	<h2>Correct Information<span class="required" style="font-size:1em;">*</span></h2>
 	<p style="line-height:1.5em;">I confirm that the information I have given in this form is correct. I give my consent to the College of Haringey, Enfield and North East London to record and process this information, on the understanding that the College complies with the Data Protection Act 1998.</p>
-	<p><input type="checkbox" value="yes" name="correct_info_confirm" id="s7_confirm_correct_info" <?php outputValueFromSession('radio', 'correct_info_confirm', 'yes'); ?>/> <label for="s7_confirm_correct_info">Yes, I confirm</label>
+	<p><input type="checkbox" value="yes" name="correct_info_confirm" id="s7_confirm_correct_info" <?php getValue('checkbox_single', 'correct_info_confirm', 'yes'); ?>/> <label for="s7_confirm_correct_info">Yes, I confirm</label>
 	<br />
 	<br />
 	
@@ -2031,14 +2182,14 @@ if ($step == 2) {
 		<tr>
 			<td width="225"><label for="s7_easy_to_complete_yes">Was this form easy to complete?:</label></td>
 			<td>
-				<input type="radio" name="easy_to_complete" value="yes" checked="checked" id="s7_easy_to_complete_yes" <?php outputValueFromSession('radio', 'easy_to_complete', 'yes'); ?>/> <label for="s7_easy_to_complete_yes">Yes</label>
-				<input type="radio" name="easy_to_complete" value="no" id="s7_easy_to_complete_no"  <?php outputValueFromSession('radio', 'easy_to_complete', 'no'); ?>/> <label for="s7_easy_to_complete_no">No</label>
+				<input type="radio" name="easy_to_complete" value="yes" checked="checked" id="s7_easy_to_complete_yes" <?php getValue('radio', 'easy_to_complete', 'yes'); ?>/> <label for="s7_easy_to_complete_yes">Yes</label>
+				<input type="radio" name="easy_to_complete" value="no" id="s7_easy_to_complete_no"  <?php getValue('radio', 'easy_to_complete', 'no'); ?>/> <label for="s7_easy_to_complete_no">No</label>
 			</td>
 		</tr>
 		<tr>
 			<td><label for="s7_how_can_we_improve_the_form">If not, please tell us how we<br /> could improve it:</label></td>
 			<td>
-				<textarea name="how_can_we_improve_the_form" id="s7_how_can_we_improve_the_form" cols="40" maxlength="1000" rows="8" style="width:500px;"><?php outputValueFromSession('textarea', 'how_can_we_improve_the_form'); ?></textarea>
+				<textarea name="how_can_we_improve_the_form" id="s7_how_can_we_improve_the_form" cols="40" maxlength="1000" rows="8" style="width:500px;"><?php getValue('textarea', 'how_can_we_improve_the_form'); ?></textarea>
 			</td>
 		</tr>
 		<tr>
@@ -2086,7 +2237,7 @@ if ($step == 2) {
 		$back_button = "<input type=\"button\" value=\"&lt; Back\" class=\"submit_back\" onclick=\"javascript:window.location.href='$back_url'\" />";
 		echo $back_button;
 	?>
-	<input type="submit" value="Submit &gt;" class="submit final_submit" />
+	<input type="submit" value="Verify Details &gt;" class="submit final_submit" />
 </form>
 <noscript>Click your browser's back button to get to the previous page</noscript>
 </div>
@@ -2161,13 +2312,14 @@ if ($step == 2) {
 		$ref_id = $_SESSION['caf']['reference_id'];
 		
 		unset($_SESSION['caf']);
+		session_destroy();
 		
 		echo '<div class="section">';
 		echo '<h2>Course Application Complete</h2>';
 		echo "<p><strong>Completed:</strong> ".$datetime_last_submitted."</p><br />";
-		echo '<p>Thank you, <strong>'.$firstname.'</strong> for completing the course application form.</p>';
-		echo '<p>We will contact you soon to tell you about your interview arrangements.</p><br />';
-		
+		echo '<p>Thank you, <strong>'.$firstname.'</strong> for completing a course application.</p>';
+		echo '<p>We will contact you soon to tell you about your interview arrangements.</p>';
+		/*
 		echo '<div id="reference_details_show">';
 		echo '<h2>Your Reference Details</h2>';
 		echo '<table>';
@@ -2178,6 +2330,7 @@ if ($step == 2) {
 		echo '</div>';
 		echo '<br />';
 		echo '<p><img src="../images/printer.png" width="16" height="16" border="0" alt="printer icon" /> <a href="javascript:window.print()">Print this page</a></p>';
+		 */
 		echo '<p><br /><input type="button" value="Return to website &gt;" class="submit_back" onclick="javascript:window.location.href=\'http://www.conel.ac.uk\'" /><noscript><a href="http://www.conel.ac.uk">Return to website &gt;</a></noscript></p>';
 		echo '</div>';
 

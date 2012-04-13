@@ -88,13 +88,16 @@ input.date {
 	padding:3px;
 	width:75px;
 }
+select.date {
+	width:115px;
+}
 input.radio, input.checkbox {
 	border:none;
 	background-color:#fff;
 }
 div.section {
-	-moz-border-radius:4px;
-	border-radius:4px;
+	-moz-border-radius:5px;
+	border-radius:5px;
 	display:block;
 	border:1px solid #E6E6E6;
 	margin-bottom:15px;
@@ -129,7 +132,7 @@ table.checkboxes td {
 #steps ul li {
 	color:#4D4D4D;
 	margin:0;
-	margin-right:16px;
+	margin-right:13px;
 	float:left;
 }
 #steps ul li.complete {
@@ -618,4 +621,41 @@ input.verify {
 }
 tr.toggle_disability {
 
+}
+#residence_questions {
+	display:none;
+}
+h2.fee_status {
+	margin:0;
+	margin-top:15px;
+	margin-bottom:0;
+}
+.error_black {
+	color:#000;
+	font-weight:normal;
+}
+#progress_holder {
+	float:right;
+	width:268px;
+	margin-top:20px;
+}
+#progress_holder span.percent {
+	display:block;
+	font-size:1.6em;
+	font-weight:bold;
+	color:#414141;
+	margin-top:1px;
+	height:20px;
+}
+#progress_bar {
+	background:#E4E9F1 url(../images/progress_bg.png) repeat-x 0 0;
+	width:200px;
+	height:21px;
+	border:1px solid #414141;
+	float:left;
+	margin-right:8px;
+}
+#progress {
+	background:#72DF35 url(../images/progress_fg.png) repeat-x 0 0;
+	height:21px;
 }

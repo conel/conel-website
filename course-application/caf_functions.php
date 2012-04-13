@@ -18,36 +18,39 @@
 		// check signed in
 		if ((isset($_SESSION['caf']['email_address']) && $_SESSION['caf']['email_address'] != '') 
 			&& isset($_SESSION['caf']['reference_id']) && $_SESSION['caf']['reference_id'] != ''
-			&& ($_SESSION['caf']['signed_in'])) {
-				// check if email address and reference id exist in the table
+			&& ($_SESSION['caf']['signed_in'] === true)) {
 		} else {
 			$_SESSION['caf']['errors'][] = "You need to register your email address first";
 			header('location: '.THIS_URL);
 			exit;
 		}
-		
-		// user is signed in, now check TRUE previous step
-		foreach ($_SESSION['caf']['step_complete'] as $key => $value) {
-			if ($value == FALSE) {
-				$_SESSION['caf']['page_step'] = $key;
-				break;
+		if ($step == 0) {
+			if (isset($_SESSION['caf']['page_step']) && $_SESSION['caf']['page_step'] != 0) {
+				header('location: '.THIS_URL.'?step='.$_SESSION['caf']['page_step'].'');
+				exit;
 			}
 		}
-		
+
 		$prev_step = $step - 1;
 		
-		// Steps 5, 7, 9 are not required to be filled in, so if the previous step is TRUE, set these as TRUE also
-		$unrequired = array(4,6,8);
-		if ((in_array($step, $unrequired)) && ($_SESSION['caf']['step_complete'][$prev_step] == TRUE)) {
+		$unrequired = array(4,8,9);
+		if ((in_array($step, $unrequired)) && ($_SESSION['caf']['step_complete'][$prev_step] === TRUE)) {
 			$_SESSION['caf']['step_complete'][$step] = TRUE;
 		}
-		
+
+		// user is signed in, now check TRUE previous step
+		foreach ($_SESSION['caf']['step_complete'] as $key => $value) {
+			if ($value === TRUE && $key > $_SESSION['caf']['page_step']) {
+				$_SESSION['caf']['page_step'] = $key;
+			}
+		}
 		if ($prev_step <= $_SESSION['caf']['page_step']) {
-			if ($_SESSION['caf']['step_complete'][$prev_step] == FALSE) {
+			if ($_SESSION['caf']['step_complete'][$prev_step] === FALSE) {
 				header('location: '.THIS_URL.'?step='.$_SESSION['caf']['page_step'].'');
 				exit;
 			}
 		} else {
+			// HACKY! Add one to page step so it redirects to the correct page
 			header('location: '.THIS_URL.'?step='.$_SESSION['caf']['page_step'].'');
 			exit;
 		}
@@ -92,10 +95,12 @@
 			'course_code_1' => 'Course Code 1',
 			'college_centre_1' => 'College Centre 1',
 			'course_entry_date_1' => 'Entry Date 1',
+			'preferred_entry_month_1' => 'Preferred Entry Month 1',
 			'course_title_2' => 'Course Title 2',
 			'course_code_2' => 'Course Code 2',
 			'college_centre_2' => 'College Centre 2',
-			'course_entry_date_2' => 'Entry Date 2'
+			'course_entry_date_2' => 'Entry Date 2',
+			'preferred_entry_month_2' => 'Preferred Entry Month 2',
 		);
 		$section_2_keys = array(
 			'title' => 'Title',
@@ -229,7 +234,15 @@
 		$body_html .= "<table class=\"verify_info_table\" cellspacing=\"0\" border=\"1\">\n";
 		foreach ($section_1_keys as $key => $value) {
 			$session_val = $_SESSION['caf'][$key];
-			$value_output = ($session_val == '') ? '&#8211;' : $session_val;
+			if ($key == 'preferred_entry_month_1') {
+				$value = 'Preferred Entry Date 1';
+				$value_output = $_SESSION['caf']['preferred_entry_month_1'] . ' ' . $_SESSION['caf']['preferred_entry_year_1'];
+			} else if ($key == 'preferred_entry_month_2') {
+				$value = 'Preferred Entry Date 2';
+				$value_output = $_SESSION['caf']['preferred_entry_month_2'] . ' ' . $_SESSION['caf']['preferred_entry_year_2'];
+			} else {
+				$value_output = ($session_val == '') ? '&#8211;' : $session_val;
+			}
 			if (is_array($value_output)) {
 				$list_html = "<ul>";
 				foreach($value_output as $val) { $list_html .= "<li>$val</li>"; }
@@ -453,7 +466,7 @@
 	// $type = fieldtype [text, textarea, select, radio, checkbox]
 	// $fieldname = the name of the field
 	// $value = only used with radio and checkboxes - fiels where more than one name exists
-	function outputValueFromSession($type='', $fieldname='', $value='') {
+	function getValue($type='', $fieldname='', $value='') {
 		
 		$html = '';
 		if (isset($_SESSION['caf'][$fieldname]) && $_SESSION['caf'][$fieldname] != '') {
@@ -471,6 +484,7 @@
 				break;
 				
 				case 'radio':
+				case 'checkbox_single':
 				if ($_SESSION['caf'][$fieldname] == $value) {
 					$html = 'checked="checked"';
 				}
@@ -480,7 +494,6 @@
 				if (in_array($value, $_SESSION['caf'][$fieldname])) {
 					$html = 'checked="checked"';
 				}
-				break;
 				
 			}
 			

@@ -25,6 +25,14 @@ $(document).ready(function() {
 		}  
 	});
 
+	// Show residence questions if No is selected
+	$('#s6_settled_no').click(function(el) {
+		$('#residence_questions').show();
+	});
+	$('#s6_settled_yes').click(function(el) {
+		$('#residence_questions').hide();
+	});
+
 	$('.add_qualification').click(function(el) {
 		el.preventDefault();
 		var qual_no = el.target.id;
@@ -144,6 +152,8 @@ $(document).ready(function() {
 		$('#s1_course_title_1').focus();
 		$('#s1_course_entry_date_1').attr('disabled', '');
 		$('#s1_course_entry_date_1').val('');
+		$('#s1_preferred_entry_month_1').val('');
+		$('#s1_preferred_entry_year_1').val('');
 	});
 	
 	$('#clear_course_2').click(function(el) {
@@ -159,6 +169,8 @@ $(document).ready(function() {
 		$('#s1_course_title_2').focus();
 		$('#s1_course_entry_date_2').attr('disabled', '');
 		$('#s1_course_entry_date_2').val('');
+		$('#s1_preferred_entry_month_2').val('');
+		$('#s1_preferred_entry_year_2').val('');
 	});
 	
 	
