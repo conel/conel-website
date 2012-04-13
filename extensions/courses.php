@@ -304,7 +304,7 @@
 					|| 
 					(!isset($_SESSION['caf']['course_title_2']) || $_SESSION['caf']['course_title_2'] == '') 
 				) {
-					$occurrences .= '<form action="http://www.conel.ac.uk/course-application/caf_add_to_application.php" method="post">';
+                    $occurrences .= '<form action="'.SITE_ROOT.'course-application/caf_add_to_application.php" method="post">';
 					$occurrences .= '<input type="hidden" name="course_title" value="'.$course_title.'" />';
 					$occurrences .= '<input type="hidden" name="course_code" value="'.$course_code.'" />';
 					// strip 'center from location'
