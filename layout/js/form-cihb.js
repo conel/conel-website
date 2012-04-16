@@ -13,9 +13,7 @@ $(document).ready(function() {
 			$('#' + infodiv).html(''+limit+' character limit reached');
 			$('#'+textid).val(text.substr(0,limit));
 			return false;
-		}
-		else
-		{
+		} else {
 			$('#' + infodiv).html(''+ (limit - textlength) +' characters left');
 			return true;
 		}
