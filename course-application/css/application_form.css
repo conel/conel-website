@@ -659,3 +659,8 @@ h2.fee_status {
 	background:#72DF35 url(../images/progress_fg.png) repeat-x 0 0;
 	height:21px;
 }
+#charlimitinfo {
+	color:#000;
+    display:block;
+    margin-top:4px;
+}

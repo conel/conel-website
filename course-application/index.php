@@ -970,6 +970,27 @@ if ($step == 2) {
 <script type="text/javascript">
 	$(document).ready(function() {
 
+        function limitChars(textid, limit, infodiv) {
+            var text = $('#'+textid).val();    
+            var textlength = text.length;
+            if (textlength > limit) {
+                $('#' + infodiv).html(''+limit+' character limit reached');
+                $('#'+textid).val(text.substr(0,limit));
+                return false;
+            } else {
+                $('#' + infodiv).html(''+ (limit - textlength) +' characters left');
+                return true;
+            }
+        }
+
+        limitChars('s2_why_want_to', 1500, 'charlimitinfo');
+
+        $(function(){
+             $('#s2_why_want_to').keyup(function(){
+                 limitChars('s2_why_want_to', 1500, 'charlimitinfo');
+             })
+        });
+        
 		// New applicant form check
 		$("#s2_personal_details").submit(function(e) {
 
@@ -1170,6 +1191,8 @@ if ($step == 2) {
 				<h4><label for="s2_why_want_to">Why do you want to do this course?:<span class="required">*</span></label></h4>
 				<p>Please use this box to tell us about your reasons for doing the course, including your future job / career / university plans.</p>
 				<textarea name="why_want_to_do_course" cols="40" rows="10" maxlength="1500" style="width:800px;" id="s2_why_want_to"><?php getValue('textarea', 'why_want_to_do_course'); ?></textarea>
+                <br />
+                <span id="charlimitinfo">1500 characters left</span>
 			</td>
 		</tr>
 		<tr>
@@ -1757,6 +1780,27 @@ if ($step == 2) {
 <script type="text/javascript">
 	$(document).ready(function() {
 
+        function limitChars(textid, limit, infodiv) {
+            var text = $('#'+textid).val();    
+            var textlength = text.length;
+            if (textlength > limit) {
+                $('#' + infodiv).html(''+limit+' character limit reached');
+                $('#'+textid).val(text.substr(0,limit));
+                return false;
+            } else {
+                $('#' + infodiv).html(''+ (limit - textlength) +' characters left');
+                return true;
+            }
+        }
+
+        limitChars('s5_relevant_skills', 1000, 'charlimitinfo');
+
+        $(function(){
+             $('#s5_relevant_skills').keyup(function(){
+                 limitChars('s5_relevant_skills', 1000, 'charlimitinfo');
+             })
+        });
+
 		// New applicant form check
 		$("#s5_employment_and_exp").submit(function(e) {
 
@@ -1833,7 +1877,10 @@ if ($step == 2) {
 				<label for="s5_relevant_skills">What experience and skills do you have that are relevant to your course?:<span class="required">*</span><br /><br />
 				Include any paid / voluntary work and any responsibilites you have had.</label>
 			</td>
-			<td><textarea name="relevant_skills_and_experience" cols="40" maxlength="1000" rows="10" id="s5_relevant_skills" style="width:630px;"><?php getValue('textarea', 'relevant_skills_and_experience'); ?></textarea></td>
+            <td>
+                <textarea name="relevant_skills_and_experience" cols="40" maxlength="1000" rows="10" id="s5_relevant_skills" style="width:630px;"><?php getValue('textarea', 'relevant_skills_and_experience'); ?></textarea>
+                <span id="charlimitinfo">1000 characters left</span>
+            </td>
 		</tr>
 		<tr>
 			<td colspan="2">
@@ -2068,6 +2115,26 @@ if ($step == 2) {
 <script type="text/javascript">
 	$(document).ready(function() {
 
+        function limitChars(textid, limit, infodiv) {
+            var text = $('#'+textid).val();    
+            var textlength = text.length;
+            if (textlength > limit) {
+                $('#' + infodiv).html(''+limit+' character limit reached');
+                $('#'+textid).val(text.substr(0,limit));
+                return false;
+            } else {
+                $('#' + infodiv).html(''+ (limit - textlength) +' characters left');
+                return true;
+            }
+        }
+
+        limitChars('s7_how_can_we_improve_the_form', 1000, 'charlimitinfo');
+        $(function(){
+             $('#s7_how_can_we_improve_the_form').keyup(function(){
+                 limitChars('s7_how_can_we_improve_the_form', 1000, 'charlimitinfo');
+             })
+        });
+
 		$('#s7_hh_other_pspec').click(function(e) {
 			$('#s7_hh_other').focus();
 		});
@@ -2190,6 +2257,8 @@ if ($step == 2) {
 			<td><label for="s7_how_can_we_improve_the_form">If not, please tell us how we<br /> could improve it:</label></td>
 			<td>
 				<textarea name="how_can_we_improve_the_form" id="s7_how_can_we_improve_the_form" cols="40" maxlength="1000" rows="8" style="width:500px;"><?php getValue('textarea', 'how_can_we_improve_the_form'); ?></textarea>
+                <br />
+                <span id="charlimitinfo">1000 characters left</span>
 			</td>
 		</tr>
 		<tr>
