@@ -723,11 +723,12 @@ if ($step > 0) {
 			// Create database record for current user
 			$datetime_sub = date('Y-m-d H:i:s'); // 2010-06-02 14:24:04 - MySQL timestamp format
 			$query = sprintf("INSERT INTO tbl_course_application 
-				(datetime_submitted_first, email_address, reference_id, form_completed) 
+				(datetime_submitted_first, email_address, reference_id, page_step, form_completed) 
 				VALUES('%s','%s','%s','%d')", 
 				$datetime_sub,
 				mysql_real_escape_string($_SESSION['caf']['email_address'], $sql->Link_ID),
 				mysql_real_escape_string($_SESSION['caf']['reference_id'], $sql->Link_ID),
+                1,
 				0
 			);
 			$sql->query($query, $debug);
