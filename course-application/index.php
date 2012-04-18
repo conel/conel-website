@@ -723,8 +723,7 @@ if ($step > 0) {
 			// Create database record for current user
 			$datetime_sub = date('Y-m-d H:i:s'); // 2010-06-02 14:24:04 - MySQL timestamp format
 			$query = sprintf("INSERT INTO tbl_course_application 
-				(datetime_submitted_first, email_address, reference_id, page_step, form_completed) 
-				VALUES('%s','%s','%s','%d')", 
+				(datetime_submitted_first, email_address, reference_id, page_step, form_completed) VALUES('%s', '%s', '%s', '%d', '%d')", 
 				$datetime_sub,
 				mysql_real_escape_string($_SESSION['caf']['email_address'], $sql->Link_ID),
 				mysql_real_escape_string($_SESSION['caf']['reference_id'], $sql->Link_ID),
@@ -2176,7 +2175,7 @@ if ($step == 2) {
 	<table class="checkboxes <?php addMissingFieldClass('how_heard_about_course'); ?>" summary="How did you hear about the course?" style="width:880px;">
 
 <?php 
-		// Much easier to update if I add these values via an array
+		// Much easier to updte if I add these values via an array
 		$how_heard = array();
 		$how_heard[] = 'I study at the College';
 		$how_heard[] = 'Course Guide';
