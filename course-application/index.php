@@ -734,7 +734,12 @@ if ($step > 0) {
 			$row_id = $sql->db_insertid();
 			if ($row_id) {
 				$_SESSION['caf']['id'] = $row_id;
-			}
+            } else {
+                // SQL Query error
+				$_SESSION['caf']['errors'][] = "Could not create a new application, please refresh then try again";
+				header('location: '.THIS_URL);
+				exit;
+            }
 
 	   } else {
 			if ($_SESSION['caf']['page_step'] == 0) {
