@@ -84,8 +84,7 @@
 			$mail->IsHTML(TRUE); // send HTML email
 			$mail->IsSMTP(); // use SMTP to send
 			// Set Recipient
-			$mail->AddAddress('NKowald@conel.ac.uk', 'Janet Stewart');
-			//$mail->AddAddress('monicaw@conel.ac.uk', 'Monica Wallace');
+			$mail->AddAddress('JAsije@conel.ac.uk', 'Jade Asije');
 			$mail->Subject = "End of Year Shows form submission";
 			$mail->From = 'webmaster@conel.ac.uk';
 			$mail->FromName = 'Conel Website Notifications';
