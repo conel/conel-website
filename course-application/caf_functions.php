@@ -21,14 +21,17 @@
 			&& ($_SESSION['caf']['signed_in'] === true)) {
 		} else {
 			$_SESSION['caf']['errors'][] = "You need to register your email address first";
-			header('location: '.THIS_URL);
-			exit;
+            $current_url = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+            if ($current_url != THIS_URL) {
+			    header('location: '.THIS_URL);
+			    exit;
+            }
 		}
 		if ($step == 0) {
 			if (isset($_SESSION['caf']['page_step']) && $_SESSION['caf']['page_step'] != 0) {
 				header('location: '.THIS_URL.'?step='.$_SESSION['caf']['page_step'].'');
 				exit;
-			}
+            }
 		}
 
 		$prev_step = $step - 1;
