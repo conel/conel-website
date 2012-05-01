@@ -1308,17 +1308,16 @@ function _page_generatePage($page_id,$template) {
 			13 => array('name' => 'Gokhan Bektas', 'quote' => 'ESOL Entry 2 - Gokhan', 'url' => '/for_learners/success_stories/gokhan_bektas'),
 			14 => array('name' => 'Justina Subaciute', 'quote' => 'ESOL Skills for Study and Work Level 1 - Justina', 'url' => '/for_learners/success_stories/justina_subaciute'),
 			15 => array('name' => 'Kyron Williams', 'quote' => 'Sports Development and Fitness BTEC Level 3 - Kyron', 'url' => '/for_learners/success_stories/kyron_williams'),
-			16 => array('name' => 'Lakia Bryan', 'quote' => 'Art and Design (Fashion) BTEC Level 3 - Lakia', 'url' => '/for_learners/success_stories/lakia_bryan'),
-			17 => array('name' => 'Lauren Kyriacou', 'quote' => 'Business BTEC Level 3 - Lauren', 'url' => '/for_learners/success_stories/lauren_kyriacou'),
-			18 => array('name' => 'Lewis Warner', 'quote' => 'Sports Development and Fitness BTEC Level 3 - Lewis', 'url' => '/for_learners/success_stories/lewis_warner'),
-			19 => array('name' => 'Marlon Amaechi', 'quote' => 'Nursing - Access to Higher Education Diploma - Marlon', 'url' => '/for_learners/success_stories/marlon_amaechi'),
-			20 => array('name' => 'Mina Abdurahman', 'quote' => 'Art and Design BTEC Diploma Level 3 - Mina', 'url' => '/for_learners/success_stories/mina_abdurahman'),
-			21 => array('name' => 'Nura Mubarak', 'quote' => 'IT and Business BTEC Level 3 - Nura', 'url' => '/for_learners/success_stories/nura_mubarak'),
-			22 => array('name' => 'Olga Obineche', 'quote' => 'Spanish Entry 3 - Olga', 'url' => '/for_learners/success_stories/olga_obineche'),
-			23 => array('name' => 'Roman Barenga', 'quote' => 'Science BTEC Level 2 - Roman', 'url' => '/for_learners/success_stories/roman_barenga'),
-			24 => array('name' => 'Sonny Kane', 'quote' => 'Access to Engineering - Sonny', 'url' => '/for_learners/success_stories/sonny_kane'),
-			25 => array('name' => 'Stacy Byfield', 'quote' => 'English Level 1 - Stacy', 'url' => '/for_learners/success_stories/stacy_byfield'),
-			26 => array('name' => 'Stephen Mafolabomi', 'quote' => 'Business BTEC Level 3 - Stephen', 'url' => '/for_learners/success_stories/stephen_mafolabomi')
+			16 => array('name' => 'Lauren Kyriacou', 'quote' => 'Business BTEC Level 3 - Lauren', 'url' => '/for_learners/success_stories/lauren_kyriacou'),
+			17 => array('name' => 'Lewis Warner', 'quote' => 'Sports Development and Fitness BTEC Level 3 - Lewis', 'url' => '/for_learners/success_stories/lewis_warner'),
+			18 => array('name' => 'Marlon Amaechi', 'quote' => 'Nursing - Access to Higher Education Diploma - Marlon', 'url' => '/for_learners/success_stories/marlon_amaechi'),
+			19 => array('name' => 'Mina Abdurahman', 'quote' => 'Art and Design BTEC Diploma Level 3 - Mina', 'url' => '/for_learners/success_stories/mina_abdurahman'),
+			20 => array('name' => 'Nura Mubarak', 'quote' => 'IT and Business BTEC Level 3 - Nura', 'url' => '/for_learners/success_stories/nura_mubarak'),
+			21 => array('name' => 'Olga Obineche', 'quote' => 'Spanish Entry 3 - Olga', 'url' => '/for_learners/success_stories/olga_obineche'),
+			22 => array('name' => 'Roman Barenga', 'quote' => 'Science BTEC Level 2 - Roman', 'url' => '/for_learners/success_stories/roman_barenga'),
+			23 => array('name' => 'Sonny Kane', 'quote' => 'Access to Engineering - Sonny', 'url' => '/for_learners/success_stories/sonny_kane'),
+			24 => array('name' => 'Stacy Byfield', 'quote' => 'English Level 1 - Stacy', 'url' => '/for_learners/success_stories/stacy_byfield'),
+			25 => array('name' => 'Stephen Mafolabomi', 'quote' => 'Business BTEC Level 3 - Stephen', 'url' => '/for_learners/success_stories/stephen_mafolabomi')
 		);
 		
 		// output a random number
