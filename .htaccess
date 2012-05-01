@@ -97,6 +97,7 @@
 	RewriteRule ^prehairdressing$ /our_courses/pre_apprenticeships_hairdressing_and_beauty_therapy [R=301,L]
 	RewriteRule ^constructionenfield$ /our_courses/careers_and_courses_in_construction/construction_enfield [R=301,L]
 	RewriteRule ^shows$ /our_college/end_of_year_shows [R=301,L]
+	RewriteRule ^preaat$ /our_courses/aat_level_2_pre_apprenticeship [R=301,L]
 
 	RewriteRule ^dynamic(.*)$ dynamic.php?url=$1 [QSA,L]
 	RewriteCond %{REQUEST_FILENAME} !-f
