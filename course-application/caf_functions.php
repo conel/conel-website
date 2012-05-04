@@ -560,4 +560,14 @@
 			$_SESSION['caf']['college_centre_'.$slot_num] = '';
 		}
 	}
+
+	function getNextFourMondays() {
+
+		$next_mon = strtotime('next monday');
+		$mondays = array($next_mon);
+		for ($i = 1; $i <= 3; $i++) {
+			$mondays[] = strtotime('+1 week', $mondays[$i - 1]);
+		}
+		return $mondays;
+	}
 ?>

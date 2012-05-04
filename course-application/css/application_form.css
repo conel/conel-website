@@ -664,3 +664,8 @@ h2.fee_status {
     display:block;
     margin-top:4px;
 }
+table.interview_time th {
+	font-weight:bold;
+	font-size:1.2em;
+	padding-bottom:10px;
+}

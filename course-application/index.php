@@ -390,7 +390,7 @@ if ($step > 0) {
 		5 => '5. Employment and Experience', 
 		6 => '6. Residence / Fee Status', 
 		7 => '7. How Heard', 
-		8 => '8. Reference',
+		8 => '8. Interview',
 		9 => '9. Verify Details'
 	);
 	$steps = '<ul>';
@@ -2293,7 +2293,7 @@ if ($step == 2) {
 
 ?>
 <div class="section">
-<h2><span>Section 8</span> &#8211; Reference</h2>
+<h2><span>Section 8</span> &#8211; Interview</h2>
 <p>Please follow these steps:</p>
 <ol>
 	<li><img src="../images/printer.png" width="16" height="16" border="0" alt="printer icon" /> <a href="http://www.conel.ac.uk/docs/reference_form_0.pdf" target="_blank">Print the Student Reference Form</a></li>
@@ -2303,7 +2303,30 @@ if ($step == 2) {
 </ol>
 <br />
 <p>You do not need to give us a reference for English/literacy, Maths/numeracy, English for Speakers of Other Languages (ESOL) and short part-time ICT courses. For other courses you need to give us a reference.</p>
-<br />
+<?php
+		// Book an interview time
+		echo '<h2>Choose an Interview Date<span class="required">*</span></h2>';
+		echo '<p>We interview every Monday from 4-6pm.</p>
+			<p>Please select a convenient interview time below or enter a preferred date and time in the \'Other\' field.</p><br />';
+		$mondays = getNextFourMondays();
+		echo '<table class="interview_time">
+		<tr><th width="155">Date</th><th>Time</th></tr>';
+		foreach ($mondays as $key => $mon) {
+			echo '<tr>';
+			echo '<td>' . date('l, j F Y', $mon) . '</td>';
+			echo '<td>
+				<input type="radio" name="interview_time" value="'. date('d/m/Y').' 4-5pm" id="time_'.$key.'_4-5" /><label for="time_'.$key.'_4-5">4:00 &ndash; 5:00 pm</label> &nbsp;
+				<input type="radio" name="interview_time" value="'. date('d/m/Y').' 5-6pm" id="time_'.$key.'_5-6" /><label for="time_'.$key.'_5-6">5:00 &ndash; 6:00 pm</label>
+				</td>';
+			echo '</tr>';
+		}
+		echo '<tr><td>Other Date/Time:</td>
+			<td><input type="radio" name="interview_time" value="other" id="other" /> <label for="other">Other</label> 
+			<input type="text" name="other_interview_date" /></td>';
+		echo '</table>';
+		echo '<br />'
+
+?>
 <form method="post" action="<?php echo THIS_URL; ?>?step=9">
 	<?php
 		$back_step = $step - 1;
@@ -2378,34 +2401,40 @@ if ($step == 2) {
 	
 		// Email the completed application to staff member
 		$is_email = TRUE;
-		$body_html = getVerifyInfo($is_email);
-		emailCompletedApplication($body_html); // builds preview html - as shown on step 9
+		//$body_html = getVerifyInfo($is_email);
+		//emailCompletedApplication($body_html); // builds preview html - as shown on step 9
 		$datetime_last_submitted = $_SESSION['caf']['datetime_submitted_last'];
 		$firstname = $_SESSION['caf']['firstname'];
 		$email_address = $_SESSION['caf']['email_address'];
 		$ref_id = $_SESSION['caf']['reference_id'];
 		
-		unset($_SESSION['caf']);
-		session_destroy();
+		//unset($_SESSION['caf']);
+		//session_destroy();
 		
 		echo '<div class="section">';
 		echo '<h2>Course Application Complete</h2>';
-		echo "<p><strong>Completed:</strong> ".$datetime_last_submitted."</p><br />";
+		//echo "<p><strong>Completed:</strong> ".$datetime_last_submitted."</p><br />";
 		echo '<p>Thank you, <strong>'.$firstname.'</strong> for completing a course application.</p>';
 		echo '<p>We will contact you soon to tell you about your interview arrangements.</p>';
-		/*
+		echo '<br />';
+
 		echo '<div id="reference_details_show">';
-		echo '<h2>Your Reference Details</h2>';
+		echo '<h2>Reference Details</h2>';
+		echo '<p>Please quote this reference number for all enquiries relating to this application.</p>';
 		echo '<table>';
 		echo '<tr><td width="120"><strong>Email Address:</strong></td><td> '.$email_address.'</td></tr>';
 		echo '<tr><td><strong>Reference ID:</strong></td><td>'.$ref_id.' </td></tr>';
-		echo '<tr><td><strong>Login URL:</strong></td><td>'.$resume_url.'</td></tr>';
+		//echo '<tr><td><strong>Login URL:</strong></td><td>'.$resume_url.'</td></tr>';
 		echo '</table>';
 		echo '</div>';
+
 		echo '<br />';
+
 		echo '<p><img src="../images/printer.png" width="16" height="16" border="0" alt="printer icon" /> <a href="javascript:window.print()">Print this page</a></p>';
-		 */
+
+
 		echo '<p><br /><input type="button" value="Return to website &gt;" class="submit_back" onclick="javascript:window.location.href=\'http://www.conel.ac.uk\'" /><noscript><a href="http://www.conel.ac.uk">Return to website &gt;</a></noscript></p>';
+
 		echo '</div>';
 
 	}
@@ -2419,14 +2448,8 @@ var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "htt
 document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 </script> 
 <script type="text/javascript">var pageTracker = _gat._getTracker("UA-3415972-1"); pageTracker._trackPageview();</script> 
-<script type="text/javascript" src="http://www.conel.ac.uk/clickheat/js/clickheat.js"></script> 
-<script type="text/javascript"> 
-//<![CDATA[
-	clickHeatSite = "";
-	clickHeatGroup = "course-application--online-application";
-	clickHeatServer = "http://www.conel.ac.uk/clickheat/click.php";
-	initClickHeat();
-//]]>
-</script>
+<?php
+getNextFourMondays();
+?>
 </body>
 </html>
