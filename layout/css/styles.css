@@ -1262,7 +1262,7 @@ table#enrolment_times td {
 	margin-top:3px;
 	margin-bottom:3px;
 }
-a.link {
+a.link, table.blue_links a {
 	color:#009EDB !important;
 }
 #print_banner, #print_footer {
