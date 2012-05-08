@@ -404,8 +404,7 @@
 		$mail->From = $_SESSION['caf']['email_address'];
 		$from_name = $_SESSION['caf']['firstname'] . " " . $_SESSION['caf']['surname'];
 		$from_name = ($from_name == '') ? $_SESSION['caf']['email_address'] : $from_name;
-		$mail->FromName = $from_name
-		;
+		$mail->FromName = $from_name;
 		//$mail->From = 'webmaster@staff.conel.ac.uk';
 		//$mail->FromName = 'Conel Website Notifications';
 		$mail->Body = $email_html;
