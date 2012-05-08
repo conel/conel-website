@@ -2465,6 +2465,7 @@ if ($step == 2) {
 	
 	if ($step == 10) {
 	
+
 		// Email the completed application to staff member
 		$is_email = TRUE;
 		//$body_html = getVerifyInfo($is_email);
