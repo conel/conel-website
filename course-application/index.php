@@ -223,10 +223,23 @@
 				break;
 			
 			case 9:
-				if ($_SESSION['caf']['step_complete'][8] === true) {
-					$_SESSION['caf']['step_complete'][9] = TRUE;
+				$continue = TRUE;
+				$required_fields = array('interview_time');
+				$_SESSION['caf']['missing_fields'] = '';
+				foreach ($required_fields as $field) {
+					if (isset($_POST[$field]) && $_POST[$field] == '') {$continue = FALSE; $_SESSION['caf']['missing_fields'][] = $field;}
 				}
-				securityStepCheck($step);
+				if (!$continue) {
+					$_SESSION['caf']['errors'][] = "Required fields missing";
+					$_SESSION['caf']['page_step'] = $step - 1;
+					header('location:'.THIS_URL.'?step='.$_SESSION['caf']['page_step'].'&error=1');
+					exit;
+				} else {
+					if ($_SESSION['caf']['step_complete'][8] === true) {
+						$_SESSION['caf']['step_complete'][9] = TRUE;
+					}
+					securityStepCheck($step);
+				}
 				break;
 				
 			case 10:
@@ -2180,7 +2193,7 @@ if ($step == 2) {
 	<table class="checkboxes <?php addMissingFieldClass('how_heard_about_course'); ?>" summary="How did you hear about the course?" style="width:880px;">
 
 <?php 
-		// Much easier to updte if I add these values via an array
+		// Much easier to update if I add these values via an array
 		$how_heard = array();
 		$how_heard[] = 'I study at the College';
 		$how_heard[] = 'Course Guide';
@@ -2292,9 +2305,45 @@ if ($step == 2) {
 	if ($step == 8) {
 
 ?>
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		// Clear 'other' field if anything but 'other' chosen
+		$("input[name='interview_time']").click(function() {
+			var interview_time = $(this).val();
+			if (interview_time != 'other') {
+				$("#other_interview").val('');
+			}
+		});
+
+		// New applicant form check
+		$("#s8_interview").submit(function(e) {
+			
+			// check if interview time is blank
+			var interview = $("input[name='interview_time']:checked").val();
+			var other_interview = $("#other_interview").val();
+			
+			if (interview == 'other') {
+				if (other_interview == '') {
+					alert('Please enter a preferred interview time in the \'Other\' field');
+					$("#other_interview").focus();
+					return false;
+				}
+			} else if (interview == '') {
+				alert('Please choose an interview time');
+				return false;
+			}
+			return true;
+
+		});
+
+	});
+</script>
 <div class="section">
+
+<form method="post" action="<?php echo THIS_URL; ?>?step=9" id="s8_interview">
 <h2><span>Section 8</span> &#8211; Interview</h2>
-<p>Please follow these steps:</p>
+<h2>Reference Form</h2>
 <ol>
 	<li><img src="../images/printer.png" width="16" height="16" border="0" alt="printer icon" /> <a href="http://www.conel.ac.uk/docs/reference_form_0.pdf" target="_blank">Print the Student Reference Form</a></li>
 	<li><strong>Section 1</strong> to be completed by yourself.</li>
@@ -2306,34 +2355,51 @@ if ($step == 2) {
 <?php
 		// Book an interview time
 		echo '<h2>Choose an Interview Date<span class="required">*</span></h2>';
-		echo '<p>We interview every Monday from 4-6pm.</p>
+		echo '<p>We interview every Monday from 4-6 PM.</p>
 			<p>Please select a convenient interview time below or enter a preferred date and time in the \'Other\' field.</p><br />';
 		$mondays = getNextFourMondays();
 		echo '<table class="interview_time">
 		<tr><th width="155">Date</th><th>Time</th></tr>';
 		foreach ($mondays as $key => $mon) {
+			$mon_format = date('l, j F Y', $mon);
 			echo '<tr>';
-			echo '<td>' . date('l, j F Y', $mon) . '</td>';
-			echo '<td>
-				<input type="radio" name="interview_time" value="'. date('d/m/Y').' 4-5pm" id="time_'.$key.'_4-5" /><label for="time_'.$key.'_4-5">4:00 &ndash; 5:00 pm</label> &nbsp;
-				<input type="radio" name="interview_time" value="'. date('d/m/Y').' 5-6pm" id="time_'.$key.'_5-6" /><label for="time_'.$key.'_5-6">5:00 &ndash; 6:00 pm</label>
-				</td>';
+			echo "<td>$mon_format</td>";
+			$value1 = $mon_format .', 4-5 PM';
+			$value2 = $mon_format .', 5-6 PM';
+			echo '<td><input type="radio" name="interview_time" value="'.$value1.'" id="time_'.$key.'_4-5"';
+			if ($_SESSION['caf']['interview_time'] == $value1) { 
+				echo 'checked="checked"';
+			}
+			echo '/><label for="time_'.$key.'_4-5">4:00 &ndash; 5:00 PM</label> &nbsp;
+
+			<input type="radio" name="interview_time" value="'.$value2.'" id="time_'.$key.'_5-6" ';
+			if ($_SESSION['caf']['interview_time'] == $value2) { 
+				echo 'checked="checked"';
+			}
+			echo '/><label for="time_'.$key.'_5-6">5:00 &ndash; 6:00 PM</label></td>';
 			echo '</tr>';
 		}
 		echo '<tr><td>Other Date/Time:</td>
-			<td><input type="radio" name="interview_time" value="other" id="other" /> <label for="other">Other</label> 
-			<input type="text" name="other_interview_date" /></td>';
+			<td><input type="radio" name="interview_time" value="other" id="other" ';
+		if ($_SESSION['caf']['interview_time'] == 'other') {
+			echo 'checked="checked"';
+		}
+		echo ' />'; 
+		echo '<label for="other">Other</label> 
+			<input type="text" name="other_interview_time" id="other_interview"  value="';
+		if ($_SESSION['caf']['other_interview_time'] != '') echo $_SESSION['caf']['other_interview_time'];  
+		echo '" /></td>';
 		echo '</table>';
 		echo '<br />'
 
 ?>
-<form method="post" action="<?php echo THIS_URL; ?>?step=9">
 	<?php
 		$back_step = $step - 1;
 		$back_url = THIS_URL . "?step=$back_step";
 		$back_button = "<input type=\"button\" value=\"&lt; Back\" class=\"submit_back\" onclick=\"javascript:window.location.href='$back_url'\" />";
 		echo $back_button;
 	?>
+	<input type="button" value="Save" class="submit_save" />
 	<input type="submit" value="Verify Details &gt;" class="submit final_submit" />
 </form>
 <noscript>Click your browser's back button to get to the previous page</noscript>
@@ -2407,6 +2473,8 @@ if ($step == 2) {
 		$firstname = $_SESSION['caf']['firstname'];
 		$email_address = $_SESSION['caf']['email_address'];
 		$ref_id = $_SESSION['caf']['reference_id'];
+		$interview_time = $_SESSION['caf']['interview_time'];
+		$other_interview_time = $_SESSION['caf']['other_interview_time'];
 		
 		//unset($_SESSION['caf']);
 		//session_destroy();
@@ -2414,13 +2482,26 @@ if ($step == 2) {
 		echo '<div class="section">';
 		echo '<h2>Course Application Complete</h2>';
 		//echo "<p><strong>Completed:</strong> ".$datetime_last_submitted."</p><br />";
-		echo '<p>Thank you, <strong>'.$firstname.'</strong> for completing a course application.</p>';
+		echo '<p>Thank you <strong>'.$firstname.'</strong> for completing a course application.</p>';
 		echo '<p>We will contact you soon to tell you about your interview arrangements.</p>';
+		echo '<br />';
+
+		echo '<div id="interview_details">';
+		echo '<h2>Interview</h2>';
+		if ($interview_time != 'other') {
+			echo '<p>Unless advised otherwise, your interview date is confirmed as:</p>';
+			echo '<p><span class="interview_date">'.$interview_time.'</span></p>';
+		} else {
+			echo '<p>You have chosen the following interview time. We will contact your shortly to confirm this date and time with you</p>';
+			echo '<p><span class="interview_date">'.$other_interview_time.'</span></p>';
+		}
+		echo '</div>';
+		echo '<br />';
 		echo '<br />';
 
 		echo '<div id="reference_details_show">';
 		echo '<h2>Reference Details</h2>';
-		echo '<p>Please quote this reference number for all enquiries relating to this application.</p>';
+		echo '<p>Please quote these reference details for all enquiries relating to this application.</p>';
 		echo '<table>';
 		echo '<tr><td width="120"><strong>Email Address:</strong></td><td> '.$email_address.'</td></tr>';
 		echo '<tr><td><strong>Reference ID:</strong></td><td>'.$ref_id.' </td></tr>';

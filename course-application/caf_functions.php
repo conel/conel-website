@@ -85,6 +85,26 @@
 		}
 		
 	}
+
+	function getSectionHTML(array $section_keys) {
+
+		$html = "<table class=\"verify_info_table\" cellspacing=\"0\" border=\"1\">\n";
+		foreach ($section_keys as $key => $value) {
+			$session_val = $_SESSION['caf'][$key];
+			$value_output = ($session_val == '') ? '&#8211;' : $session_val;
+			if (is_array($value_output)) {
+				$list_html = "<ul>";
+				foreach($value_output as $val) { $list_html .= "<li>$val</li>"; }
+				$list_html .= "</ul>";
+				$value_output = $list_html;
+			}
+			$td_width = ($is_email) ? ' width="250"' : ' width="225"';
+			$html .= '<tr><td '.$td_width.'><strong>'.$value.':</strong></td><td>'.$value_output.'</td></tr>';
+		}
+		$html .= "</table>";
+		return $html;
+		
+	}
 	
 	function getVerifyInfo($is_email = FALSE) {
 	
@@ -229,6 +249,11 @@
 			'easy_to_complete' => 'Was this form easy to complete?',
 			'how_can_we_improve_the_form' => 'If not, please tell us how we could improve it'
 		);
+
+		$section_8_keys = array(
+			'interview_time' => 'Interview Time',
+			'other_interview_time' => 'Other Interview Time'
+		);
 		
 		$body_html .= '<h3>Section 1 &#8211; Course Details</h3>';
 		if (!$is_email) {
@@ -258,46 +283,18 @@
 		$body_html .= "</table>\n";
 		
 		
-		
 		$body_html .= '<h3>Section 2 &#8211; Personal Details</h3>';
 		if (!$is_email) {
 			$body_html .= "<a href=\"".THIS_URL."?step=2\">Edit these details</a><br class=\"clear_both\" />";
 		}
-		$body_html .= "<table class=\"verify_info_table\" cellspacing=\"0\" border=\"1\">\n";
-		foreach ($section_2_keys as $key => $value) {
-			$session_val = $_SESSION['caf'][$key];
-			$value_output = ($session_val == '') ? '&#8211;' : $session_val;
-			if (is_array($value_output)) {
-				$list_html = "<ul>";
-				foreach($value_output as $val) { $list_html .= "<li>$val</li>"; }
-				$list_html .= "</ul>";
-				$value_output = $list_html;
-			}
-			$td_width = ($is_email) ? ' width="250"' : ' width="225"';
-			$body_html .= '<tr><td '.$td_width.'><strong>'.$value.':</strong></td><td>'.$value_output.'</td></tr>';
-		}
-		$body_html .= "</table>";
-		
+		$body_html .= getSectionHTML($section_2_keys);
 		
 		
 		$body_html .= '<h3>Section 3 &#8211; Support at the College of Haringey, Enfield and North East London</h3>';
 		if (!$is_email) {
 			$body_html .= "<a href=\"".THIS_URL."?step=3\">Edit these details</a><br class=\"clear_both\" />";
 		}
-		$body_html .= "<table class=\"verify_info_table\" cellspacing=\"0\" border=\"1\">\n";
-		foreach ($section_3_keys as $key => $value) {
-			$session_val = $_SESSION['caf'][$key];
-			$value_output = ($session_val == '') ? '&#8211;' : $session_val;
-			if (is_array($value_output)) {
-				$list_html = "<ul>";
-				foreach($value_output as $val) { $list_html .= "<li>$val</li>"; }
-				$list_html .= "</ul>";
-				$value_output = $list_html;
-			}
-			$td_width = ($is_email) ? ' width="250"' : ' width="225"';
-			$body_html .= '<tr><td '.$td_width.'><strong>'.$value.':</strong></td><td>'.$value_output.'</td></tr>';
-		}
-		$body_html .= "</table>";
+		$body_html .= getSectionHTML($section_3_keys);
 		
 		
 		$body_html .= '<h3>Section 4 &#8211; Your Qualifications</h3>';
@@ -315,69 +312,32 @@
 		}
 		$body_html .= "</table>";
 		
-		
-		
 		$body_html .= '<h3>Section 5 &#8211; Your Employment and Experience</h3>';
 		if (!$is_email) {
 			$body_html .= "<a href=\"".THIS_URL."?step=5\">Edit these details</a><br class=\"clear_both\" />";
 		}
-		$body_html .= "<table class=\"verify_info_table\" cellspacing=\"0\" border=\"1\">\n";
-		foreach ($section_5_keys as $key => $value) {
-			$session_val = $_SESSION['caf'][$key];
-			$value_output = $session_val;
-			if ($value_output != '') {
-				$td_width = ($is_email) ? ' width="250"' : ' width="225"';
-				$body_html .= '<tr><td '.$td_width.'><strong>'.$value.':</strong></td><td>'.$value_output.'</td></tr>';
-			}
-		}
-		$body_html .= "</table>";
-		
+		$body_html .= getSectionHTML($section_5_keys);
 		
 		
 		$body_html .= '<h3>Section 6 &#8211; Residence and Fee Status</h3>';
 		if (!$is_email) {
 			$body_html .= "<a href=\"".THIS_URL."?step=6\">Edit these details</a><br class=\"clear_both\" />";
 		}
-		$body_html .= "<table class=\"verify_info_table\" cellspacing=\"0\" border=\"1\">\n";
-		foreach ($section_6_keys as $key => $value) {
-			$session_val = $_SESSION['caf'][$key];
-			$value_output = ($session_val == '') ? '&#8211;' : $session_val;
-			if (is_array($value_output)) {
-				$list_html = "<ul>";
-				foreach($value_output as $val) { $list_html .= "<li>$val</li>"; }
-				$list_html .= "</ul>";
-				$value_output = $list_html;
-			}
-			$td_width = ($is_email) ? ' width="250"' : ' width="225"';
-			$body_html .= '<tr><td '.$td_width.'><strong>'.$value.':</strong></td><td>'.$value_output.'</td></tr>';
-		}
-		$body_html .= "</table>";
-		
+		$body_html .= getSectionHTML($section_6_keys);
 		
 		
 		$body_html .= '<h3>Section 7 &#8211; How Did You Hear About The Course?</h3>';
 		if (!$is_email) {
 			$body_html .= "<a href=\"".THIS_URL."?step=7\">Edit these details</a><br class=\"clear_both\" />";
 		}
-		$body_html .= "<table class=\"verify_info_table\" cellspacing=\"0\" border=\"1\">\n";
-		foreach ($section_7_keys as $key => $value) {
-			$session_val = $_SESSION['caf'][$key];
-			$value_output = ($session_val == '') ? '&#8211;' : $session_val;
-			if (is_array($value_output)) {
-				$list_html = "<ul>";
-				foreach($value_output as $val) { $list_html .= "<li>$val</li>"; }
-				$list_html .= "</ul>";
-				$value_output = $list_html;
-			}
-			$td_width = ($is_email) ? ' width="250"' : ' width="225"';
-			$body_html .= '<tr><td '.$td_width.'><strong>'.$value.':</strong></td><td>'.$value_output.'</td></tr>';
-		}
-		$body_html .= "</table>";
+		$body_html .= getSectionHTML($section_7_keys);
 
+		$body_html .= '<h3>Section 8 &#8211; Interview</h3>';
 		if (!$is_email) {
-			$body_html .= '<h3>Section 8 &#8211; Reference</h3>';
-			$body_html .= "<a href=\"".THIS_URL."?step=8\">View instructions</a><br class=\"clear_both\" />";
+			$body_html .= "<a href=\"".THIS_URL."?step=8\">Edit these details</a><br class=\"clear_both\" />";
 		}
+		$body_html .= getSectionHTML($section_8_keys);
+
 		return $body_html;
 	}
 	
