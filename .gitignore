@@ -2,5 +2,6 @@ cache/*
 docs/*
 images/*
 VRD*
+forms/sendmail.php
 matrix_engine/config.php
 !.gitignore

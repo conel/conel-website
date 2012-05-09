@@ -21,7 +21,7 @@
 			&& ($_SESSION['caf']['signed_in'] === true)) {
 		} else {
             if ($step == 1) {
-			$_SESSION['caf']['errors'][] = "You need to register your email address first";
+			    $_SESSION['caf']['errors'][] = "You need to register your email address first";
             }
             $current_url = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
             if ($current_url != THIS_URL) {

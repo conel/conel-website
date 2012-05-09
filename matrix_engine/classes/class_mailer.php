@@ -53,7 +53,7 @@ class phpmailer {
      * Sets the From email address for the message.
      * @var string
      */
-    var $From               = "webmaster@staff.conel.ac.uk";
+    var $From               = "webmaster@conel.ac.uk";
 
     /**
      * Sets the From name of the message.
@@ -151,7 +151,7 @@ class phpmailer {
      var $Host        = "192.168.2.6"; // internal
 
 	 // nkowald - 2012-03-05 - SMTP host to use to send to personal email addresses
-	 var $ExternalHost = "193.63.43.229";
+     //var $ExternalHost = "192.168.2.6"; // internal
 	 
     /**
      *  Sets the default SMTP server port.
@@ -534,10 +534,12 @@ class phpmailer {
         if($this->smtp == NULL) { $this->smtp = new SMTP(); }
 		
 		// nkowald - 2012-03-05 - Switch hosts based on email sending to
+        /*
 		if (strpos($this->to[0][0], 'conel.ac.uk') === false) {
 			// Is a personal email address: switch hosts
 			$this->Host = $this->ExternalHost;
 		}
+        */
 
         $this->smtp->do_debug = $this->SMTPDebug;
         $hosts = explode(";", $this->Host);
