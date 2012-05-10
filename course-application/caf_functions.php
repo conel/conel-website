@@ -24,7 +24,7 @@
 			    $_SESSION['caf']['errors'][] = "You need to register your email address first";
             }
             $current_url = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-            if ($current_url != THIS_URL) {
+            if ($current_url != THIS_URL && count($_SESSION['caf']['errors']) > 0) {
 			    header('location: '.THIS_URL);
 			    exit;
             }
@@ -561,5 +561,67 @@
 			echo '';
 			$_SESSION['caf']['college_centre_'.$slot_num] = '';
 		}
+	}
+
+    function emailUserReferenceDetails($to_email='') {
+		
+		$date_now = date('d/m/Y, H:i:s');
+		
+		/* Create email */
+		$email_html = '
+		<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+		<html>
+		<head><title>Course Application</title>
+		<style type="text/css">
+		body, table td {
+			font-family:Arial, Helvetica, sans-serif;
+			font-size:13px; 
+			line-height:1.3em;
+		}
+		table {
+			width:100%;
+		}
+		table td {
+			vertical-align:top;
+			padding:3px;
+		}
+		</style>
+		</head>
+		<body>';
+		
+		$email_html .= '<p>Thank you for starting a course application with <a href="http://www.conel.ac.uk" target="_blank">the College of Haringey, Enfield and North East London</a>.</p>';
+		$email_html .= '<p>Your reference details are provided below.<br />You can save your progress at any time during your application and re-login with this email and reference ID.</p>';
+		
+		$email_html .= '<h3>Reference Details</h3>';
+		$email_html .= '<table>';
+		$email_html .= '<tr><td width="120"><strong>Email Address:</strong></td><td> '.$_SESSION['caf']['email_address'].'</td></tr>';
+		$email_html .= '<tr><td><strong>Reference ID:</strong></td><td>'.$_SESSION['caf']['reference_id'].' </td></tr>';
+		$resume_link = 'http://www.conel.ac.uk/course-application/index.php?email='.$_SESSION['caf']['email_address'].'&ref_id='.$_SESSION['caf']['reference_id'];
+		$email_html .= '<tr><td><strong>Resume Link:</strong></td><td><a href="'.$resume_link.'">Resume Application</a></td></tr>';
+		$email_html .= '<tr><td><strong>Date Started:</strong></td><td>'.$date_now.'</td></tr>';
+		$email_html .= '</table>';
+        $email_html .= '<br />';
+		$email_html .= '<p>Kind regards, <br /><br />
+		Learner Recruitment Team <br />
+		E-mail: <a href="mailto:admissions@conel.ac.uk" target="_blank">admissions@conel.ac.uk</a> <br />
+		Tel: 020 8442 3055 / 020 8442 3103</p>';
+		
+		$email_html .= '</body></html>';
+
+		$mail = new phpmailer();
+		$mail->IsHTML(TRUE); // send HTML email
+		$mail->IsSMTP(); // use SMTP to send
+		// Set Recipient
+		$mail->AddAddress($to_email, $to_email);
+		$mail->AddAddress('NKowald@conel.ac.uk', 'Nathan Kowald');
+		$mail->Subject = "Course Application - Reference Details";
+		
+		// nkowald - 2010-10-13 - Changed default from address to be applicant's email address
+		$mail->From = 'admissions@conel.ac.uk';
+		$mail->FromName = 'Conel Admissions';
+		$mail->Body = $email_html;
+		//$mail->SMTPDebug = TRUE;
+
+		$result = $mail->Send(); // send email notification!
 	}
 ?>

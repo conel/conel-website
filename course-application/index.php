@@ -720,6 +720,9 @@ if ($step > 0) {
 			unset($_SESSION['security_code']);
 			$_SESSION['caf']['page_step'] = 1;
 
+            // Email user their reference details
+			emailUserReferenceDetails($_SESSION['caf']['email_address']);
+
 			// Create database record for current user
 			$datetime_sub = date('Y-m-d H:i:s'); // 2010-06-02 14:24:04 - MySQL timestamp format
 			$query = sprintf("INSERT INTO tbl_course_application 
