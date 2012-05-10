@@ -10,7 +10,7 @@
 		if ($target_date < $m.$d) { $years--; }
 		return $years;
 	}
-	
+
 	// Make sure people can't get to steps they should'nt be able to
 	// Must be "signed in" to be in a step
 	function securityStepCheck($step) {
@@ -20,9 +20,6 @@
 			&& isset($_SESSION['caf']['reference_id']) && $_SESSION['caf']['reference_id'] != ''
 			&& ($_SESSION['caf']['signed_in'] === true)) {
 		} else {
-			if ($step == 1) {
-			    $_SESSION['caf']['errors'][] = "You need to register your email address first";
-            }
             $current_url = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
             if ($current_url != THIS_URL) {
 			    header('location: '.THIS_URL);
@@ -413,17 +410,6 @@
 		//$mail->SMTPDebug = TRUE;
 
 		$result = $mail->Send(); // send email notification!
-		//var_dump($result);
-		/*
-		if ($result) {
-			header('Location: http://www.conel.ac.uk/email_successfully_sent');
-			exit;
-		} else {
-			echo '<p>Email failed</p>';
-			header('Location: http://www.conel.ac.uk/news_events/event_calendar/november_2009/7_november_2009_open_day?email=failed');
-			exit;
-		}
-		*/
 	}
 	
 	// takes field name as input, checks if session with same name exists, returns value html
@@ -522,13 +508,98 @@
 		}
 	}
 
+	function isExcludedMonday($monday) {
+		// Mondays to exclude (half term, staff dev. days, bank holidays)
+		$mon_excludes = array(
+			'4/6/2012',
+			'2/7/2012',
+			'27/8/2012',
+			'1/4/2013',
+			'6/5/2013',
+			'27/5/2013',
+			'26/8/2013'
+		);
+		$monday_formatted = date('j/n/Y', $monday);
+		if (in_array($monday_formatted, $mon_excludes)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	function getNextFourMondays() {
 
 		$next_mon = strtotime('next monday');
-		$mondays = array($next_mon);
-		for ($i = 1; $i <= 3; $i++) {
-			$mondays[] = strtotime('+1 week', $mondays[$i - 1]);
+		$mondays = array();
+		if (!isExcludedMonday($next_mon)) {
+			$mondays[] = $next_mon;
 		}
+
+		while(count($mondays) <= 3) {
+			$next_mon = strtotime('+1 week', $next_mon);
+			if (!isExcludedMonday($next_mon)) {
+				$mondays[] = $next_mon;
+			}
+		}
+
 		return $mondays;
+	}
+
+	function emailUserReferenceDetails($to_email='') {
+		
+		$date_now = date('d/m/Y, H:i:s');
+		
+		/* Create email */
+		$email_html = '
+		<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+		<html>
+		<head><title>Course Application</title>
+		<style type="text/css">
+		body, table td {
+			font-family:Arial, Helvetica, sans-serif;
+			font-size:13px; 
+			line-height:1.3em;
+		}
+		table {
+			width:100%;
+		}
+		table td {
+			vertical-align:top;
+			padding:3px;
+		}
+		</style>
+		</head>
+		<body>';
+		
+		$email_html .= '<h2>Course Application - Your Reference Details</h2>';
+		$email_html .= '<p>Thank you for starting a course application at The College of Haringey, Enfield and North East London.</p>';
+		$email_html .= '<p>Your reference details are provided below. You can save your progress at any time during your application and re-login with your email and reference ID.</p>';
+		
+		$email_html .= '<h3>Reference Details</h3>';
+		$email_html .= '<table>';
+		$email_html .= '<tr><td width="120"><strong>Email Address:</strong></td><td> '.$_SESSION['caf']['email_address'].'</td></tr>';
+		$email_html .= '<tr><td><strong>Reference ID:</strong></td><td>'.$_SESSION['caf']['reference_id'].' </td></tr>';
+		$resume_link = 'http://www.conel.ac.uk/course-application/index.php?email='.$_SESSION['caf']['email_address'].'&ref_id='.$_SESSION['caf']['reference_id'];
+		$email_html .= '<td><td><strong>Resume Link:</strong></td><td><a href="'.$resume_link.'">Resume Application</a></td></tr>';
+		$email_html .= '</table>';
+		
+		$email_html .= '</body></html>';
+
+		$mail = new phpmailer();
+		$mail->IsHTML(TRUE); // send HTML email
+		$mail->IsSMTP(); // use SMTP to send
+		// Set Recipient
+		if ($email_address != '') {
+			$mail->AddAddress($to_email, $to_email);
+		}
+		$mail->Subject = "Course Application - Your Reference Details";
+		
+		// nkowald - 2010-10-13 - Changed default from address to be applicant's email address
+		$mail->From = 'admissions@conel.ac.uk';
+		$mail->FromName = 'Conel Admissions';
+		$mail->Body = $email_html;
+		//$mail->SMTPDebug = TRUE;
+
+		$result = $mail->Send(); // send email notification!
 	}
 ?>

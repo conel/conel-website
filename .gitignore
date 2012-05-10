@@ -2,5 +2,6 @@ cache/*
 docs/*
 images/*
 VRD*
+course-application/logout.php
 matrix_engine/config.php
 !.gitignore

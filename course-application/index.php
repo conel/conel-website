@@ -506,8 +506,9 @@ if ($step > 0) {
 		$not_form_data = array('datetime_submitted_first', 'form_completed');
 		
 		//is_valid_email_address
-		if (($email_address != '') && (filter_var(trim($email_address), FILTER_VALIDATE_EMAIL)) && ($_SESSION['caf']['step_complete'][0] == FALSE)) {
-			
+		if (($email_address != '') && (filter_var(trim($email_address), FILTER_VALIDATE_EMAIL)) && 
+		($_SESSION['caf']['step_complete'][0] == FALSE)) {
+
 			// check if reference id also posted	
 			if (isset($_POST['reference_id']) && $_POST['reference_id'] != '') {
 				
@@ -583,6 +584,8 @@ if ($step > 0) {
 				// Trim whitespace
 				$email_address = trim(mysql_real_escape_string($email_address, $sql->Link_ID));
 				
+				// TODO implement email domain checking
+
 				// See if this email's already in use - probably won't ever occur, good to have it here anyway
 				$query = "SELECT id FROM tbl_course_application WHERE email_address = '$email_address' AND form_completed = 0";
 				$sql->query($query, $debug);
@@ -732,6 +735,8 @@ if ($step > 0) {
 			// Insert your code for processing the form here, e.g emailing the submission, entering it into a database. 
 			unset($_SESSION['security_code']);
 			$_SESSION['caf']['page_step'] = 1;
+
+			// Email user their reference details
 
 			// Create database record for current user
 			$datetime_sub = date('Y-m-d H:i:s'); // 2010-06-02 14:24:04 - MySQL timestamp format
