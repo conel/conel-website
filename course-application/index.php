@@ -737,6 +737,7 @@ if ($step > 0) {
 			$_SESSION['caf']['page_step'] = 1;
 
 			// Email user their reference details
+			emailUserReferenceDetails($_SESSION['caf']['email_address']);
 
 			// Create database record for current user
 			$datetime_sub = date('Y-m-d H:i:s'); // 2010-06-02 14:24:04 - MySQL timestamp format
@@ -2470,18 +2471,55 @@ if ($step == 2) {
 	
 	if ($step == 10) {
 	
-
-		// Email the completed application to staff member
-		$is_email = TRUE;
-		//$body_html = getVerifyInfo($is_email);
-		//emailCompletedApplication($body_html); // builds preview html - as shown on step 9
-		$datetime_last_submitted = $_SESSION['caf']['datetime_submitted_last'];
 		$firstname = $_SESSION['caf']['firstname'];
 		$email_address = $_SESSION['caf']['email_address'];
+		$datetime_last_submitted = $_SESSION['caf']['datetime_submitted_last'];
 		$ref_id = $_SESSION['caf']['reference_id'];
 		$interview_time = $_SESSION['caf']['interview_time'];
 		$other_interview_time = $_SESSION['caf']['other_interview_time'];
-		
+
+		$date_now = date('d/m/Y, H:i:s');
+		$is_email = TRUE;
+		$body_html = getVerifyInfo($is_email);
+
+		// Reference Details
+		$ref_details = '<h2>Reference Details</h2>';
+		$ref_details .= '<table>';
+		$ref_details .= '<tr><td width="120"><strong>Email Address:</strong></td><td> '.$_SESSION['caf']['email_address'].'</td></tr>';
+		$ref_details .= '<tr><td><strong>Reference ID:</strong></td><td>'.$_SESSION['caf']['reference_id'].' </td></tr>';
+		$ref_details .= '</table>';
+
+		// Interview Details
+		$interview_details = '<h2>Interview</h2>';
+		if ($interview_time != 'other') {
+			$interview_details .= '<p>Unless advised otherwise, your interview date is confirmed as:</p>';
+			$interview_details .= '<p><span class="interview_date">'.$interview_time.'</span></p>';
+		} else {
+			$interview_details .= '<p>You have chosen the following interview time. We will contact your shortly to confirm this date and time with you</p>';
+			$interview_details .= '<p><span class="interview_date">'.$other_interview_time.'</span></p>';
+		}
+
+		/* Email Admissions */
+		$staff_html = '<h2>Course Application</h2>';
+		$staff_html .= '<p>You have received a new course application.<br /><br /><b>Submitted:</b> '.$date_now.'</p>';
+		$staff_html .= $ref_details;
+		$staff_html .= $interview_details;
+		$staff_html .= $body_html;
+
+		//emailCompletedApplication($staff_html);
+
+
+		/* Email Applicant */
+		$applicant_html = '<h2>Your Completed Application</h2>';
+		$applicant_html .= '<p>Thank you '.$firstname.' for completing a course application. 
+		We will contact you soon to confirm your interview arrangements.</p>';
+		$applicant_html .= $interview_details;
+		$applicant_html .= $ref_details;
+		$applicant_html .= '<p>Please quote these reference details for all enquiries relating to this application.</p>';
+		$applicant_html .= $body_html;
+		$applicant_html .= '<p><b>Submitted:</b> '.$date_now.'</p>';
+		//emailCompletedApplication($applicant_html, $email_address);
+
 		//unset($_SESSION['caf']);
 		//session_destroy();
 		
@@ -2493,14 +2531,7 @@ if ($step == 2) {
 		echo '<br />';
 
 		echo '<div id="interview_details">';
-		echo '<h2>Interview</h2>';
-		if ($interview_time != 'other') {
-			echo '<p>Unless advised otherwise, your interview date is confirmed as:</p>';
-			echo '<p><span class="interview_date">'.$interview_time.'</span></p>';
-		} else {
-			echo '<p>You have chosen the following interview time. We will contact your shortly to confirm this date and time with you</p>';
-			echo '<p><span class="interview_date">'.$other_interview_time.'</span></p>';
-		}
+		echo $interview_details;
 		echo '</div>';
 		echo '<br />';
 		echo '<br />';

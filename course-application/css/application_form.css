@@ -562,12 +562,14 @@ a#logout:hover {
 .browse_instructions{
 	display:block;
 	border:1px solid #F4DC7B;
+	background-color:#FEFFE6;
 	padding:13px;
 	margin-bottom:15px;
-	background-color:#FEFFE6;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
 	width:540px;
+	-webkit-box-shadow:rgba(0, 0, 0, 0.2) 1px 1px 10px;
+	box-shadow:rgba(0, 0, 0, 0.2) 1px 1px 10px;
 }
 .browse_instructions p {
 	line-height:0.95em !important;

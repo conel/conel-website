@@ -21,7 +21,7 @@
 			&& ($_SESSION['caf']['signed_in'] === true)) {
 		} else {
             $current_url = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-            if ($current_url != THIS_URL) {
+            if ($current_url != THIS_URL && count($_SESSION['caf']['errors']) > 0) {
 			    header('location: '.THIS_URL);
 			    exit;
             }
@@ -253,6 +253,8 @@
 			'interview_time' => 'Interview Time',
 			'other_interview_time' => 'Other Interview Time'
 		);
+
+		$body_html .= '<h2>Application</h2>';
 		
 		$body_html .= '<h3>Section 1 &#8211; Course Details</h3>';
 		if (!$is_email) {
@@ -339,18 +341,10 @@
 
 		return $body_html;
 	}
-	
-	function emailCompletedApplication($body_html='', $email_address='') {
-		
-		$date_now = date('d/m/Y, H:i:s');
-		
-		// nkowald - 2011-11-04 - Added this current academic year
-		$current_year = date('y');
-		$next_year = $current_year + 1;
-		$this_ac_year = '20' . $current_year . '-' . $next_year;
-		
-		/* Create email */
-		$email_html = '
+
+	function getHTMLEmailHeader() {
+
+		$header = '
 		<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 		<html>
 		<head><title>Course Application</title>
@@ -370,47 +364,45 @@
 		</style>
 		</head>
 		<body>';
+
+		return $header;
+
+	}
+	
+	function emailCompletedApplication($body_html='', $email_address='') {
 		
-		//$email_html .= '<h2>Course Application '.$this_ac_year.'</h2>';
-		$email_html .= '<h2>Course Application</h2>';
-		$email_html .= '<p>You have received a new course application.<br />
-		<br /><b>Submitted:</b> '.$date_now.'</p>';
-		
-		$email_html .= '<h3>Reference Details</h3>';
-		$email_html .= '<table>';
-		$email_html .= '<tr><td width="120"><strong>Email Address:</strong></td><td> '.$_SESSION['caf']['email_address'].'</td></tr>';
-		$email_html .= '<tr><td><strong>Reference ID:</strong></td><td>'.$_SESSION['caf']['reference_id'].' </td></tr>';
-		$email_html .= '</table>';
-		
+		/* Create email */
+		$email_html = getHTMLEmailHeader();
 		$email_html .= $body_html;
 		$email_html .= '</body></html>';
 
-		// If database insert successful, send email:
 		$mail = new phpmailer();
 		$mail->IsHTML(TRUE); // send HTML email
 		$mail->IsSMTP(); // use SMTP to send
-		// Set Recipient
+
+		// Set Recipient - If email_address given: it's sending to user
 		if ($email_address != '') {
-			$mail->AddAddress($email_address,$email_address);
+			// Send to applicant
+			$from_name = $_SESSION['caf']['firstname'] . " " . $_SESSION['caf']['surname'];
+			$from_name = ($from_name == '') ? $_SESSION['caf']['email_address'] : $from_name;
+			$mail->AddAddress($email_address, $email_address);
+			$mail->From = 'admissions@conel.ac.uk';
+			$mail->FromName = 'Conel Admissions';
 		} else {
-			//$mail->AddAddress('NKowald@conel.ac.uk','Nathan Kowald');
+			// Send to admissions
 			$mail->AddAddress('admissions@conel.ac.uk','Admissions');
+			$from_name = $_SESSION['caf']['firstname'] . " " . $_SESSION['caf']['surname'];
+			$from_name = ($from_name == '') ? $_SESSION['caf']['email_address'] : $from_name;
+			$mail->From = $_SESSION['caf']['email_address'];
+			$mail->FromName = $from_name;
 		}
-		//$mail->AddBCC('NKowald@staff.conel.ac.uk','Course Applications');
 		$mail->Subject = "Course application submission";
-		
-		// nkowald - 2010-10-13 - Changed default from address to be applicant's email address
-		$mail->From = $_SESSION['caf']['email_address'];
-		$from_name = $_SESSION['caf']['firstname'] . " " . $_SESSION['caf']['surname'];
-		$from_name = ($from_name == '') ? $_SESSION['caf']['email_address'] : $from_name;
-		$mail->FromName = $from_name;
-		//$mail->From = 'webmaster@staff.conel.ac.uk';
-		//$mail->FromName = 'Conel Website Notifications';
 		$mail->Body = $email_html;
 		//$mail->SMTPDebug = TRUE;
 
 		$result = $mail->Send(); // send email notification!
 	}
+
 	
 	// takes field name as input, checks if session with same name exists, returns value html
 	// $type = fieldtype [text, textarea, select, radio, checkbox]
@@ -529,8 +521,8 @@
 
 	function getNextFourMondays() {
 
-		$next_mon = strtotime('next monday');
 		$mondays = array();
+		$next_mon = strtotime('next monday');
 		if (!isExcludedMonday($next_mon)) {
 			$mondays[] = $next_mon;
 		}
@@ -546,42 +538,27 @@
 	}
 
 	function emailUserReferenceDetails($to_email='') {
-		
+
 		$date_now = date('d/m/Y, H:i:s');
 		
 		/* Create email */
-		$email_html = '
-		<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-		<html>
-		<head><title>Course Application</title>
-		<style type="text/css">
-		body, table td {
-			font-family:Arial, Helvetica, sans-serif;
-			font-size:13px; 
-			line-height:1.3em;
-		}
-		table {
-			width:100%;
-		}
-		table td {
-			vertical-align:top;
-			padding:3px;
-		}
-		</style>
-		</head>
-		<body>';
-		
-		$email_html .= '<h2>Course Application - Your Reference Details</h2>';
-		$email_html .= '<p>Thank you for starting a course application at The College of Haringey, Enfield and North East London.</p>';
-		$email_html .= '<p>Your reference details are provided below. You can save your progress at any time during your application and re-login with your email and reference ID.</p>';
+		$email_html = getHTMLEmailHeader();
+		$email_html .= '<p><strong>Application Started:</strong> '.$date_now.'</p>';
+		$email_html .= '<p>Thank you for starting a course application with the College of Haringey, Enfield and North East London.</p>';
+		$email_html .= '<p>Your reference details are provided below. You can save your progress at any time during your application and re-login using the \'Resume Application\' link below.</p>';
 		
 		$email_html .= '<h3>Reference Details</h3>';
-		$email_html .= '<table>';
+		$email_html .= '<table cellspacing="0" cellpadding="2">';
 		$email_html .= '<tr><td width="120"><strong>Email Address:</strong></td><td> '.$_SESSION['caf']['email_address'].'</td></tr>';
 		$email_html .= '<tr><td><strong>Reference ID:</strong></td><td>'.$_SESSION['caf']['reference_id'].' </td></tr>';
 		$resume_link = 'http://www.conel.ac.uk/course-application/index.php?email='.$_SESSION['caf']['email_address'].'&ref_id='.$_SESSION['caf']['reference_id'];
-		$email_html .= '<td><td><strong>Resume Link:</strong></td><td><a href="'.$resume_link.'">Resume Application</a></td></tr>';
+		$email_html .= '<tr><td><strong>Resume Link:</strong></td><td><a href="'.$resume_link.'">Resume Application</a></td></tr>';
+		$email_html .= '<tr><td></td></tr>';
 		$email_html .= '</table>';
+		$email_html .= '<p>Kind regards,<br /><br />
+		Learner Recruitment Team<br />
+		E-mail: <a href="mailto:admissions@conel.ac.uk" target="_blank">admissions@conel.ac.uk</a><br />
+		Tel: 020 8442 3055 / 020 8442 3103</p>';
 		
 		$email_html .= '</body></html>';
 
@@ -589,17 +566,15 @@
 		$mail->IsHTML(TRUE); // send HTML email
 		$mail->IsSMTP(); // use SMTP to send
 		// Set Recipient
-		if ($email_address != '') {
-			$mail->AddAddress($to_email, $to_email);
-		}
-		$mail->Subject = "Course Application - Your Reference Details";
-		
-		// nkowald - 2010-10-13 - Changed default from address to be applicant's email address
+		$mail->AddAddress($to_email, $to_email);
+		$mail->Subject = "Course Application - Reference Details";
 		$mail->From = 'admissions@conel.ac.uk';
 		$mail->FromName = 'Conel Admissions';
 		$mail->Body = $email_html;
 		//$mail->SMTPDebug = TRUE;
 
 		$result = $mail->Send(); // send email notification!
+
 	}
+
 ?>
