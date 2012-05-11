@@ -1,4 +1,6 @@
 <?php 
+	
+	define('ADMISSIONS_EMAIL', 'admissions@conel.ac.uk');
 
 	// Functions used by the Course Application Form - index.php
 	function getAge($birthdate) {
@@ -385,11 +387,11 @@
 			$from_name = $_SESSION['caf']['firstname'] . " " . $_SESSION['caf']['surname'];
 			$from_name = ($from_name == '') ? $_SESSION['caf']['email_address'] : $from_name;
 			$mail->AddAddress($email_address, $email_address);
-			$mail->From = 'admissions@conel.ac.uk';
+			$mail->From = ADMISSIONS_EMAIL;
 			$mail->FromName = 'Conel Admissions';
 		} else {
 			// Send to admissions
-			$mail->AddAddress('admissions@conel.ac.uk','Admissions');
+			$mail->AddAddress(ADMISSIONS_EMAIL,'Admissions');
 			$from_name = $_SESSION['caf']['firstname'] . " " . $_SESSION['caf']['surname'];
 			$from_name = ($from_name == '') ? $_SESSION['caf']['email_address'] : $from_name;
 			$mail->From = $_SESSION['caf']['email_address'];
@@ -540,7 +542,7 @@
 
 		$html = '<p>Kind regards,<br /><br />
 		Learner Recruitment Team<br />
-		E-mail: <a href="mailto:admissions@conel.ac.uk" target="_blank">admissions@conel.ac.uk</a><br />
+		E-mail: <a href="mailto:'.ADMISSIONS_EMAIL.'" target="_blank">'.ADMISSIONS_EMAIL.'</a><br />
 		Tel: 020 8442 3055 / 020 8442 3103</p>';
 
 		return $html;
@@ -573,7 +575,7 @@
 		// Set Recipient
 		$mail->AddAddress($to_email, $to_email);
 		$mail->Subject = "Course Application - Reference Details";
-		$mail->From = 'admissions@conel.ac.uk';
+		$mail->From = ADMISSIONS_EMAIL;
 		$mail->FromName = 'Conel Admissions';
 		$mail->Body = $email_html;
 		//$mail->SMTPDebug = TRUE;

@@ -2508,7 +2508,6 @@ if ($step == 2) {
 
 		//emailCompletedApplication($staff_html);
 
-
 		/* Email Applicant */
 		$applicant_html = '<h2>Your Completed Application</h2>';
 		$applicant_html .= '<p>Thank you for completing a course application. 
@@ -2523,9 +2522,6 @@ if ($step == 2) {
 		$applicant_html .= getAdmissionsFooter();
 		//emailCompletedApplication($applicant_html, $email_address);
 
-		//unset($_SESSION['caf']);
-		//session_destroy();
-		
 		echo '<div class="section">';
 		echo '<h2>Course Application Complete</h2>';
 		//echo "<p><strong>Completed:</strong> ".$datetime_last_submitted."</p><br />";
@@ -2553,11 +2549,12 @@ if ($step == 2) {
 
 		echo '<p><img src="../images/printer.png" width="16" height="16" border="0" alt="printer icon" /> <a href="javascript:window.print()">Print this page</a></p>';
 
-
 		echo '<p><br /><input type="button" value="Return to website &gt;" class="submit_back" onclick="javascript:window.location.href=\'http://www.conel.ac.uk\'" /><noscript><a href="http://www.conel.ac.uk">Return to website &gt;</a></noscript></p>';
 
 		echo '</div>';
 
+		//unset($_SESSION['caf']);
+		//session_destroy();
 	}
 	
 	// Clear errors session after page rendered
