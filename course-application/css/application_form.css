@@ -568,6 +568,8 @@ a#logout:hover {
 	-moz-border-radius: 10px;
 	border-radius: 10px;
 	width:540px;
+    -webkit-box-shadow:rgba(0, 0, 0, 0.2) 1px 1px 10px;
+	box-shadow:rgba(0, 0, 0, 0.2) 1px 1px 10px
 }
 .browse_instructions p {
 	line-height:0.95em !important;
@@ -663,4 +665,35 @@ h2.fee_status {
 	color:#000;
     display:block;
     margin-top:4px;
+}
+table.interview_time th {
+	font-weight:bold;
+	font-size:1.2em;
+	padding-bottom:10px;
+}
+#interview_details {
+	color:#271007;
+	background:#FEFEE9;
+	padding:11px 11px 4px 11px;
+	-moz-border-radius:7px;
+	border-radius:7px;
+	width:460px;
+	border:1px solid #D9BB77;
+	-webkit-box-shadow:rgba(0, 0, 0, 0.2) 1px 1px 10px;
+	box-shadow:rgba(0, 0, 0, 0.2) 1px 1px 10px;
+	text-shadow:rgba(255, 255, 255, 0.9) 1px 1px 1px;
+}
+#interview_details h2 {
+	margin-bottom:10px;
+}
+span.interview_date {
+	background:transparent url(images/icon-cal.png) no-repeat 0 0;
+	height:30px;
+	padding-top:17px;
+	padding-left:61px;
+	font-size:1.75em;
+	display:block;
+	margin-left:5px;
+	margin-top:15px;
+	color:#50291D;
 }
