@@ -2511,13 +2511,16 @@ if ($step == 2) {
 
 		/* Email Applicant */
 		$applicant_html = '<h2>Your Completed Application</h2>';
-		$applicant_html .= '<p>Thank you '.$firstname.' for completing a course application. 
+		$applicant_html .= '<p>Thank you for completing a course application. 
 		We will contact you soon to confirm your interview arrangements.</p>';
 		$applicant_html .= $interview_details;
 		$applicant_html .= $ref_details;
 		$applicant_html .= '<p>Please quote these reference details for all enquiries relating to this application.</p>';
+		$applicant_html .= '<h2>Application</h2>';
+		$applicant_html .= '<p>Here\'s a copy of your submitted application for your records.</p>';
+		$applicant_html .= '<p><b>Submitted:</b> '.$date_now.'</p><br />';
 		$applicant_html .= $body_html;
-		$applicant_html .= '<p><b>Submitted:</b> '.$date_now.'</p>';
+		$applicant_html .= getAdmissionsFooter();
 		//emailCompletedApplication($applicant_html, $email_address);
 
 		//unset($_SESSION['caf']);

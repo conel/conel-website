@@ -254,7 +254,6 @@
 			'other_interview_time' => 'Other Interview Time'
 		);
 
-		$body_html .= '<h2>Application</h2>';
 		
 		$body_html .= '<h3>Section 1 &#8211; Course Details</h3>';
 		if (!$is_email) {
@@ -537,6 +536,16 @@
 		return $mondays;
 	}
 
+	function getAdmissionsFooter() {
+
+		$html = '<p>Kind regards,<br /><br />
+		Learner Recruitment Team<br />
+		E-mail: <a href="mailto:admissions@conel.ac.uk" target="_blank">admissions@conel.ac.uk</a><br />
+		Tel: 020 8442 3055 / 020 8442 3103</p>';
+
+		return $html;
+	}
+
 	function emailUserReferenceDetails($to_email='') {
 
 		$date_now = date('d/m/Y, H:i:s');
@@ -555,11 +564,7 @@
 		$email_html .= '<tr><td><strong>Resume Link:</strong></td><td><a href="'.$resume_link.'">Resume Application</a></td></tr>';
 		$email_html .= '<tr><td></td></tr>';
 		$email_html .= '</table>';
-		$email_html .= '<p>Kind regards,<br /><br />
-		Learner Recruitment Team<br />
-		E-mail: <a href="mailto:admissions@conel.ac.uk" target="_blank">admissions@conel.ac.uk</a><br />
-		Tel: 020 8442 3055 / 020 8442 3103</p>';
-		
+		$email_html .= getAdmissionsFooter();
 		$email_html .= '</body></html>';
 
 		$mail = new phpmailer();
