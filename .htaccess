@@ -99,6 +99,8 @@
 	RewriteRule ^shows$ /our_college/end_of_year_shows [R=301,L]
 	RewriteRule ^preaat$ /our_courses/aat_level_2_pre_apprenticeship [R=301,L]
 	RewriteRule ^newcourses$ /our_courses/new_courses [R=301,L]
+	RewriteRule ^prebusiness$ /our_courses/pre_apprenticeships_business_administration [R=301,L]
+	RewriteRule ^preit$ /our_courses/pre_apprenticeships_it [R=301,L]
 
 	RewriteRule ^dynamic(.*)$ dynamic.php?url=$1 [QSA,L]
 	RewriteCond %{REQUEST_FILENAME} !-f
