@@ -114,7 +114,7 @@
 			$mail->IsSMTP(); // use SMTP to send
 			// Set Recipient
 			//$mail->AddAddress('NKowald@staff.conel.ac.uk', 'Nathan Kowald');
-			$mail->AddAddress('courseinfo@staff.conel.ac.uk', 'Course Information');
+			$mail->AddAddress('courseinfo@conel.ac.uk', 'Course Information');
 			$mail->Subject = "Online Enquiry";
 			$mail->From = 'webmaster@staff.conel.ac.uk';
 			$mail->FromName = 'Conel Website Notifications';

@@ -96,14 +96,6 @@ $(document).ready(function() {
 			return false;
 		}
 		
-		// check if address line 3 is blank
-		var add_line_3 = $("#contact_address_line_3").val();
-		if (add_line_3 == '') {
-			alert('Address Line 3 is a required field');
-			$("#contact_address_line_3").focus();
-			return false;
-		}
-		
 		// check if postcode is blank
 		var postcode = $("#contact_postcode").val();
 		if (postcode == '') {
