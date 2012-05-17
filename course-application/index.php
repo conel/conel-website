@@ -704,7 +704,7 @@ if ($step > 0) {
 			
 			echo '<form method="post" action="'.THIS_URL.'" id="new_applicant">';
 			echo '<table>';
-			echo '<tr><td><label for="s0_email">Email Address:</label></td><td><input type="text" name="email_address" id="s0_email" class="text_home" /><span id="valid_email"></span>'.$blank_email_msg.'</td></tr>';
+			echo '<tr><td><label for="s0_email">Email Address:</label></td><td><input type="email" name="email_address" id="s0_email" class="text_home" required /><span id="valid_email"></span>'.$blank_email_msg.'</td></tr>';
 			echo '<tr><td colspan="2"><input type="submit" value="Start Application &gt;" class="submit" /></td>';
 			echo '</table>';
 			echo '</form>';
@@ -715,8 +715,8 @@ if ($step > 0) {
 			echo '<p>Please enter your email address and reference ID to continue a saved application.</p>';
 			echo '<form method="post" action="'.THIS_URL.'" id="returning_applicant">';
 			echo '<table>';
-			echo '<tr><td><label for="s0_ra_email">Email Address:</label></td><td><input type="text" name="email_address" id="s0_ra_email" class="text_home" value="'.$passed_email.'" /></td></tr>';
-			echo '<tr><td><label for="s0_ra_ref">Reference ID:</label></td><td><input type="text" name="reference_id" id="s0_ra_ref" class="text_home" value="'.$passed_refid.'" /><br /></td></tr>';
+			echo '<tr><td><label for="s0_ra_email">Email Address:</label></td><td><input type="email" name="email_address" id="s0_ra_email" class="text_home" value="'.$passed_email.'" required /></td></tr>';
+			echo '<tr><td><label for="s0_ra_ref">Reference ID:</label></td><td><input type="text" name="reference_id" id="s0_ra_ref" class="text_home" value="'.$passed_refid.'" pattern="[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}" requied /><br /></td></tr>';
 			echo '<tr><td colspan="2" class="lost_ref_id note">Lost or forgotten your reference ID? Phone us on <strong>020 8442 3055</strong></td></tr>';
 			echo '<tr><td colspan="2"><input type="submit" value="Continue Application &gt;" class="submit" /></td></tr>';		
 			echo '</table>';
@@ -830,7 +830,7 @@ if ($step > 0) {
 		<tr class="<?php addMissingFieldClass('course_title_1'); ?>">
 			<?php if (isset($_SESSION['caf']['course_title_1']) && $_SESSION['caf']['course_title_1'] != '') { $readonly = ' readonly="readonly"'; } else { $readonly = ''; } ?>
 			<td width="145"><label for="s1_course_title_1">Course Title:<span class="required">*</span></label></td>
-			<td><input type="text" name="course_title_1" class="text" id="s1_course_title_1" maxlength="100" value="<?php getValue('text', 'course_title_1'); ?>" <?php echo $readonly; ?> /></td>
+			<td><input type="text" name="course_title_1" class="text" id="s1_course_title_1" maxlength="100" value="<?php getValue('text', 'course_title_1'); ?>" <?php echo $readonly; ?> required /></td>
 		</tr>
 		<tr>
 			<?php if (isset($_SESSION['caf']['course_code_1']) && $_SESSION['caf']['course_code_1'] != '') { $readonly = ' readonly="readonly"'; } else { $readonly = ''; } ?>
@@ -842,10 +842,10 @@ if ($step > 0) {
 			<td>
 				<?php
 					if (isset($_SESSION['caf']['college_centre_1']) && $_SESSION['caf']['college_centre_1'] != '') {
-						echo '<input type="text" id="s1_college_centre_1" name="college_centre_1" value="'.$_SESSION['caf']['college_centre_1'].'" readonly="readonly" class="text" maxlength="15" />';
+						echo '<input type="text" id="s1_college_centre_1" name="college_centre_1" value="'.$_SESSION['caf']['college_centre_1'].'" readonly="readonly" class="text" maxlength="15" required />';
 					} else {
 				?>
-					<select name="college_centre_1" id="s1_college_centre_1">
+					<select name="college_centre_1" id="s1_college_centre_1" required>
 						<option value="">Choose centre...</option>
 						<option value="Enfield" <?php getValue('select', 'college_centre_1', 'Enfield'); ?>>Enfield</option>
 						<option value="Tottenham" <?php getValue('select', 'college_centre_1', 'Tottenham'); ?>>Tottenham</option>
@@ -859,7 +859,7 @@ if ($step > 0) {
 			<td><label>Entry Date:<span class="required">*</span></label></td>
 			<td>
 				<?php if (isset($_SESSION['caf']['course_entry_date_1']) && $_SESSION['caf']['course_entry_date_1'] != '') { $readonly = ' readonly="readonly"'; } else { $readonly = ''; } ?>
-				<input type="text" name="course_entry_date_1" class="text" id="s1_course_entry_date_1" maxlength="60" value="<?php getValue('text', 'course_entry_date_1'); ?>" <?php echo $readonly; ?> />
+				<input type="text" name="course_entry_date_1" class="text" id="s1_course_entry_date_1" maxlength="60" value="<?php getValue('text', 'course_entry_date_1'); ?>" <?php echo $readonly; ?> required />
 			</td>
 		</tr>
 		<tr>
@@ -1120,11 +1120,11 @@ if ($step == 2) {
 		</tr>
 		<tr class="<?php addMissingFieldClass('firstname'); ?>">
 			<td><label for="s2_firstname">First name(s):<span class="required">*</span></label></td>
-			<td><input type="text" name="firstname" class="text capitalise" id="s2_firstname" maxlength="30" value="<?php getValue('text', 'firstname'); ?>" /></td>
+			<td><input type="text" name="firstname" class="text capitalise" id="s2_firstname" maxlength="30" value="<?php getValue('text', 'firstname'); ?>" required /></td>
 		</tr>
 		<tr class="<?php addMissingFieldClass('surname'); ?>">
 			<td><label for="s2_surname">Family name / surname:<span class="required">*</span></label></td>
-			<td><input type="text" name="surname" class="text capitalise" id="s2_surname" maxlength="40" value="<?php getValue('text', 'surname'); ?>" /></td>
+			<td><input type="text" name="surname" class="text capitalise" id="s2_surname" maxlength="40" value="<?php getValue('text', 'surname'); ?>" required /></td>
 		</tr>
 		<tr class="<?php addMissingFieldClass('gender'); ?>">
 			<td><label>Gender:<span class="required">*</span></label></td>
@@ -1137,17 +1137,17 @@ if ($step == 2) {
 		<tr class="<?php addMissingFieldClass('date_of_birth'); ?>">
 			<td><label for="s2_dob">Date of Birth:<span class="required">*</span></label></td>
 			<td>
-				<input type="text" name="date_of_birth" class="date" id="s2_dob" maxlength="10" value="<?php getValue('text', 'date_of_birth'); ?>" /> <span class="note">(dd/mm/yyyy)</span>
+				<input type="text" name="date_of_birth" class="date" id="s2_dob" maxlength="10" value="<?php getValue('text', 'date_of_birth'); ?>" placeholder="dd/mm/yyyy" required pattern="\d{2}/\d{2}/\d{4}" /> <span class="note">(dd/mm/yyyy)</span>
 				<input type="hidden" name="age_at_31_aug_2010" value="" />
 			</td>
 		</tr>
 		<tr class="<?php addMissingFieldClass('home_address'); ?>">
 			<td><label for="s2_home_address">Home Address:<span class="required">*</span></label></td>
-			<td><textarea name="home_address" id="s2_home_address" cols="40" rows="2" maxlength="200" class="capitalise"><?php getValue('textarea', 'home_address'); ?></textarea></td>
+			<td><textarea name="home_address" id="s2_home_address" cols="40" rows="2" maxlength="200" class="capitalise" required><?php getValue('textarea', 'home_address'); ?></textarea></td>
 		</tr>
 		<tr class="<?php addMissingFieldClass('postcode'); ?>">
 			<td><label for="s2_postcode">Postcode:<span class="required">*</span></label></td>
-			<td><input type="text" name="postcode" class="text uppercase" id="s2_postcode" maxlength="10" value="<?php getValue('text', 'postcode'); ?>" /></td>
+			<td><input type="text" name="postcode" class="text uppercase" id="s2_postcode" maxlength="10" value="<?php getValue('text', 'postcode'); ?>" required /></td>
 		</tr>
 		<tr>
 			<td colspan="2"><label>Telephone<span class="required">*</span></label> (At least one phone number required)</td>
@@ -1164,12 +1164,12 @@ if ($step == 2) {
 		</tr>
 		<tr>
 			<td><label for="s2_email">Email address:</label></td>
-			<td><input type="text" name="email_address" class="text" disabled="disabled" id="s2_email" value="<?php getValue('text', 'email_address'); ?>" /><br /><br /></td>
+			<td><input type="email" name="email_address" class="text" disabled="disabled" id="s2_email" value="<?php getValue('text', 'email_address'); ?>" /><br /><br /></td>
 		</tr>
 		<tr class="<?php addMissingFieldClass('ethnic_group'); ?>">
 			<td><label for="s2_ethnic_group">Your ethnic group:<span class="required">*</span></label></td>
 			<td>
-				<select name="ethnic_group" id="s2_ethnic_group">
+				<select name="ethnic_group" id="s2_ethnic_group" required>
 					<option value="" <?php getValue('select', 'ethnic_group', ''); ?>>Please Select...</option>
 					<optgroup label="White">
 						<option value="English/Welsh/Scottish/Northern Irish/British" <?php getValue('select', 'ethnic_group', 'English/Welsh/Scottish/Northern Irish/British'); ?>>English/Welsh/Scottish/Northern Irish/British</option>
@@ -1214,7 +1214,7 @@ if ($step == 2) {
 			<td colspan="2">
 				<h4><label for="s2_why_want_to">Why do you want to do this course?:<span class="required">*</span></label></h4>
 				<p>Please use this box to tell us about your reasons for doing the course, including your future job / career / university plans.</p>
-				<textarea name="why_want_to_do_course" cols="40" rows="10" maxlength="1500" style="width:800px;" id="s2_why_want_to"><?php getValue('textarea', 'why_want_to_do_course'); ?></textarea>
+				<textarea name="why_want_to_do_course" cols="40" rows="10" maxlength="1500" style="width:800px;" id="s2_why_want_to" required><?php getValue('textarea', 'why_want_to_do_course'); ?></textarea>
                 <br />
                 <span id="charlimitinfo">1500 characters left</span>
 			</td>
@@ -1902,7 +1902,7 @@ if ($step == 2) {
 				Include any paid / voluntary work and any responsibilites you have had.</label>
 			</td>
             <td>
-                <textarea name="relevant_skills_and_experience" cols="40" maxlength="1000" rows="10" id="s5_relevant_skills" style="width:630px;"><?php getValue('textarea', 'relevant_skills_and_experience'); ?></textarea>
+                <textarea name="relevant_skills_and_experience" cols="40" maxlength="1000" rows="10" id="s5_relevant_skills" style="width:630px;" required><?php getValue('textarea', 'relevant_skills_and_experience'); ?></textarea>
                 <span id="charlimitinfo">1000 characters left</span>
             </td>
 		</tr>
@@ -1985,7 +1985,7 @@ if ($step == 2) {
 		</tr>
 		<tr class="<?php addMissingFieldClass('nationality'); ?>">
 			<td width="350"><label for="s6_nationality">What is your nationality?:<span class="required">*</span></label></td>
-			<td><input type="text" name="nationality" class="text capitalise" maxlength="40" id="s6_nationality" value="<?php getValue('text', 'nationality'); ?>" /></td>
+			<td><input type="text" name="nationality" class="text capitalise" maxlength="40" id="s6_nationality" value="<?php getValue('text', 'nationality'); ?>" required /></td>
 		</tr>
 		<tr class="<?php addMissingFieldClass('permanent_right_to_live_in_uk'); ?>">
 			<td><label>Do you have the permanent right to live in the UK?:<span class="required">*</span><br /><span class="note">(e.g. British citizen, settled status, indefinite leave)</span></label></td>
@@ -2263,7 +2263,7 @@ if ($step == 2) {
 
 	<h2>Correct Information<span class="required" style="font-size:1em;">*</span></h2>
 	<p style="line-height:1.5em;">I confirm that the information I have given in this form is correct. I give my consent to the College of Haringey, Enfield and North East London to record and process this information, on the understanding that the College complies with the Data Protection Act 1998.</p>
-	<p><input type="checkbox" value="yes" name="correct_info_confirm" id="s7_confirm_correct_info" <?php getValue('checkbox_single', 'correct_info_confirm', 'yes'); ?>/> <label for="s7_confirm_correct_info">Yes, I confirm</label>
+	<p><input type="checkbox" value="yes" name="correct_info_confirm" id="s7_confirm_correct_info" <?php getValue('checkbox_single', 'correct_info_confirm', 'yes'); ?> required /> <label for="s7_confirm_correct_info">Yes, I confirm</label>
 	<br />
 	<br />
 	
@@ -2364,14 +2364,14 @@ if ($step == 2) {
 			// check if interview time is blank
 			var interview = $("input[name='interview_time']:checked").val();
 			var other_interview = $("#other_interview").val();
-			
+
 			if (interview == 'other') {
 				if (other_interview == '') {
 					alert('Please enter a preferred interview time in the \'Other\' field');
 					$("#other_interview").focus();
 					return false;
 				}
-			} else if (interview == '') {
+			} else if (typeof interview == 'undefined') {
 				alert('Please choose an interview time');
 				return false;
 			}

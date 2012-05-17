@@ -442,17 +442,7 @@
 			
 		}
 		
-		// date of birth needs a starting value
-		if ($fieldname == 'date_of_birth') {
-			if (!isset($_SESSION['caf']['date_of_birth'])) {
-				$html = 'dd/mm/yyyy';
-				echo $html;
-			} else {
-				echo $html;
-			}
-		} else {
-			echo $html;
-		}
+		echo $html;
 		
 	}
 	
