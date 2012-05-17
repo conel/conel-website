@@ -410,6 +410,9 @@ table#admissions_login input.text {
 	width:170px;
 	padding:2px;
 }
+#other_interview {
+	width:180px;
+}
 #logout {
 	text-align:right;
 	font-size:1.4em;
@@ -682,18 +685,22 @@ table.interview_time th {
 	-webkit-box-shadow:rgba(0, 0, 0, 0.2) 1px 1px 10px;
 	box-shadow:rgba(0, 0, 0, 0.2) 1px 1px 10px;
 	text-shadow:rgba(255, 255, 255, 0.9) 1px 1px 1px;
+	margin-bottom:12px;
 }
 #interview_details h2 {
 	margin-bottom:10px;
 }
 span.interview_date {
+	display:block;
 	background:transparent url(images/icon-cal.png) no-repeat 0 0;
-	height:30px;
-	padding-top:17px;
+	height:38px;
+	padding-top:10px;
 	padding-left:61px;
 	font-size:1.75em;
-	display:block;
 	margin-left:5px;
 	margin-top:15px;
+	line-height:1.4em;
 	color:#50291D;
+}
+.ui-datepicker {
 }

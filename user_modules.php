@@ -24,7 +24,7 @@
 			$banner = '<a href="'.getTargetURL($data['ADLINK'][0]['page_id']).'" class="fl"><img src="/images/'.$data['AD']['filename'].'" width="110" height="114" alt="'.$data['AD']['alt'].'" /></a>';
 		}
 		
-		// nkowald - 2010-01-14 - Set up enfield CSS if coming from Enfield's site
+		// nkowald - 2010-01-14 - Set up Enfield CSS if coming from Enfield's site
 		if (FROM_ENFIELD) {
 			$enfield_css = '<link href="/pop-up/styles/pop-up.css" rel="stylesheet" type="text/css" media="screen" />';
 		} else {
@@ -32,6 +32,7 @@
 		}
 		
 		// nkowald - 2010-01-14 - Set up lightbox code if coming from Enfield's site
+		/*
 		if (FROM_ENFIELD) {
 			$enfield_inc = 
 			'<!-- Pop-up code -->
@@ -52,6 +53,8 @@
 		} else {
 			$enfield_inc = '';
 		}
+		 */
+		$enfield_inc;
 		
 		// nkowald - 2010-01-26 - add a footer variable to global modules - we can just update this to add some code to pages now
 		$page_info = structure_getPathURL($params['page_id']);

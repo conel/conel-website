@@ -404,7 +404,7 @@ if ($step > 0) {
 		6 => '6. Residence / Fee Status', 
 		7 => '7. How Heard', 
 		8 => '8. Interview',
-		9 => '9. Verify Details'
+		9 => '9. Check Details'
 	);
 	$steps = '<ul>';
 	$class = '';
@@ -2309,10 +2309,46 @@ if ($step == 2) {
 	}
 
 	if ($step == 8) {
+	$js_disabled_days = getJSExcludeDays();
 
 ?>
+<link media="screen" rel="stylesheet" href="css/colorbox.css" />
+<link media="screen" rel="stylesheet" href="css/jquery-ui.css" />
+<script type="text/javascript" src="js/jquery-ui-1.8.20.custom.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
+
+		var disabledDays = [<?php echo $js_disabled_days; ?>];
+
+		function noInterviews(date) {
+		  var m = date.getMonth(), d = date.getDate(), y = date.getFullYear();
+		  for (i = 0; i < disabledDays.length; i++) {
+			if($.inArray(d + '/' + (m+1) + '/' + y, disabledDays) != -1 || new Date() > date) {
+			  return [false];
+			}
+		  }
+		  return [true];
+		}
+		function noWeekendsOrNonCollegeDays(date) {
+		  var noWeekend = jQuery.datepicker.noWeekends(date);
+		  return noWeekend[0] ? noInterviews(date) : noWeekend;
+		}
+
+		// Datepicker
+		$(function() {
+			$( "#other_interview" ).datepicker({
+				dateFormat: "DD, d MM yy", 
+				firstDay: 1, 
+				minDate: "+2", 
+				maxDate: new Date(2012, 6, 9),
+				beforeShowDay: noWeekendsOrNonCollegeDays
+			});
+		});
+
+		// If other field clicked into, force radio button to be checked
+		$("#other_interview").click(function() {
+			$("#other").attr('checked', true);
+		});
 
 		// Clear 'other' field if anything but 'other' chosen
 		$("input[name='interview_time']").click(function() {
@@ -2361,32 +2397,34 @@ if ($step == 2) {
 <?php
 		// Book an interview time
 		echo '<h2>Choose an Interview Date<span class="required">*</span></h2>';
-		echo '<p>We interview every Monday from 4-6 PM.</p>
+		echo '<p>We interview every Monday from 4-6 PM. Interviews start at 4 PM.</p>
 			<p>Please select a convenient interview time below or enter a preferred date and time in the \'Other\' field.</p><br />';
 		$mondays = getNextFourMondays();
 		echo '<table class="interview_time">
-		<tr><th width="155">Date</th><th>Time</th></tr>';
+		<tr><th width="160">Date</th><th>Time</th></tr>';
 		foreach ($mondays as $key => $mon) {
 			$mon_format = date('l, j F Y', $mon);
 			echo '<tr>';
 			echo "<td>$mon_format</td>";
-			$value1 = $mon_format .', 4-5 PM';
-			$value2 = $mon_format .', 5-6 PM';
-			echo '<td><input type="radio" name="interview_time" value="'.$value1.'" id="time_'.$key.'_4-5"';
+			$value1 = $mon_format .', 4-6 PM';
+			//$value2 = $mon_format .', 5-6 PM';
+			echo '<td><input type="radio" name="interview_time" value="'.$value1.'" id="time_'.$key.'_4-6" class="radio" ';
 			if ($_SESSION['caf']['interview_time'] == $value1) { 
 				echo 'checked="checked"';
 			}
-			echo '/><label for="time_'.$key.'_4-5">4:00 &ndash; 5:00 PM</label> &nbsp;
+			echo '/><label for="time_'.$key.'_4-6">4:00 &ndash; 6:00 PM</label> &nbsp;';
 
-			<input type="radio" name="interview_time" value="'.$value2.'" id="time_'.$key.'_5-6" ';
+			/* For the time being, just having one slot
+			<input type="radio" name="interview_time" value="'.$value2.'" id="time_'.$key.'_5-6" class="radio" ';
 			if ($_SESSION['caf']['interview_time'] == $value2) { 
 				echo 'checked="checked"';
 			}
 			echo '/><label for="time_'.$key.'_5-6">5:00 &ndash; 6:00 PM</label></td>';
+			*/
 			echo '</tr>';
 		}
 		echo '<tr><td>Other Date/Time:</td>
-			<td><input type="radio" name="interview_time" value="other" id="other" ';
+			<td><input type="radio" name="interview_time" value="other" id="other" class="radio" ';
 		if ($_SESSION['caf']['interview_time'] == 'other') {
 			echo 'checked="checked"';
 		}
@@ -2406,7 +2444,7 @@ if ($step == 2) {
 		echo $back_button;
 	?>
 	<input type="button" value="Save" class="submit_save" />
-	<input type="submit" value="Verify Details &gt;" class="submit final_submit" />
+	<input type="submit" value="Submit &gt;" class="submit final_submit" />
 </form>
 <noscript>Click your browser's back button to get to the previous page</noscript>
 </div>
@@ -2440,7 +2478,7 @@ if ($step == 2) {
 			echo '<h2>Ready to submit?</h2>';
 			echo '<form method="post" action="'.THIS_URL.'?step=10">';
 			echo '<strong>Yes:</strong> <input type="submit" value="Submit Application" class="submit final_submit" /> &nbsp;';
-			echo '<strong>No:</strong> <input type="submit" value="Verify" class="submit verify" id="verify" />';
+			echo '<strong>No:</strong> <input type="submit" value="Check details" class="submit verify" id="verify" />';
 			echo '</form>';
 		echo '</div>';
 		
@@ -2490,14 +2528,21 @@ if ($step == 2) {
 		$ref_details .= '</table>';
 
 		// Interview Details
-		$interview_details = '<h2>Interview</h2>';
 		if ($interview_time != 'other') {
-			$interview_details .= '<p>Unless advised otherwise, your interview date is confirmed as:</p>';
+			$interview_details = '<p>Your interview is confirmed.</p>';
+			$interview_details .= '<div id="interview_details">';
+			$interview_details .= '<h2>Interview</h2>';
 			$interview_details .= '<p><span class="interview_date">'.$interview_time.'</span></p>';
+			$interview_chosen = $interview_time;
 		} else {
-			$interview_details .= '<p>You have chosen the following interview time. We will contact your shortly to confirm this date and time with you</p>';
+			$interview_details = '<div id="interview_details">';
+			$interview_details .= '<h2>Interview</h2>';
+			$interview_details .= '<p>You have chosen the following interview time. We will contact your shortly to confirm this date and time with you.</p>';
 			$interview_details .= '<p><span class="interview_date">'.$other_interview_time.'</span></p>';
+			$interview_chosen = $other_interview_time;
 		}
+		$interview_details .= '</div>';
+		$interview_details .= "<p>Unable to attend? <a href=\"mailto:admissions@conel.ac.uk?subject=Unable to attend my interview&body=%0D%0DPreferred Interview Date:%0D%0DMy Details%0DOld Interview Date: ".$interview_chosen."%0DEmail: ".$_SESSION['caf']['email_address']."%0DReference ID: ".$_SESSION['caf']['reference_id']."\">Contact us</a> to arrange a different interview date and time.</p>";
 
 		/* Email Admissions */
 		$staff_html = '<h2>Course Application</h2>';
@@ -2510,8 +2555,7 @@ if ($step == 2) {
 
 		/* Email Applicant */
 		$applicant_html = '<h2>Your Completed Application</h2>';
-		$applicant_html .= '<p>Thank you for completing a course application. 
-		We will contact you soon to confirm your interview arrangements.</p>';
+		$applicant_html .= '<p>Thank you for completing a course application.</p>'; 
 		$applicant_html .= $interview_details;
 		$applicant_html .= $ref_details;
 		$applicant_html .= '<p>Please quote these reference details for all enquiries relating to this application.</p>';
@@ -2525,13 +2569,10 @@ if ($step == 2) {
 		echo '<div class="section">';
 		echo '<h2>Course Application Complete</h2>';
 		//echo "<p><strong>Completed:</strong> ".$datetime_last_submitted."</p><br />";
-		echo '<p>Thank you <strong>'.$firstname.'</strong> for completing a course application.</p>';
-		echo '<p>We will contact you soon to tell you about your interview arrangements.</p>';
+		echo '<p>Thank you '.$firstname.' for completing a course application.</p>';
 		echo '<br />';
 
-		echo '<div id="interview_details">';
 		echo $interview_details;
-		echo '</div>';
 		echo '<br />';
 		echo '<br />';
 
