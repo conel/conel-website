@@ -252,8 +252,7 @@
 		);
 
 		$section_8_keys = array(
-			'interview_time' => 'Interview Time',
-			'other_interview_time' => 'Other Interview Time'
+			'interview_time' => 'Interview Time'
 		);
 
 		
@@ -538,24 +537,33 @@
 		}
 	}
 
+	function tenDaysNotice($unixtime) {
+		$processing_date = strtotime('-10 days', $unixtime);
+		if (time() > $processing_date) {
+			return true;
+		}
+		return false;
+	}
+
+	function isValidMonday($unixtime) {
+		if (!isExcludedMonday($unixtime) && !tenDaysNotice($unixtime)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	function getNextFourMondays() {
 
 		$mondays = array();
 		$max_mon = mktime(1,0,0,6,25,2012); 
 		$next_mon = strtotime('next monday');
-		$fri_before_mon = strtotime('-3 day', $next_mon);
-		// If now is > the Friday before next monday: add a week to next monday.
-		if (time() > $fri_before_mon) $next_mon = strtotime('+1 week', $next_mon);
-
-		if (!isExcludedMonday($next_mon)) {
-			$mondays[] = $next_mon;
-		}
 
 		while(count($mondays) <= 3 && $next_mon < $max_mon) {
-			$next_mon = strtotime('+1 week', $next_mon);
-			if (!isExcludedMonday($next_mon)) {
+			if (isValidMonday($next_mon)) {
 				$mondays[] = $next_mon;
 			}
+			$next_mon = strtotime('+1 week', $next_mon);
 		}
 
 		return $mondays;
