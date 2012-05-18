@@ -2339,8 +2339,8 @@ if ($step == 2) {
 			$( "#other_interview" ).datepicker({
 				dateFormat: "DD, d MM yy", 
 				firstDay: 1, 
-				minDate: "+2", 
-				maxDate: new Date(2012, 6, 9),
+				minDate: "+4", 
+				maxDate: new Date(2012, 6, 25),
 				beforeShowDay: noWeekendsOrNonCollegeDays
 			});
 		});
@@ -2607,8 +2607,5 @@ var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "htt
 document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 </script> 
 <script type="text/javascript">var pageTracker = _gat._getTracker("UA-3415972-1"); pageTracker._trackPageview();</script> 
-<?php
-getNextFourMondays();
-?>
 </body>
 </html>

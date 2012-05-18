@@ -516,17 +516,6 @@
 		return $mon_excludes;
 	}
 
-	function isExcludedMonday($monday) {
-		// Mondays to exclude (half term, staff dev. days, bank holidays)
-		$monday_excludes = getExcludedMondays();
-		$monday_formatted = date('j/n/Y', $monday);
-		if (in_array($monday_formatted, $mon_excludes)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 	function getJSExcludeDays() {
 		$excluded_mondays = getExcludedMondays();
 		$quoted_excludes = array();
@@ -537,9 +526,22 @@
 		return $js_disabled_days;
 	}
 
+	function isExcludedMonday($monday) {
+		// Mondays to exclude (half term, staff dev. days, bank holidays)
+		$monday_excludes = getExcludedMondays();
+		$monday_formatted = date('j/n/Y', $monday);
+
+		if (in_array($monday_formatted, $monday_excludes)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	function getNextFourMondays() {
 
 		$mondays = array();
+		$max_mon = mktime(1,0,0,6,25,2012); 
 		$next_mon = strtotime('next monday');
 		$fri_before_mon = strtotime('-3 day', $next_mon);
 		// If now is > the Friday before next monday: add a week to next monday.
@@ -549,7 +551,7 @@
 			$mondays[] = $next_mon;
 		}
 
-		while(count($mondays) <= 3) {
+		while(count($mondays) <= 3 && $next_mon < $max_mon) {
 			$next_mon = strtotime('+1 week', $next_mon);
 			if (!isExcludedMonday($next_mon)) {
 				$mondays[] = $next_mon;
