@@ -2528,23 +2528,25 @@ if ($step == 2) {
         // Build interview address
         if ($interview_centre == 'Tottenham') {
             $interview_address = 
-                '<strong>Tottenham Centre</strong><br />
-                <p>The College of Haringey, Enfield and North East London<br />
+                '<h3>Address</h3>
+				Tottenham Centre<br />
+                The College of Haringey, Enfield and North East London<br />
                 High Road<br />
                 London<br />
                 N15 4RU<br />
-                <a href="http://www.conel.ac.uk/docs/tottenham_centres_map_0.pdf" target="_blank" style="text-decoration: underline; text-color: #0000ff;">Download a Map</a><br />
-                <a href="http://maps.google.co.uk/maps?q=The+College+of+Haringey,+Enfield+and+North+East+London+High+Road+London+N15+4RU&hl=en&ll=51.586187,-0.072296&spn=0.00269,0.006866&sll=51.65291,-0.046177&sspn=0.005372,0.009645&t=h&z=18" target="_blank" style="text-decoration: underline; text-color: #0000ff;">Google Map</a><br />';
+                <p><a href="http://www.conel.ac.uk/docs/tottenham_centres_map_0.pdf" target="_blank" style="text-decoration: underline; text-color: #0000ff;">Download a Map</a><br />
+                <a href="http://maps.google.co.uk/maps?q=The+College+of+Haringey,+Enfield+and+North+East+London+High+Road+London+N15+4RU&hl=en&ll=51.586187,-0.072296&spn=0.00269,0.006866&sll=51.65291,-0.046177&sspn=0.005372,0.009645&t=h&z=18" target="_blank" style="text-decoration: underline; text-color: #0000ff;">Google Map</a></p>';
         } else {
             $interview_address = 
-                '<strong>Enfield Centre</strong><br />
-                <p>College of Haringey, Enfield and North East London<br /><br />
+                '<h3>Address</h3>
+				Enfield Centre<br />
+				College of Haringey, Enfield and North East London<br />
                 73 Hertford Road<br />
                 Enfield<br />
                 Middlesex<br />
                 EN3 5HA<br />
-                <a href="http://www.conel.ac.uk/docs/enfield_centre_map_0.pdf" target="_blank" style="text-decoration: underline; text-color: #0000ff;">Download a Map</a><br />
-                <a href="http://maps.google.co.uk/maps?q=73+Hertford+Road+Enfield+Middlesex+EN3+5HA&hl=en&ll=51.65291,-0.046177&spn=0.005372,0.009645&sll=51.654843,-0.046713&sspn=0.002686,0.004823&t=h&z=17" target="_blank" style="text-decoration: underline; text-color: #0000ff;">Google Map</a><br />';
+                <p><a href="http://www.conel.ac.uk/docs/enfield_centre_map_0.pdf" target="_blank" style="text-decoration: underline; text-color: #0000ff;">Download a Map</a><br />
+                <a href="http://maps.google.co.uk/maps?q=73+Hertford+Road+Enfield+Middlesex+EN3+5HA&hl=en&ll=51.65291,-0.046177&spn=0.005372,0.009645&sll=51.654843,-0.046713&sspn=0.002686,0.004823&t=h&z=17" target="_blank" style="text-decoration: underline; text-color: #0000ff;">Google Map</a></p>';
         }
 
 		$date_now = date('d/m/Y, H:i:s');
@@ -2565,7 +2567,7 @@ if ($step == 2) {
 			$interview_details_app .= '<div id="interview_details">';
 			$interview_details_app .= '<h2>Interview</h2>';
 			$interview_details_app .= '<p><span class="interview_date">'.$interview_time.'</span></p>';
-			$interview_details_app .= '<p>'.$interview_address.'</p>';
+			$interview_details_app .= $interview_address;
 			$interview_details_app .= '</div>';
 			$interview_details_app .= "<p>Unable to attend? <a href=\"mailto:admissions@conel.ac.uk?subject=Unable to attend my interview&body=%0D%0DPreferred Interview Date:%0D%0DMy Details%0DOld Interview Date: ".$interview_time."%0DEmail: ".$_SESSION['caf']['email_address']."%0DReference ID: ".$_SESSION['caf']['reference_id']."\">Contact us</a> to arrange a different interview date and time.</p>";
 
@@ -2581,15 +2583,15 @@ if ($step == 2) {
 		if ($interview_time != 'Other') {
 			$interview_details_admis .= '<div id="interview_details">';
 			$interview_details_admis .= '<h2>Interview Chosen</h2>';
-			$interview_details_admis .= '<p><strong>Date:</strong> <span class="interview_date">'.$interview_time.'</span></p>';
-			$interview_details_admis .= '<p><strong>Location:</strong> '.$interview_centre.'</p>';
+			$interview_details_admis .= '<p><strong>Date:</strong> <span class="interview_date">'.$interview_time.'</span><br />';
+			$interview_details_admis .= '<strong>Location:</strong> '.$interview_centre.'</p>';
 			$interview_details_admis .= '</div>';
 
 		} else {
 			$interview_details_admis = '<div id="interview_details">';
 			$interview_details_admis .= '<h2>Interview</h2>';
-			$interview_details_admis .= '<p>Applicant has chosen \'Other\'. Please contact them to arrange a suitable interview date</p>';
-			$interview_details_admis .= '<p><strong>Location:</strong> '.$interview_centre.'</p>';
+			$interview_details_admis .= '<p>Applicant has chosen \'Other\'. Please contact them to arrange a suitable interview date<br />';
+			$interview_details_admis .= '<strong>Location:</strong> '.$interview_centre.'</p>';
 			$interview_details_admis .= '</div>';
         }
 
