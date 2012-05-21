@@ -688,7 +688,7 @@ table.interview_time th {
 	text-shadow:rgba(255, 255, 255, 0.9) 1px 1px 1px;
 	margin-bottom:12px;
 }
-#interview_details h3 {
+#interview_details h3, #interview_details h2 {
 	margin-bottom:10px;
 	font-size:1.5em;
 }
@@ -697,6 +697,9 @@ table.interview_time th {
 	margin:0;
 	padding:0;
 	margin-bottom:8px;
+}
+#interview_details span.hide {
+    display:none;
 }
 span.interview_date {
 	display:block;

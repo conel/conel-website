@@ -87,9 +87,9 @@
 		
 	}
 
-	function getSectionHTML(array $section_keys) {
+	function getSectionHTML(array $section_keys, $is_email=false) {
 
-		$html = "<table class=\"verify_info_table\" cellspacing=\"0\" border=\"1\">\n";
+		$html = "<table class=\"verify_info_table\" cellspacing=\"0\" cellspacing=\"1\" border=\"1\" width=\"100%\">\n";
 		foreach ($section_keys as $key => $value) {
 			$session_val = $_SESSION['caf'][$key];
 			$value_output = ($session_val == '') ? '&#8211;' : $session_val;
@@ -261,7 +261,7 @@
 		if (!$is_email) {
 			$body_html .= "<a href=\"".THIS_URL."?step=1\">Edit these details</a><br class=\"clear_both\" />";
 		}
-		$body_html .= "<table class=\"verify_info_table\" cellspacing=\"0\" border=\"1\">\n";
+		$body_html .= "<table class=\"verify_info_table\" cellspacing=\"0\" cellpadding=\"1\" border=\"1\" width=\"100%\">\n";
 		foreach ($section_1_keys as $key => $value) {
 			$session_val = $_SESSION['caf'][$key];
 			if ($key == 'preferred_entry_month_1') {
@@ -289,21 +289,21 @@
 		if (!$is_email) {
 			$body_html .= "<a href=\"".THIS_URL."?step=2\">Edit these details</a><br class=\"clear_both\" />";
 		}
-		$body_html .= getSectionHTML($section_2_keys);
+		$body_html .= getSectionHTML($section_2_keys, $is_email);
 		
 		
 		$body_html .= '<h3>Section 3 &#8211; Support at the College of Haringey, Enfield and North East London</h3>';
 		if (!$is_email) {
 			$body_html .= "<a href=\"".THIS_URL."?step=3\">Edit these details</a><br class=\"clear_both\" />";
 		}
-		$body_html .= getSectionHTML($section_3_keys);
+		$body_html .= getSectionHTML($section_3_keys, $is_email);
 		
 		
 		$body_html .= '<h3>Section 4 &#8211; Your Qualifications</h3>';
 		if (!$is_email) {
 			$body_html .= "<a href=\"".THIS_URL."?step=4\">Edit these details</a><br class=\"clear_both\" />";
 		}
-		$body_html .= "<table class=\"verify_info_table\" cellspacing=\"0\" border=\"1\">\n";
+		$body_html .= "<table class=\"verify_info_table\" cellspacing=\"0\" border=\"1\" width=\"100%\">\n";
 		foreach ($section_4_keys as $key => $value) {
 			$session_val = $_SESSION['caf'][$key];
 			$value_output = $session_val;
@@ -318,27 +318,27 @@
 		if (!$is_email) {
 			$body_html .= "<a href=\"".THIS_URL."?step=5\">Edit these details</a><br class=\"clear_both\" />";
 		}
-		$body_html .= getSectionHTML($section_5_keys);
+		$body_html .= getSectionHTML($section_5_keys, $is_email);
 		
 		
 		$body_html .= '<h3>Section 6 &#8211; Residence and Fee Status</h3>';
 		if (!$is_email) {
 			$body_html .= "<a href=\"".THIS_URL."?step=6\">Edit these details</a><br class=\"clear_both\" />";
 		}
-		$body_html .= getSectionHTML($section_6_keys);
+		$body_html .= getSectionHTML($section_6_keys, $is_email);
 		
 		
 		$body_html .= '<h3>Section 7 &#8211; How Did You Hear About The Course?</h3>';
 		if (!$is_email) {
 			$body_html .= "<a href=\"".THIS_URL."?step=7\">Edit these details</a><br class=\"clear_both\" />";
 		}
-		$body_html .= getSectionHTML($section_7_keys);
+		$body_html .= getSectionHTML($section_7_keys, $is_email);
 
 		$body_html .= '<h3>Section 8 &#8211; Interview</h3>';
 		if (!$is_email) {
 			$body_html .= "<a href=\"".THIS_URL."?step=8\">Edit these details</a><br class=\"clear_both\" />";
 		}
-		$body_html .= getSectionHTML($section_8_keys);
+		$body_html .= getSectionHTML($section_8_keys, $is_email);
 
 		return $body_html;
 	}

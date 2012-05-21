@@ -556,7 +556,7 @@ if ($step > 0) {
 							} else if ((!is_numeric($key) && $value != '') && $key == 'form_completed') {
 								$completed = $value;
 								if ($completed == 1) {
-									$_SESSION['caf']['errors'][] = "You have submitted this course application already.<br/><span class=\"error_black\">To start a new application please enter your email in the 'New Application' section below.</span>";
+									$_SESSION['caf']['errors'][] = "You have submitted this course application already.<br/>To start a new application please enter your email in the 'New Application' section below.";
 									//$_SESSION['caf']['step_complete'][0] = FALSE;
 									//$_SESSION['caf']['email_address'] = '';
 									session_destroy();
@@ -2565,8 +2565,8 @@ if ($step == 2) {
 		if ($interview_time != 'Other') {
 			$interview_details_app = '<p>Your interview is confirmed.</p>';
 			$interview_details_app .= '<div id="interview_details">';
-			$interview_details_app .= '<h3>Interview</h3>';
-			$interview_details_app .= '<p><span class="interview_date">'.$interview_time.'</span></p>';
+			$interview_details_app .= '<h2>Interview</h2>';
+			$interview_details_app .= '<p><span class="hide"><strong>Date:</strong> </span><span class="interview_date">'.$interview_time.'</span></p>';
 			$interview_details_app .= $interview_address;
 			$interview_details_app .= '</div>';
 			$interview_details_app .= "<p>Unable to attend? <a href=\"mailto:admissions@conel.ac.uk?subject=Unable to attend my interview&body=%0D%0DPreferred Interview Date:%0D%0DMy Details%0DOld Interview Date: ".$interview_time."%0DEmail: ".$_SESSION['caf']['email_address']."%0DReference ID: ".$_SESSION['caf']['reference_id']."\">Contact us</a> to arrange a different interview date and time.</p>";
@@ -2592,7 +2592,7 @@ if ($step == 2) {
 		} else {
 			$interview_details_admis = '<div id="interview_details">';
 			$interview_details_admis .= '<h3>Interview</h3>';
-			$interview_details_admis .= '<p>Applicant has chosen \'Other\'. Please contact them to arrange a suitable interview date<br />';
+			$interview_details_admis .= '<p><strong>Date:</strong> Applicant has chosen \'Other\' for their interview date.<br />Please contact them to arrange a suitable interview date<br />';
 			$interview_details_admis .= '<strong>Location:</strong> '.$interview_centre.'</p>';
 			$interview_details_admis .= '</div>';
         }
@@ -2600,10 +2600,11 @@ if ($step == 2) {
 
 		/* Email Admissions */
 		$staff_html = '<h2>Course Application</h2>';
-		$staff_html .= '<p>You have received a new course application.<br /><b>Submitted:</b> '.$date_now.'</p>';
+		$staff_html .= '<p>You have received a new course application.</p>';
 		$staff_html .= $ref_details;
 		$staff_html .= $interview_details_admis;
 		$staff_html .= $body_html;
+        $staff_html .= '<p><b>Submitted:</b> '.$date_now.'</p>';
 
 		emailCompletedApplication($staff_html);
 
@@ -2611,8 +2612,10 @@ if ($step == 2) {
 		$applicant_html = '<h2>Your Completed Application</h2>';
 		$applicant_html .= '<p>Thank you '.$firstname.' for completing a course application with the College of Haringey, Enfield and North East London.</p>'; 
 		$applicant_html .= $interview_details_app;
+        $applicant_html .= '<br />';
 		$applicant_html .= $ref_details;
 		$applicant_html .= '<p>Please quote these reference details for all enquiries relating to this application.</p>';
+        $applicant_html .= '<br />';
 		$applicant_html .= '<h3>Application</h3>';
 		$applicant_html .= '<p>Here\'s a copy of your submitted application for your records.</p>';
 		$applicant_html .= '<p><b>Submitted:</b> '.$date_now.'</p><br />';
