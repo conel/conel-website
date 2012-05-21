@@ -2359,17 +2359,21 @@ if ($step == 2) {
 		$mondays = getNextFourMondays();
 		echo '<table class="interview_time">
 		<tr><th width="160">Date</th><th>Time</th></tr>';
-		foreach ($mondays as $key => $mon) {
-			$mon_format = date('l, j F Y', $mon);
-			echo '<tr>';
-			echo "<td>$mon_format</td>";
-			$value1 = $mon_format .', 4-6 PM';
-			echo '<td><input type="radio" name="interview_time" value="'.$value1.'" id="time_'.$key.'_4-6" class="radio" ';
-			if ($_SESSION['caf']['interview_time'] == $value1) { 
-				echo 'checked="checked"';
+		if (count($mondays) == 0) {
+			echo '<tr><td colspan="2">No interview times are currently available. Please select \'Other\'.</td></tr>';
+		} else {
+			foreach ($mondays as $key => $mon) {
+				$mon_format = date('l, j F Y', $mon);
+				echo '<tr>';
+				echo "<td>$mon_format</td>";
+				$value1 = $mon_format .', 4-6 PM';
+				echo '<td><input type="radio" name="interview_time" value="'.$value1.'" id="time_'.$key.'_4-6" class="radio" ';
+				if ($_SESSION['caf']['interview_time'] == $value1) { 
+					echo 'checked="checked"';
+				}
+				echo '/><label for="time_'.$key.'_4-6">4:00 &ndash; 6:00 PM</label> &nbsp;';
+				echo '</tr>';
 			}
-			echo '/><label for="time_'.$key.'_4-6">4:00 &ndash; 6:00 PM</label> &nbsp;';
-			echo '</tr>';
 		}
 		echo '<tr><td>Other Date/Time:</td>
 			<td><input type="radio" name="interview_time" value="Other" id="other" class="radio" ';
@@ -2495,7 +2499,7 @@ if ($step == 2) {
 		$staff_html .= $interview_details;
 		$staff_html .= $body_html;
 
-		//emailCompletedApplication($staff_html);
+		emailCompletedApplication($staff_html);
 
 		/* Email Applicant */
 		$applicant_html = '<h2>Your Completed Application</h2>';
@@ -2508,7 +2512,7 @@ if ($step == 2) {
 		$applicant_html .= '<p><b>Submitted:</b> '.$date_now.'</p><br />';
 		$applicant_html .= $body_html;
 		$applicant_html .= getAdmissionsFooter();
-		//emailCompletedApplication($applicant_html, $email_address);
+		emailCompletedApplication($applicant_html, $email_address);
 
 		echo '<div class="section">';
 		echo '<h2>Course Application Complete</h2>';
@@ -2538,8 +2542,8 @@ if ($step == 2) {
 
 		echo '</div>';
 
-		//unset($_SESSION['caf']);
-		//session_destroy();
+		unset($_SESSION['caf']);
+		session_destroy();
 	}
 	
 	// Clear errors session after page rendered
