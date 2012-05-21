@@ -571,13 +571,8 @@ a#logout:hover {
 	-moz-border-radius: 10px;
 	border-radius: 10px;
 	width:540px;
-<<<<<<< HEAD
-    -webkit-box-shadow:rgba(0, 0, 0, 0.2) 1px 1px 10px;
-	box-shadow:rgba(0, 0, 0, 0.2) 1px 1px 10px
-=======
 	-webkit-box-shadow:rgba(0, 0, 0, 0.2) 1px 1px 10px;
 	box-shadow:rgba(0, 0, 0, 0.2) 1px 1px 10px;
->>>>>>> DEV/course-application2
 }
 .browse_instructions p {
 	line-height:0.95em !important;
@@ -690,27 +685,12 @@ table.interview_time th {
 	-webkit-box-shadow:rgba(0, 0, 0, 0.2) 1px 1px 10px;
 	box-shadow:rgba(0, 0, 0, 0.2) 1px 1px 10px;
 	text-shadow:rgba(255, 255, 255, 0.9) 1px 1px 1px;
-<<<<<<< HEAD
-=======
 	margin-bottom:12px;
->>>>>>> DEV/course-application2
 }
 #interview_details h2 {
 	margin-bottom:10px;
 }
 span.interview_date {
-<<<<<<< HEAD
-	background:transparent url(images/icon-cal.png) no-repeat 0 0;
-	height:30px;
-	padding-top:17px;
-	padding-left:61px;
-	font-size:1.75em;
-	display:block;
-	margin-left:5px;
-	margin-top:15px;
-	color:#50291D;
-}
-=======
 	display:block;
 	background:transparent url(images/icon-cal.png) no-repeat 0 0;
 	height:38px;
@@ -724,4 +704,3 @@ span.interview_date {
 }
 .ui-datepicker {
 }
->>>>>>> DEV/course-application2

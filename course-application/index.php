@@ -736,11 +736,7 @@ if ($step > 0) {
 			unset($_SESSION['security_code']);
 			$_SESSION['caf']['page_step'] = 1;
 
-<<<<<<< HEAD
-            // Email user their reference details
-=======
 			// Email user their reference details
->>>>>>> DEV/course-application2
 			emailUserReferenceDetails($_SESSION['caf']['email_address']);
 
 			// Create database record for current user

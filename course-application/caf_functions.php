@@ -22,12 +22,6 @@
 			&& isset($_SESSION['caf']['reference_id']) && $_SESSION['caf']['reference_id'] != ''
 			&& ($_SESSION['caf']['signed_in'] === true)) {
 		} else {
-<<<<<<< HEAD
-            if ($step == 1) {
-			    $_SESSION['caf']['errors'][] = "You need to register your email address first";
-            }
-=======
->>>>>>> DEV/course-application2
             $current_url = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
             if ($current_url != THIS_URL && count($_SESSION['caf']['errors']) > 0) {
 			    header('location: '.THIS_URL);
@@ -496,33 +490,6 @@
 		}
 	}
 
-<<<<<<< HEAD
-    function emailUserReferenceDetails($to_email='') {
-		
-		$date_now = date('d/m/Y, H:i:s');
-		
-		/* Create email */
-		$email_html = '
-		<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-		<html>
-		<head><title>Course Application</title>
-		<style type="text/css">
-		body, table td {
-			font-family:Arial, Helvetica, sans-serif;
-			font-size:13px; 
-			line-height:1.3em;
-		}
-		table {
-			width:100%;
-		}
-		table td {
-			vertical-align:top;
-			padding:3px;
-		}
-		</style>
-		</head>
-		<body>';
-=======
 	function getExcludedMondays() {
 
 		$mon_excludes = array(
@@ -618,7 +585,6 @@
 		
 		/* Create email */
 		$email_html = getHTMLEmailHeader();
->>>>>>> DEV/course-application2
 		$email_html .= '<p><strong>Application Started:</strong> '.$date_now.'</p>';
 		$email_html .= '<p>Thank you for starting a course application with the College of Haringey, Enfield and North East London.</p>';
 		$email_html .= '<p>Your reference details are provided below. You can save your progress at any time during your application and re-login using the \'Resume Application\' link below.</p>';
@@ -631,15 +597,12 @@
 		$email_html .= '<tr><td><strong>Resume Link:</strong></td><td><a href="'.$resume_link.'">Resume Application</a></td></tr>';
 		$email_html .= '<tr><td></td></tr>';
 		$email_html .= '</table>';
-<<<<<<< HEAD
 		$email_html .= '<p>Kind regards,<br /><br />
 		Learner Recruitment Team<br />
 		E-mail: <a href="mailto:admissions@conel.ac.uk" target="_blank">admissions@conel.ac.uk</a><br />
 		Tel: 020 8442 3055 / 020 8442 3103</p>';
 		
-=======
 		$email_html .= getAdmissionsFooter();
->>>>>>> DEV/course-application2
 		$email_html .= '</body></html>';
 
 		$mail = new phpmailer();
@@ -648,23 +611,13 @@
 		// Set Recipient
 		$mail->AddAddress($to_email, $to_email);
 		$mail->Subject = "Course Application - Reference Details";
-<<<<<<< HEAD
-		
-		// nkowald - 2010-10-13 - Changed default from address to be applicant's email address
-		$mail->From = 'admissions@conel.ac.uk';
-=======
 		$mail->From = ADMISSIONS_EMAIL;
->>>>>>> DEV/course-application2
 		$mail->FromName = 'Conel Admissions';
 		$mail->Body = $email_html;
 		//$mail->SMTPDebug = TRUE;
 
 		$result = $mail->Send(); // send email notification!
-<<<<<<< HEAD
-	}
-=======
 
 	}
 
->>>>>>> DEV/course-application2
 ?>
