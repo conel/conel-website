@@ -224,7 +224,7 @@
 			
 			case 9:
 				$continue = TRUE;
-				$required_fields = array('interview_time');
+				$required_fields = array('interview_time', 'interview_location');
 				$_SESSION['caf']['missing_fields'] = '';
 				foreach ($required_fields as $field) {
 					if (isset($_POST[$field]) && $_POST[$field] == '') {$continue = FALSE; $_SESSION['caf']['missing_fields'][] = $field;}
@@ -652,6 +652,7 @@ if ($step > 0) {
 			echo '</div>';
 
 			echo '<p class="important">Print your reference details &mdash; required to resume a saved application.</p> ';
+            echo '<p>Your reference details will be emailed to you after entering a correct security code below.</p>';
 			echo '<p class="print_this"><img src="../images/printer.png" width="16" height="16" border="0" alt="printer icon" /> <strong><a href="javascript:window.print()">Print</a></strong></p>';
 			echo '<br />';
 			
@@ -2330,6 +2331,14 @@ if ($step == 2) {
 				alert('Please choose an interview time');
 				return false;
 			}
+
+			// check if interview location is blank
+			var interview_loc = $("input[name='interview_location']:checked").val();
+			if (typeof interview_loc == 'undefined') {
+				alert('Please choose an interview location');
+				return false;
+			}
+
 			return true;
 
 		});
@@ -2349,16 +2358,17 @@ if ($step == 2) {
 </ol>
 <br />
 <p>You do not need to give us a reference for English/literacy, Maths/numeracy, English for Speakers of Other Languages (ESOL) and short part-time ICT courses. For other courses you need to give us a reference.</p>
+<br />
 <?php
 		// Book an interview time
-		echo '<h2>Choose an Interview Date<span class="required">*</span></h2>';
+		echo '<h2>Book your Interview</h2>';
 		echo '<p>We interview every Monday from 4-6 PM. Interviews start at 4 PM.</p>
-			<p>Please select a convenient interview date below.</p>
-		   <p>If you can\'t attend a date below select \'Other\'. We will contact you to arrange an alternative interview date and time.</p><br />';
+			<p>Please select a convenient interview date and location below.</p>
+		   <p>If you can\'t attend a date below select \'Other\'. We will contact you to arrange an alternative interview date and time.</p>';
 
 		$mondays = getNextFourMondays();
 		echo '<table class="interview_time">
-		<tr><th width="160">Date</th><th>Time</th></tr>';
+		<tr><th width="160">Date</th><th>Time<span class="required">*</span></th></tr>';
 		if (count($mondays) == 0) {
 			echo '<tr><td colspan="2">No interview times are currently available. Please select \'Other\'.</td></tr>';
 		} else {
@@ -2384,7 +2394,56 @@ if ($step == 2) {
 		echo '<label for="other">Other</label>';
 		echo '</td>';
 		echo '</table>';
-		echo '<br />'
+
+        echo '<br />';
+        echo '<p>Please select your interview location.</p>';
+        echo '<table width="312" class="interview_time">';
+        echo '<tr><th colspan="4">Interview Location<span class="required">*</span></th></tr>';
+        echo '<tr><td valign="top">
+            <input type="radio" name="interview_location" value="Tottenham" id="interview_tottenham"';
+        if ($_SESSION['caf']['interview_location'] == 'Tottenham') { 
+            echo 'checked="checked"';
+        }
+        echo '/></td>
+            <td valign="top">
+            <label for="interview_tottenham">Tottenham Centre<br />
+            High Road<br />
+            London<br />
+            N15 4RU<br />
+            </label>
+
+            <br />
+            <div class="address_links">
+                <p><a href="http://www.conel.ac.uk/docs/tottenham_centres_map_0.pdf" target="_blank" style="text-decoration: underline; text-color: #0000ff;">Download a Map</a></p>
+                <p><a href="http://maps.google.co.uk/maps?q=The+College+of+Haringey,+Enfield+and+North+East+London+High+Road+London+N15+4RU&hl=en&ll=51.586187,-0.072296&spn=0.00269,0.006866&sll=51.65291,-0.046177&sspn=0.005372,0.009645&t=h&z=18" target="_blank" style="text-decoration: underline; text-color: #0000ff;">Google Map</a></p>
+            </div>
+        </td>';
+
+        echo '<td valign="top">
+            <input type="radio" name="interview_location" value="Enfield" id="interview_enfield" ';
+        if ($_SESSION['caf']['interview_location'] == 'Enfield') { 
+            echo 'checked="checked"';
+        }
+        echo '/>
+            </td>
+            <td valign="top">
+            <label for="interview_enfield">Enfield Centre<br />
+            73 Hertford Road<br />
+            Enfield<br />
+            Middlesex<br />
+            EN3 5HA<br />
+            </label>
+
+            <br />
+            <div class="address_links">
+                <p><a href="http://www.conel.ac.uk/docs/enfield_centre_map_0.pdf" target="_blank" style="text-decoration: underline; text-color: #0000ff;">Download a Map</a></p>
+                <p><a href="http://maps.google.co.uk/maps?q=73+Hertford+Road+Enfield+Middlesex+EN3+5HA&hl=en&ll=51.65291,-0.046177&spn=0.005372,0.009645&sll=51.654843,-0.046713&sspn=0.002686,0.004823&t=h&z=17" target="_blank" style="text-decoration: underline; text-color: #0000ff;">Google Map</a></p>
+            </div>
+        </td>';
+
+
+        echo '</tr></table>';
+        echo '<br />';
 
 ?>
 	<?php
@@ -2464,6 +2523,29 @@ if ($step == 2) {
 		$datetime_last_submitted = $_SESSION['caf']['datetime_submitted_last'];
 		$ref_id = $_SESSION['caf']['reference_id'];
 		$interview_time = $_SESSION['caf']['interview_time'];
+        $interview_centre = $_SESSION['caf']['interview_location'];
+
+        // Build interview address
+        if ($interview_centre == 'Tottenham') {
+            $interview_address = 
+                '<strong>Tottenham Centre</strong><br />
+                <p>The College of Haringey, Enfield and North East London<br />
+                High Road<br />
+                London<br />
+                N15 4RU<br />
+                <a href="http://www.conel.ac.uk/docs/tottenham_centres_map_0.pdf" target="_blank" style="text-decoration: underline; text-color: #0000ff;">Download a Map</a><br />
+                <a href="http://maps.google.co.uk/maps?q=The+College+of+Haringey,+Enfield+and+North+East+London+High+Road+London+N15+4RU&hl=en&ll=51.586187,-0.072296&spn=0.00269,0.006866&sll=51.65291,-0.046177&sspn=0.005372,0.009645&t=h&z=18" target="_blank" style="text-decoration: underline; text-color: #0000ff;">Google Map</a><br />';
+        } else {
+            $interview_address = 
+                '<strong>Enfield Centre</strong><br />
+                <p>College of Haringey, Enfield and North East London<br /><br />
+                73 Hertford Road<br />
+                Enfield<br />
+                Middlesex<br />
+                EN3 5HA<br />
+                <a href="http://www.conel.ac.uk/docs/enfield_centre_map_0.pdf" target="_blank" style="text-decoration: underline; text-color: #0000ff;">Download a Map</a><br />
+                <a href="http://maps.google.co.uk/maps?q=73+Hertford+Road+Enfield+Middlesex+EN3+5HA&hl=en&ll=51.65291,-0.046177&spn=0.005372,0.009645&sll=51.654843,-0.046713&sspn=0.002686,0.004823&t=h&z=17" target="_blank" style="text-decoration: underline; text-color: #0000ff;">Google Map</a><br />';
+        }
 
 		$date_now = date('d/m/Y, H:i:s');
 		$is_email = TRUE;
@@ -2476,41 +2558,62 @@ if ($step == 2) {
 		$ref_details .= '<tr><td><strong>Reference ID:</strong></td><td>'.$_SESSION['caf']['reference_id'].' </td></tr>';
 		$ref_details .= '</table>';
 
-		// Interview Details
+
+		// Interview Details - Applicant
 		if ($interview_time != 'Other') {
-			$interview_details = '<p>Your interview is confirmed.</p>';
-			$interview_details .= '<div id="interview_details">';
-			$interview_details .= '<h2>Interview</h2>';
-			$interview_details .= '<p><span class="interview_date">'.$interview_time.'</span></p>';
-			$interview_details .= '</div>';
-			$interview_details .= "<p>Unable to attend? <a href=\"mailto:admissions@conel.ac.uk?subject=Unable to attend my interview&body=%0D%0DPreferred Interview Date:%0D%0DMy Details%0DOld Interview Date: ".$interview_time."%0DEmail: ".$_SESSION['caf']['email_address']."%0DReference ID: ".$_SESSION['caf']['reference_id']."\">Contact us</a> to arrange a different interview date and time.</p>";
+			$interview_details_app = '<p>Your interview is confirmed.</p>';
+			$interview_details_app .= '<div id="interview_details">';
+			$interview_details_app .= '<h2>Interview</h2>';
+			$interview_details_app .= '<p><span class="interview_date">'.$interview_time.'</span></p>';
+			$interview_details_app .= '<p>'.$interview_address.'</p>';
+			$interview_details_app .= '</div>';
+			$interview_details_app .= "<p>Unable to attend? <a href=\"mailto:admissions@conel.ac.uk?subject=Unable to attend my interview&body=%0D%0DPreferred Interview Date:%0D%0DMy Details%0DOld Interview Date: ".$interview_time."%0DEmail: ".$_SESSION['caf']['email_address']."%0DReference ID: ".$_SESSION['caf']['reference_id']."\">Contact us</a> to arrange a different interview date and time.</p>";
 
 		} else {
-			$interview_details = '<div id="interview_details">';
-			$interview_details .= '<h2>Interview</h2>';
-			$interview_details .= '<p>We will contact you to arrange an interview date and time.</p>';
-			$interview_details .= '</div>';
+			$interview_details_app = '<div id="interview_details">';
+			$interview_details_app .= '<h2>Interview</h2>';
+			$interview_details_app .= '<p>We will contact you to arrange an interview date and time.</p>';
+			$interview_details_app .= '</div>';
 		}
+
+
+		// Interview Details - Admissions
+		if ($interview_time != 'Other') {
+			$interview_details_admis .= '<div id="interview_details">';
+			$interview_details_admis .= '<h2>Interview Chosen</h2>';
+			$interview_details_admis .= '<p><strong>Date:</strong> <span class="interview_date">'.$interview_time.'</span></p>';
+			$interview_details_admis .= '<p><strong>Location:</strong> '.$interview_centre.'</p>';
+			$interview_details_admis .= '</div>';
+
+		} else {
+			$interview_details_admis = '<div id="interview_details">';
+			$interview_details_admis .= '<h2>Interview</h2>';
+			$interview_details_admis .= '<p>Applicant has chosen \'Other\'. Please contact them to arrange a suitable interview date</p>';
+			$interview_details_admis .= '<p><strong>Location:</strong> '.$interview_centre.'</p>';
+			$interview_details_admis .= '</div>';
+        }
+
 
 		/* Email Admissions */
 		$staff_html = '<h2>Course Application</h2>';
 		$staff_html .= '<p>You have received a new course application.<br /><br /><b>Submitted:</b> '.$date_now.'</p>';
 		$staff_html .= $ref_details;
-		$staff_html .= $interview_details;
+		$staff_html .= $interview_details_admis;
 		$staff_html .= $body_html;
 
 		emailCompletedApplication($staff_html);
 
 		/* Email Applicant */
 		$applicant_html = '<h2>Your Completed Application</h2>';
-		$applicant_html .= '<p>Thank you for completing a course application.</p>'; 
-		$applicant_html .= $interview_details;
+		$applicant_html .= '<p>Thank you '.$firstname.' for completing a course application with the College of Haringey, Enfield and North East London.</p>'; 
+		$applicant_html .= $interview_details_app;
 		$applicant_html .= $ref_details;
 		$applicant_html .= '<p>Please quote these reference details for all enquiries relating to this application.</p>';
 		$applicant_html .= '<h2>Application</h2>';
 		$applicant_html .= '<p>Here\'s a copy of your submitted application for your records.</p>';
 		$applicant_html .= '<p><b>Submitted:</b> '.$date_now.'</p><br />';
 		$applicant_html .= $body_html;
+        $applicant_html .= '<br />';
 		$applicant_html .= getAdmissionsFooter();
 		emailCompletedApplication($applicant_html, $email_address);
 
@@ -2520,7 +2623,7 @@ if ($step == 2) {
 		echo '<p>Thank you '.$firstname.' for completing a course application.</p>';
 		echo '<br />';
 
-		echo $interview_details;
+		echo $interview_details_app;
 		echo '<br />';
 		echo '<br />';
 

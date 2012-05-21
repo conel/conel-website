@@ -252,7 +252,8 @@
 		);
 
 		$section_8_keys = array(
-			'interview_time' => 'Interview Time'
+			'interview_time' => 'Interview Time',
+			'interview_location' => 'Interview Location'
 		);
 
 		
@@ -396,7 +397,7 @@
 			$mail->From = $_SESSION['caf']['email_address'];
 			$mail->FromName = $from_name;
 		}
-		$mail->Subject = "Course application submission";
+		$mail->Subject = "Course Application Submission";
 		$mail->Body = $email_html;
 		//$mail->SMTPDebug = TRUE;
 
@@ -597,10 +598,6 @@
 		$email_html .= '<tr><td><strong>Resume Link:</strong></td><td><a href="'.$resume_link.'">Resume Application</a></td></tr>';
 		$email_html .= '<tr><td></td></tr>';
 		$email_html .= '</table>';
-		$email_html .= '<p>Kind regards,<br /><br />
-		Learner Recruitment Team<br />
-		E-mail: <a href="mailto:admissions@conel.ac.uk" target="_blank">admissions@conel.ac.uk</a><br />
-		Tel: 020 8442 3055 / 020 8442 3103</p>';
 		
 		$email_html .= getAdmissionsFooter();
 		$email_html .= '</body></html>';

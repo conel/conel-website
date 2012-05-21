@@ -704,3 +704,8 @@ span.interview_date {
 }
 .ui-datepicker {
 }
+div.address_links p {
+    margin:0 !important;
+    padding:0 !important;
+    margin-bottom:4px !important;
+}
