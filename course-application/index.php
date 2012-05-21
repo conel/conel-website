@@ -2528,7 +2528,7 @@ if ($step == 2) {
         // Build interview address
         if ($interview_centre == 'Tottenham') {
             $interview_address = 
-                '<h3>Address</h3>
+                '<h4>Address</h4>
 				Tottenham Centre<br />
                 The College of Haringey, Enfield and North East London<br />
                 High Road<br />
@@ -2538,7 +2538,7 @@ if ($step == 2) {
                 <a href="http://maps.google.co.uk/maps?q=The+College+of+Haringey,+Enfield+and+North+East+London+High+Road+London+N15+4RU&hl=en&ll=51.586187,-0.072296&spn=0.00269,0.006866&sll=51.65291,-0.046177&sspn=0.005372,0.009645&t=h&z=18" target="_blank" style="text-decoration: underline; text-color: #0000ff;">Google Map</a></p>';
         } else {
             $interview_address = 
-                '<h3>Address</h3>
+                '<h4>Address</h4>
 				Enfield Centre<br />
 				College of Haringey, Enfield and North East London<br />
                 73 Hertford Road<br />
@@ -2554,7 +2554,7 @@ if ($step == 2) {
 		$body_html = getVerifyInfo($is_email);
 
 		// Reference Details
-		$ref_details = '<h2>Reference Details</h2>';
+		$ref_details = '<h3>Reference Details</h3>';
 		$ref_details .= '<table>';
 		$ref_details .= '<tr><td width="120"><strong>Email Address:</strong></td><td> '.$_SESSION['caf']['email_address'].'</td></tr>';
 		$ref_details .= '<tr><td><strong>Reference ID:</strong></td><td>'.$_SESSION['caf']['reference_id'].' </td></tr>';
@@ -2565,7 +2565,7 @@ if ($step == 2) {
 		if ($interview_time != 'Other') {
 			$interview_details_app = '<p>Your interview is confirmed.</p>';
 			$interview_details_app .= '<div id="interview_details">';
-			$interview_details_app .= '<h2>Interview</h2>';
+			$interview_details_app .= '<h3>Interview</h3>';
 			$interview_details_app .= '<p><span class="interview_date">'.$interview_time.'</span></p>';
 			$interview_details_app .= $interview_address;
 			$interview_details_app .= '</div>';
@@ -2582,14 +2582,16 @@ if ($step == 2) {
 		// Interview Details - Admissions
 		if ($interview_time != 'Other') {
 			$interview_details_admis .= '<div id="interview_details">';
-			$interview_details_admis .= '<h2>Interview Chosen</h2>';
-			$interview_details_admis .= '<p><strong>Date:</strong> <span class="interview_date">'.$interview_time.'</span><br />';
-			$interview_details_admis .= '<strong>Location:</strong> '.$interview_centre.'</p>';
+			$interview_details_admis .= '<h3>Interview Chosen</h3>';
+            $interview_details_admis .= '<table>';
+			$interview_details_admis .= '<tr><td width="120"><strong>Date:</strong></td><td>'.$interview_time.'</td></tr>';
+			$interview_details_admis .= '<tr><td><strong>Location:</strong></td><td>'.$interview_centre.'</td></tr>';
+            $interview_details_admis .= '</table>';
 			$interview_details_admis .= '</div>';
 
 		} else {
 			$interview_details_admis = '<div id="interview_details">';
-			$interview_details_admis .= '<h2>Interview</h2>';
+			$interview_details_admis .= '<h3>Interview</h3>';
 			$interview_details_admis .= '<p>Applicant has chosen \'Other\'. Please contact them to arrange a suitable interview date<br />';
 			$interview_details_admis .= '<strong>Location:</strong> '.$interview_centre.'</p>';
 			$interview_details_admis .= '</div>';
@@ -2598,7 +2600,7 @@ if ($step == 2) {
 
 		/* Email Admissions */
 		$staff_html = '<h2>Course Application</h2>';
-		$staff_html .= '<p>You have received a new course application.<br /><br /><b>Submitted:</b> '.$date_now.'</p>';
+		$staff_html .= '<p>You have received a new course application.<br /><b>Submitted:</b> '.$date_now.'</p>';
 		$staff_html .= $ref_details;
 		$staff_html .= $interview_details_admis;
 		$staff_html .= $body_html;
@@ -2611,7 +2613,7 @@ if ($step == 2) {
 		$applicant_html .= $interview_details_app;
 		$applicant_html .= $ref_details;
 		$applicant_html .= '<p>Please quote these reference details for all enquiries relating to this application.</p>';
-		$applicant_html .= '<h2>Application</h2>';
+		$applicant_html .= '<h3>Application</h3>';
 		$applicant_html .= '<p>Here\'s a copy of your submitted application for your records.</p>';
 		$applicant_html .= '<p><b>Submitted:</b> '.$date_now.'</p><br />';
 		$applicant_html .= $body_html;
@@ -2630,7 +2632,7 @@ if ($step == 2) {
 		echo '<br />';
 
 		echo '<div id="reference_details_show">';
-		echo '<h2>Reference Details</h2>';
+		echo '<h3>Reference Details</h3>';
 		echo '<p>Please quote these reference details for all enquiries relating to this application.</p>';
 		echo '<table>';
 		echo '<tr><td width="120"><strong>Email Address:</strong></td><td> '.$email_address.'</td></tr>';

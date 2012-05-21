@@ -688,10 +688,11 @@ table.interview_time th {
 	text-shadow:rgba(255, 255, 255, 0.9) 1px 1px 1px;
 	margin-bottom:12px;
 }
-#interview_details h2 {
-	margin-bottom:10px;
-}
 #interview_details h3 {
+	margin-bottom:10px;
+	font-size:1.3em;
+}
+#interview_details h4 {
 	font-size:1.3em;
 	margin:0;
 	padding:0;
@@ -715,4 +716,7 @@ div.address_links p {
     margin:0 !important;
     padding:0 !important;
     margin-bottom:4px !important;
+}
+#reference_details_show h3 {
+    font-size:1.3em;
 }
