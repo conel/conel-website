@@ -3,6 +3,6 @@
 	if (isset($_SESSION['caf'])) {
 		unset($_SESSION['caf']);
 	}
-	header('location: http://www.conel.ac.uk/course-application/');
+	header('location: /course-application/');
 	exit;
 ?>

@@ -1,7 +1,6 @@
-## TODO
+## tbl_course_application Additions
 
-* Allow re-applying (have to allow them to choose to continue old or start a new one).
-* Add progress bars to the website so you know how much you've got left
+ ALTER TABLE tbl_course_application ADD interview_time VARCHAR(60);  
 
 ### Change to College Website
 

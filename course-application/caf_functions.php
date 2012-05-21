@@ -1,4 +1,6 @@
 <?php 
+	
+	define('ADMISSIONS_EMAIL', 'admissions@conel.ac.uk');
 
 	// Functions used by the Course Application Form - index.php
 	function getAge($birthdate) {
@@ -10,7 +12,7 @@
 		if ($target_date < $m.$d) { $years--; }
 		return $years;
 	}
-	
+
 	// Make sure people can't get to steps they should'nt be able to
 	// Must be "signed in" to be in a step
 	function securityStepCheck($step) {
@@ -20,9 +22,12 @@
 			&& isset($_SESSION['caf']['reference_id']) && $_SESSION['caf']['reference_id'] != ''
 			&& ($_SESSION['caf']['signed_in'] === true)) {
 		} else {
+<<<<<<< HEAD
             if ($step == 1) {
 			    $_SESSION['caf']['errors'][] = "You need to register your email address first";
             }
+=======
+>>>>>>> DEV/course-application2
             $current_url = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
             if ($current_url != THIS_URL && count($_SESSION['caf']['errors']) > 0) {
 			    header('location: '.THIS_URL);
@@ -85,6 +90,26 @@
 			$_SESSION['caf']['errors'][] = "Not signed in";
 			return FALSE;
 		}
+		
+	}
+
+	function getSectionHTML(array $section_keys) {
+
+		$html = "<table class=\"verify_info_table\" cellspacing=\"0\" border=\"1\">\n";
+		foreach ($section_keys as $key => $value) {
+			$session_val = $_SESSION['caf'][$key];
+			$value_output = ($session_val == '') ? '&#8211;' : $session_val;
+			if (is_array($value_output)) {
+				$list_html = "<ul>";
+				foreach($value_output as $val) { $list_html .= "<li>$val</li>"; }
+				$list_html .= "</ul>";
+				$value_output = $list_html;
+			}
+			$td_width = ($is_email) ? ' width="250"' : ' width="225"';
+			$html .= '<tr><td '.$td_width.'><strong>'.$value.':</strong></td><td>'.$value_output.'</td></tr>';
+		}
+		$html .= "</table>";
+		return $html;
 		
 	}
 	
@@ -231,6 +256,11 @@
 			'easy_to_complete' => 'Was this form easy to complete?',
 			'how_can_we_improve_the_form' => 'If not, please tell us how we could improve it'
 		);
+
+		$section_8_keys = array(
+			'interview_time' => 'Interview Time'
+		);
+
 		
 		$body_html .= '<h3>Section 1 &#8211; Course Details</h3>';
 		if (!$is_email) {
@@ -260,46 +290,18 @@
 		$body_html .= "</table>\n";
 		
 		
-		
 		$body_html .= '<h3>Section 2 &#8211; Personal Details</h3>';
 		if (!$is_email) {
 			$body_html .= "<a href=\"".THIS_URL."?step=2\">Edit these details</a><br class=\"clear_both\" />";
 		}
-		$body_html .= "<table class=\"verify_info_table\" cellspacing=\"0\" border=\"1\">\n";
-		foreach ($section_2_keys as $key => $value) {
-			$session_val = $_SESSION['caf'][$key];
-			$value_output = ($session_val == '') ? '&#8211;' : $session_val;
-			if (is_array($value_output)) {
-				$list_html = "<ul>";
-				foreach($value_output as $val) { $list_html .= "<li>$val</li>"; }
-				$list_html .= "</ul>";
-				$value_output = $list_html;
-			}
-			$td_width = ($is_email) ? ' width="250"' : ' width="225"';
-			$body_html .= '<tr><td '.$td_width.'><strong>'.$value.':</strong></td><td>'.$value_output.'</td></tr>';
-		}
-		$body_html .= "</table>";
-		
+		$body_html .= getSectionHTML($section_2_keys);
 		
 		
 		$body_html .= '<h3>Section 3 &#8211; Support at the College of Haringey, Enfield and North East London</h3>';
 		if (!$is_email) {
 			$body_html .= "<a href=\"".THIS_URL."?step=3\">Edit these details</a><br class=\"clear_both\" />";
 		}
-		$body_html .= "<table class=\"verify_info_table\" cellspacing=\"0\" border=\"1\">\n";
-		foreach ($section_3_keys as $key => $value) {
-			$session_val = $_SESSION['caf'][$key];
-			$value_output = ($session_val == '') ? '&#8211;' : $session_val;
-			if (is_array($value_output)) {
-				$list_html = "<ul>";
-				foreach($value_output as $val) { $list_html .= "<li>$val</li>"; }
-				$list_html .= "</ul>";
-				$value_output = $list_html;
-			}
-			$td_width = ($is_email) ? ' width="250"' : ' width="225"';
-			$body_html .= '<tr><td '.$td_width.'><strong>'.$value.':</strong></td><td>'.$value_output.'</td></tr>';
-		}
-		$body_html .= "</table>";
+		$body_html .= getSectionHTML($section_3_keys);
 		
 		
 		$body_html .= '<h3>Section 4 &#8211; Your Qualifications</h3>';
@@ -317,83 +319,38 @@
 		}
 		$body_html .= "</table>";
 		
-		
-		
 		$body_html .= '<h3>Section 5 &#8211; Your Employment and Experience</h3>';
 		if (!$is_email) {
 			$body_html .= "<a href=\"".THIS_URL."?step=5\">Edit these details</a><br class=\"clear_both\" />";
 		}
-		$body_html .= "<table class=\"verify_info_table\" cellspacing=\"0\" border=\"1\">\n";
-		foreach ($section_5_keys as $key => $value) {
-			$session_val = $_SESSION['caf'][$key];
-			$value_output = $session_val;
-			if ($value_output != '') {
-				$td_width = ($is_email) ? ' width="250"' : ' width="225"';
-				$body_html .= '<tr><td '.$td_width.'><strong>'.$value.':</strong></td><td>'.$value_output.'</td></tr>';
-			}
-		}
-		$body_html .= "</table>";
-		
+		$body_html .= getSectionHTML($section_5_keys);
 		
 		
 		$body_html .= '<h3>Section 6 &#8211; Residence and Fee Status</h3>';
 		if (!$is_email) {
 			$body_html .= "<a href=\"".THIS_URL."?step=6\">Edit these details</a><br class=\"clear_both\" />";
 		}
-		$body_html .= "<table class=\"verify_info_table\" cellspacing=\"0\" border=\"1\">\n";
-		foreach ($section_6_keys as $key => $value) {
-			$session_val = $_SESSION['caf'][$key];
-			$value_output = ($session_val == '') ? '&#8211;' : $session_val;
-			if (is_array($value_output)) {
-				$list_html = "<ul>";
-				foreach($value_output as $val) { $list_html .= "<li>$val</li>"; }
-				$list_html .= "</ul>";
-				$value_output = $list_html;
-			}
-			$td_width = ($is_email) ? ' width="250"' : ' width="225"';
-			$body_html .= '<tr><td '.$td_width.'><strong>'.$value.':</strong></td><td>'.$value_output.'</td></tr>';
-		}
-		$body_html .= "</table>";
-		
+		$body_html .= getSectionHTML($section_6_keys);
 		
 		
 		$body_html .= '<h3>Section 7 &#8211; How Did You Hear About The Course?</h3>';
 		if (!$is_email) {
 			$body_html .= "<a href=\"".THIS_URL."?step=7\">Edit these details</a><br class=\"clear_both\" />";
 		}
-		$body_html .= "<table class=\"verify_info_table\" cellspacing=\"0\" border=\"1\">\n";
-		foreach ($section_7_keys as $key => $value) {
-			$session_val = $_SESSION['caf'][$key];
-			$value_output = ($session_val == '') ? '&#8211;' : $session_val;
-			if (is_array($value_output)) {
-				$list_html = "<ul>";
-				foreach($value_output as $val) { $list_html .= "<li>$val</li>"; }
-				$list_html .= "</ul>";
-				$value_output = $list_html;
-			}
-			$td_width = ($is_email) ? ' width="250"' : ' width="225"';
-			$body_html .= '<tr><td '.$td_width.'><strong>'.$value.':</strong></td><td>'.$value_output.'</td></tr>';
-		}
-		$body_html .= "</table>";
+		$body_html .= getSectionHTML($section_7_keys);
 
+		$body_html .= '<h3>Section 8 &#8211; Interview</h3>';
 		if (!$is_email) {
-			$body_html .= '<h3>Section 8 &#8211; Reference</h3>';
-			$body_html .= "<a href=\"".THIS_URL."?step=8\">View instructions</a><br class=\"clear_both\" />";
+			$body_html .= "<a href=\"".THIS_URL."?step=8\">Edit these details</a><br class=\"clear_both\" />";
 		}
+		$body_html .= getSectionHTML($section_8_keys);
+
 		return $body_html;
 	}
-	
-	function emailCompletedApplication($body_html='', $email_address='') {
-		
-		$date_now = date('d/m/Y, H:i:s');
-		
-		// nkowald - 2011-11-04 - Added this current academic year
-		$current_year = date('y');
-		$next_year = $current_year + 1;
-		$this_ac_year = '20' . $current_year . '-' . $next_year;
-		
-		/* Create email */
-		$email_html = '
+
+	function getHTMLEmailHeader() {
+
+		$header = '
 		<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 		<html>
 		<head><title>Course Application</title>
@@ -413,59 +370,45 @@
 		</style>
 		</head>
 		<body>';
+
+		return $header;
+
+	}
+	
+	function emailCompletedApplication($body_html='', $email_address='') {
 		
-		//$email_html .= '<h2>Course Application '.$this_ac_year.'</h2>';
-		$email_html .= '<h2>Course Application</h2>';
-		$email_html .= '<p>You have received a new course application.<br />
-		<br /><b>Submitted:</b> '.$date_now.'</p>';
-		
-		$email_html .= '<h3>Reference Details</h3>';
-		$email_html .= '<table>';
-		$email_html .= '<tr><td width="120"><strong>Email Address:</strong></td><td> '.$_SESSION['caf']['email_address'].'</td></tr>';
-		$email_html .= '<tr><td><strong>Reference ID:</strong></td><td>'.$_SESSION['caf']['reference_id'].' </td></tr>';
-		$email_html .= '</table>';
-		
+		/* Create email */
+		$email_html = getHTMLEmailHeader();
 		$email_html .= $body_html;
 		$email_html .= '</body></html>';
 
-		// If database insert successful, send email:
 		$mail = new phpmailer();
 		$mail->IsHTML(TRUE); // send HTML email
 		$mail->IsSMTP(); // use SMTP to send
-		// Set Recipient
+
+		// Set Recipient - If email_address given: it's sending to user
 		if ($email_address != '') {
-			$mail->AddAddress($email_address,$email_address);
+			// Send to applicant
+			$from_name = $_SESSION['caf']['firstname'] . " " . $_SESSION['caf']['surname'];
+			$from_name = ($from_name == '') ? $_SESSION['caf']['email_address'] : $from_name;
+			$mail->AddAddress($email_address, $email_address);
+			$mail->From = ADMISSIONS_EMAIL;
+			$mail->FromName = 'Conel Admissions';
 		} else {
-			//$mail->AddAddress('NKowald@conel.ac.uk','Nathan Kowald');
-			$mail->AddAddress('admissions@conel.ac.uk','Admissions');
+			// Send to admissions
+			$mail->AddAddress(ADMISSIONS_EMAIL,'Admissions');
+			$from_name = $_SESSION['caf']['firstname'] . " " . $_SESSION['caf']['surname'];
+			$from_name = ($from_name == '') ? $_SESSION['caf']['email_address'] : $from_name;
+			$mail->From = $_SESSION['caf']['email_address'];
+			$mail->FromName = $from_name;
 		}
-		//$mail->AddBCC('NKowald@staff.conel.ac.uk','Course Applications');
 		$mail->Subject = "Course application submission";
-		
-		// nkowald - 2010-10-13 - Changed default from address to be applicant's email address
-		$mail->From = $_SESSION['caf']['email_address'];
-		$from_name = $_SESSION['caf']['firstname'] . " " . $_SESSION['caf']['surname'];
-		$from_name = ($from_name == '') ? $_SESSION['caf']['email_address'] : $from_name;
-		$mail->FromName = $from_name
-		;
-		//$mail->From = 'webmaster@staff.conel.ac.uk';
-		//$mail->FromName = 'Conel Website Notifications';
 		$mail->Body = $email_html;
 		//$mail->SMTPDebug = TRUE;
 
 		$result = $mail->Send(); // send email notification!
-		//var_dump($result);
-		/*
-		if ($result) {
-			header('Location: http://www.conel.ac.uk/email_successfully_sent');
-			exit;
-		} else {
-			echo '<p>Email failed</p>';
-			header('Location: http://www.conel.ac.uk/news_events/event_calendar/november_2009/7_november_2009_open_day?email=failed');
-			exit;
-		}
-		*/
 	}
+
 	
 	// takes field name as input, checks if session with same name exists, returns value html
 	// $type = fieldtype [text, textarea, select, radio, checkbox]
@@ -504,17 +447,7 @@
 			
 		}
 		
-		// date of birth needs a starting value
-		if ($fieldname == 'date_of_birth') {
-			if (!isset($_SESSION['caf']['date_of_birth'])) {
-				$html = 'dd/mm/yyyy';
-				echo $html;
-			} else {
-				echo $html;
-			}
-		} else {
-			echo $html;
-		}
+		echo $html;
 		
 	}
 	
@@ -563,6 +496,7 @@
 		}
 	}
 
+<<<<<<< HEAD
     function emailUserReferenceDetails($to_email='') {
 		
 		$date_now = date('d/m/Y, H:i:s');
@@ -588,6 +522,103 @@
 		</style>
 		</head>
 		<body>';
+=======
+	function getExcludedMondays() {
+
+		$mon_excludes = array(
+			'4/6/2012',
+			'2/7/2012',
+			'27/8/2012',
+			'29/10/2012',
+			'24/12/2012',
+			'31/12/2012',
+			'18/2/2012',
+			'1/4/2013',
+			'8/4/2013',
+			'6/5/2013',
+			'27/5/2013',
+			'1/7/2013',
+			'15/7/2013',
+			'22/7/2013',
+			'29/7/2013',
+			'5/8/2013',
+			'12/8/2013',
+			'26/8/2013'
+		);
+		return $mon_excludes;
+	}
+
+	function getJSExcludeDays() {
+		$excluded_mondays = getExcludedMondays();
+		$quoted_excludes = array();
+		foreach ($excluded_mondays as $mon) {
+			$quoted_excludes[] = '"'.$mon.'"';
+		}
+		$js_disabled_days = implode(',', $quoted_excludes);
+		return $js_disabled_days;
+	}
+
+	function isExcludedMonday($monday) {
+		// Mondays to exclude (half term, staff dev. days, bank holidays)
+		$monday_excludes = getExcludedMondays();
+		$monday_formatted = date('j/n/Y', $monday);
+
+		if (in_array($monday_formatted, $monday_excludes)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	function tenDaysNotice($unixtime) {
+		$processing_date = strtotime('-10 days', $unixtime);
+		if (time() > $processing_date) {
+			return true;
+		}
+		return false;
+	}
+
+	function isValidMonday($unixtime) {
+		if (!isExcludedMonday($unixtime) && !tenDaysNotice($unixtime)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	function getNextFourMondays() {
+
+		$mondays = array();
+		$max_mon = mktime(1,0,0,6,25,2012); 
+		$next_mon = strtotime('next monday');
+
+		while(count($mondays) <= 3 && $next_mon < $max_mon) {
+			if (isValidMonday($next_mon)) {
+				$mondays[] = $next_mon;
+			}
+			$next_mon = strtotime('+1 week', $next_mon);
+		}
+
+		return $mondays;
+	}
+
+	function getAdmissionsFooter() {
+
+		$html = '<p>Kind regards,<br /><br />
+		Learner Recruitment Team<br />
+		E-mail: <a href="mailto:'.ADMISSIONS_EMAIL.'" target="_blank">'.ADMISSIONS_EMAIL.'</a><br />
+		Tel: 020 8442 3055 / 020 8442 3103</p>';
+
+		return $html;
+	}
+
+	function emailUserReferenceDetails($to_email='') {
+
+		$date_now = date('d/m/Y, H:i:s');
+		
+		/* Create email */
+		$email_html = getHTMLEmailHeader();
+>>>>>>> DEV/course-application2
 		$email_html .= '<p><strong>Application Started:</strong> '.$date_now.'</p>';
 		$email_html .= '<p>Thank you for starting a course application with the College of Haringey, Enfield and North East London.</p>';
 		$email_html .= '<p>Your reference details are provided below. You can save your progress at any time during your application and re-login using the \'Resume Application\' link below.</p>';
@@ -600,11 +631,15 @@
 		$email_html .= '<tr><td><strong>Resume Link:</strong></td><td><a href="'.$resume_link.'">Resume Application</a></td></tr>';
 		$email_html .= '<tr><td></td></tr>';
 		$email_html .= '</table>';
+<<<<<<< HEAD
 		$email_html .= '<p>Kind regards,<br /><br />
 		Learner Recruitment Team<br />
 		E-mail: <a href="mailto:admissions@conel.ac.uk" target="_blank">admissions@conel.ac.uk</a><br />
 		Tel: 020 8442 3055 / 020 8442 3103</p>';
 		
+=======
+		$email_html .= getAdmissionsFooter();
+>>>>>>> DEV/course-application2
 		$email_html .= '</body></html>';
 
 		$mail = new phpmailer();
@@ -613,13 +648,23 @@
 		// Set Recipient
 		$mail->AddAddress($to_email, $to_email);
 		$mail->Subject = "Course Application - Reference Details";
+<<<<<<< HEAD
 		
 		// nkowald - 2010-10-13 - Changed default from address to be applicant's email address
 		$mail->From = 'admissions@conel.ac.uk';
+=======
+		$mail->From = ADMISSIONS_EMAIL;
+>>>>>>> DEV/course-application2
 		$mail->FromName = 'Conel Admissions';
 		$mail->Body = $email_html;
 		//$mail->SMTPDebug = TRUE;
 
 		$result = $mail->Send(); // send email notification!
+<<<<<<< HEAD
 	}
+=======
+
+	}
+
+>>>>>>> DEV/course-application2
 ?>
