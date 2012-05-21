@@ -2619,6 +2619,7 @@ if ($step == 2) {
 		$applicant_html .= $body_html;
         $applicant_html .= '<br />';
 		$applicant_html .= getAdmissionsFooter();
+
 		emailCompletedApplication($applicant_html, $email_address);
 
 		echo '<div class="section">';

@@ -690,10 +690,10 @@ table.interview_time th {
 }
 #interview_details h3 {
 	margin-bottom:10px;
-	font-size:1.3em;
+	font-size:1.5em;
 }
 #interview_details h4 {
-	font-size:1.3em;
+	font-size:1.25em;
 	margin:0;
 	padding:0;
 	margin-bottom:8px;
@@ -718,5 +718,5 @@ div.address_links p {
     margin-bottom:4px !important;
 }
 #reference_details_show h3 {
-    font-size:1.3em;
+    font-size:1.4em;
 }
