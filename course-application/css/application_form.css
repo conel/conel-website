@@ -570,7 +570,7 @@ a#logout:hover {
 	margin-bottom:15px;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
-	width:540px;
+	width:560px;
 	-webkit-box-shadow:rgba(0, 0, 0, 0.2) 1px 1px 10px;
 	box-shadow:rgba(0, 0, 0, 0.2) 1px 1px 10px;
 }
@@ -722,4 +722,47 @@ div.address_links p {
 }
 #reference_details_show h3 {
     font-size:1.4em;
+}
+
+#interview_dates table {
+    width:100%;
+    margin-bottom:10px;
+}
+#interview_dates table th {
+    font-weight:bold;
+    padding-bottom:10px;
+}
+#interview_dates h3 {
+    font-size:1.3em;
+    color:#676767;
+    margin-bottom:23px;
+}
+#interview_dates h3 span {
+    font-weight:normal;
+    color:#52BB24;
+}
+#interview_dates h4 {
+    color:#303030;
+    font-size:1.25em;
+}
+#interview_dates h4 span {
+    font-weight:normal;
+    color:#52BB24;
+}
+td.center, th.center {
+    text-align:center;
+}
+#interview_dates .location {
+    /*
+   display:block;
+   padding-left:20px;
+   border-left:5px solid #F8E7D3;
+   border-bottom:5px solid #F8E7D3;
+   */
+   margin-bottom:15px;
+   display:none;
+}
+h3 a.toggle {
+    font-weight:normal;
+    font-size:0.9em;
 }

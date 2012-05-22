@@ -2259,12 +2259,12 @@ if ($step == 2) {
 	</p>
 	<p>
 <!-- Default to 'yes' --><input type="hidden" value="yes" name="receive_communications" />
-<input type="checkbox" value="no" name="receive_communications" id="s7_receive_comms_no" <?php getValue('checkbox_single', 'receive_communications', 'no'); ?>/> <label for="s7_receive_comms_no">No</label>
+<input type="checkbox" class="checkbox" value="no" name="receive_communications" id="s7_receive_comms_no" <?php getValue('checkbox_single', 'receive_communications', 'no'); ?>/> <label for="s7_receive_comms_no">No</label>
 </p>
 
 	<h2>Correct Information<span class="required" style="font-size:1em;">*</span></h2>
 	<p style="line-height:1.5em;">I confirm that the information I have given in this form is correct. I give my consent to the College of Haringey, Enfield and North East London to record and process this information, on the understanding that the College complies with the Data Protection Act 1998.</p>
-	<p><input type="checkbox" value="yes" name="correct_info_confirm" id="s7_confirm_correct_info" <?php getValue('checkbox_single', 'correct_info_confirm', 'yes'); ?> required /> <label for="s7_confirm_correct_info">Yes, I confirm</label>
+	<p><input type="checkbox" value="yes" name="correct_info_confirm" id="s7_confirm_correct_info" class="checkbox" <?php getValue('checkbox_single', 'correct_info_confirm', 'yes'); ?> required /> <label for="s7_confirm_correct_info">Yes, I confirm</label>
 	<br />
 	<br />
 	
@@ -2274,8 +2274,8 @@ if ($step == 2) {
 		<tr>
 			<td width="225"><label for="s7_easy_to_complete_yes">Was this form easy to complete?:</label></td>
 			<td>
-				<input type="radio" name="easy_to_complete" value="yes" checked="checked" id="s7_easy_to_complete_yes" <?php getValue('radio', 'easy_to_complete', 'yes'); ?>/> <label for="s7_easy_to_complete_yes">Yes</label>
-				<input type="radio" name="easy_to_complete" value="no" id="s7_easy_to_complete_no"  <?php getValue('radio', 'easy_to_complete', 'no'); ?>/> <label for="s7_easy_to_complete_no">No</label>
+				<input type="radio" name="easy_to_complete" value="yes" checked="checked" id="s7_easy_to_complete_yes" class="radio" <?php getValue('radio', 'easy_to_complete', 'yes'); ?>/> <label for="s7_easy_to_complete_yes">Yes</label>
+				<input type="radio" name="easy_to_complete" value="no" id="s7_easy_to_complete_no" class="radio" <?php getValue('radio', 'easy_to_complete', 'no'); ?>/> <label for="s7_easy_to_complete_no">No</label>
 			</td>
 		</tr>
 		<tr>
@@ -2400,11 +2400,11 @@ if ($step == 2) {
         echo '<table width="312" class="interview_time">';
         echo '<tr><th colspan="4">Interview Location<span class="required">*</span></th></tr>';
         echo '<tr><td valign="top">
-            <input type="radio" name="interview_location" value="Tottenham" id="interview_tottenham"';
+            <input type="radio" name="interview_location" value="Tottenham" id="interview_tottenham" class="radio" ';
         if ($_SESSION['caf']['interview_location'] == 'Tottenham') { 
             echo 'checked="checked"';
         }
-        echo '/></td>
+        echo ' /></td>
             <td valign="top">
             <label for="interview_tottenham">Tottenham Centre<br />
             High Road<br />
@@ -2420,11 +2420,11 @@ if ($step == 2) {
         </td>';
 
         echo '<td valign="top">
-            <input type="radio" name="interview_location" value="Enfield" id="interview_enfield" ';
+            <input type="radio" name="interview_location" value="Enfield" id="interview_enfield" class="radio" ';
         if ($_SESSION['caf']['interview_location'] == 'Enfield') { 
             echo 'checked="checked"';
         }
-        echo '/>
+        echo ' />
             </td>
             <td valign="top">
             <label for="interview_enfield">Enfield Centre<br />

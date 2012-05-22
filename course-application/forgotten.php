@@ -14,18 +14,8 @@
 	$debug = 1; // 0 = Don't debug, 1 = debug
 	
 	$show = (isset($_GET['show']) && $_GET['show'] != '') ? $_GET['show'] : 1;
-	$order = (isset($_GET['order']) && $_GET['order'] != '') ? $_GET['order'] : 'email_address';
-	$pos = (isset($_GET['pos']) && $_GET['pos'] != '') ? $_GET['pos'] : 'ASC';
-	
-	// Make sure no SQL injections can occur
-	$valid_pos = array('ASC', 'DESC');
-	if (!in_array($pos, $valid_pos)) {
-		$pos = 'ASC';
-	}
 	
 	if ($show > 3 || !is_numeric($show)) $show = 1;
-	
-	$valid_orders = array('firstname', 'surname', 'email_address', 'reference_id', 'page_step');
 	
 	$_SESSION['ca']['errors'] = array();
 	
@@ -75,8 +65,10 @@
 <title>Reference ID Search - Online Course Applications</title>
 <link href="css/application_form.css" rel="stylesheet" type="text/css" media="all" />
 <link href="css/application_form_print.css" rel="stylesheet" type="text/css" media="print" />
+<link href="css/jquery.dataTables.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="js/fl_functions.js"></script>
+<script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
 </head>
 
 <body>
@@ -126,36 +118,50 @@
 		<p>
 			<strong>Show:</strong>&nbsp;
 			<a href="/course-application/forgotten.php?show=1"<?php if ($show == 1) echo ' class="active"'; ?>>Incomplete</a> | 
-			<a href="/course-application/forgotten.php?show=2"<?php if ($show == 2) echo ' class="active"'; ?>>Completed</a> | 
-			<a href="/course-application/forgotten.php?show=3"<?php if ($show == 3) echo ' class="active"'; ?>>Incomplete (since 01/09/11)</a>
+			<a href="/course-application/forgotten.php?show=2"<?php if ($show == 2) echo ' class="active"'; ?>>Complete</a> | 
+			<!--<a href="/course-application/forgotten.php?show=3"<?php //if ($show == 3) echo ' class="active"'; ?>>Incomplete (since 01/09/11)</a> | -->
+			<a href="/course-application/interviews.php">Interviews</a>
 		</p>
 		<div id="logout"><a href="forgotten.php?logout=1">Log out</a></div>
 		<br />
 		
 <?php
 	if ($show == 1) {
+?>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#incomplete').dataTable({
+            'iDisplayLength':15,
+            'aoColumns': [
+                    /* email */     null,
+                    /* ref id */    null,
+                    /* firstname */ null,
+                    /* surname */   null,
+                    /* complete */  null,
+                    /* actions */  {'bSearchable': false, 'bSortable': false}
+            ]
+            
+        });
+    });
+</script>
 		
-		if (in_array($order, $valid_orders)) {
-			$query = "SELECT id, firstname, surname, email_address, reference_id, page_step FROM tbl_course_application WHERE form_completed = 0 ORDER BY $order $pos";
-		} else {
-			$query = "SELECT id, firstname, surname, email_address, reference_id, page_step FROM tbl_course_application WHERE form_completed = 0 ORDER BY email_address $pos";
-		}
+<?php
+		$query = "SELECT id, firstname, surname, email_address, reference_id, page_step FROM tbl_course_application WHERE form_completed = 0 ORDER BY email_address ASC";
+
 		$sql->query($query, $debug);
 		if ($sql->num_rows() > 0) {
 			
 			echo '<h2>Incomplete</h2>';
 			echo '<p id="incomplete_count">'.number_format($sql->num_rows()).' incomplete applications</p>';
-			echo '<!--<p class="email_filter"><strong>Filter by Email:</strong> &nbsp;<input type="text" name="filter" id="filter_incomplete" value="" /></p>-->';
-			echo '<table class="application_stats">';
+			echo '<table class="application_stats" id="incomplete">';
 			echo '<thead>';
 			echo '<tr>';
 				// In the link we need to switch position to whatever it's currently set to
-				if ($pos == 'ASC') { $pos = 'DESC'; } else { $pos = 'ASC'; }
-				echo '<th><a href="http://www.conel.ac.uk/course-application/forgotten.php?show=1&amp;order=email_address&amp;pos='.$pos.'">Email</a></th>';
-				echo '<th width="130"><a href="http://www.conel.ac.uk/course-application/forgotten.php?show=1&amp;order=reference_id&amp;pos='.$pos.'">Reference ID</a></th>';
-				echo '<th><a href="http://www.conel.ac.uk/course-application/forgotten.php?show=1&amp;order=firstname&amp;pos='.$pos.'">Firstname</a></th>';
-				echo '<th><a href="http://www.conel.ac.uk/course-application/forgotten.php?show=1&amp;order=surname&amp;pos='.$pos.'">Surname</a></th>';
-				echo '<th><a href="http://www.conel.ac.uk/course-application/forgotten.php?show=1&amp;order=page_step&amp;pos='.$pos.'">Complete</a></th>';
+				echo '<th>Email</th>';
+				echo '<th width="130">Reference ID</th>';
+				echo '<th>Firstname</th>';
+				echo '<th>Surname</th>';
+				echo '<th>Complete</th>';
 				echo '<th>Actions</th>';
 			echo '</tr>';
 			echo '</thead>';
@@ -187,16 +193,15 @@
 			echo '</tbody>';
 			echo '</table>';
 			echo '<br />';
+			echo '<br />';
+			echo '<br />';
 		}
 	}
 							
 	if ($show == 3) {
 		
-		if (in_array($order, $valid_orders)) {
-			$query = "SELECT id, firstname, surname, email_address, reference_id, page_step FROM tbl_course_application WHERE form_completed = 0 AND datetime_submitted_first >= '2011-09-01 00:00:00' ORDER BY $order $pos";
-		} else {
-			$query = "SELECT id, firstname, surname, email_address, reference_id, page_step FROM tbl_course_application WHERE datetime_submitted_first >= '2011-09-01 00:00:00' AND form_completed = 0 ORDER BY email_address $pos";
-		}
+		$query = "SELECT id, firstname, surname, email_address, reference_id, page_step FROM tbl_course_application WHERE datetime_submitted_first >= '2011-09-01 00:00:00' AND form_completed = 0 ORDER BY email_address ASC";
+
 		$sql->query($query, $debug);
 		if ($sql->num_rows() > 0) {
 			
@@ -207,9 +212,22 @@
 		$('table.application_stats a.email_user').bind('click', function(e) {
 			$(e.target).closest('tr').children('td,th').css('background-color','#FFFF79');
 		});
+
+        $('#since_sept').dataTable({
+            'iDisplayLength':15,
+            'aoColumns': [
+                    /* no */        null,
+                    /* email */     null,
+                    /* ref id */    null,
+                    /* firstname */ null,
+                    /* surname */   null,
+                    /* complete */  null,
+                    /* actions */  {'bSearchable': false, 'bSortable': false}
+            ]
+        });
+        
 	});
 
-    
     function isIE() {
         return (navigator.appName == 'Microsoft Internet Explorer') ? true : false;
     }
@@ -228,12 +246,9 @@
 <?php 
 			echo '<h2>Incomplete - since 1 September 2011</h2>';
 			echo '<p id="incomplete_count">'.number_format($sql->num_rows()).' incomplete applications</p>';
-			echo '<!--<p class="email_filter"><strong>Filter by Email:</strong> &nbsp;<input type="text" name="filter" id="filter_incomplete" value="" /></p>-->';
-			echo '<table class="application_stats">';
+			echo '<table class="application_stats" id="since_sept">';
 			echo '<thead>';
 			echo '<tr>';
-				// In the link we need to switch position to whatever it's currently set to
-				if ($pos == 'ASC') { $pos = 'DESC'; } else { $pos = 'ASC'; }
 				echo '<th>&nbsp;</th>';
 				echo '<th>Email</th>';
 				echo '<th width="130">Reference ID</th>';
@@ -287,32 +302,44 @@
 			echo '</tbody>';
 			echo '</table>';
 			echo '<br />';
+			echo '<br />';
+			echo '<br />';
 		}
 	}
 
 	if ($show == 2) {
 
-		if (in_array($order, $valid_orders)) {
-			$query = "SELECT id, firstname, surname, email_address, reference_id FROM tbl_course_application WHERE form_completed = 1 ORDER BY $order $pos";
-		} else {
-			$query = "SELECT id, firstname, surname, email_address, reference_id FROM tbl_course_application WHERE form_completed = 1 ORDER BY email_address $pos";
-		}
+?>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#complete').dataTable({
+            'iDisplayLength':15,
+            'aoColumns': [
+                    /* email */     null,
+                    /* ref id */    null,
+                    /* firstname */ null,
+                    /* surname */   null,
+                    /* actions */  {'bSearchable': false, 'bSortable': false}
+            ]
+        });
+    });
+</script>
+		
+<?php
+        $query = "SELECT id, firstname, surname, email_address, reference_id FROM tbl_course_application WHERE form_completed = 1 ORDER BY email_address ASC";
 		
 		$sql->query($query, $debug);
 		if ($sql->num_rows() > 0) {
 			
-			echo '<h2>Completed</h2>';
+			echo '<h2>Complete</h2>';
 			echo '<p id="complete_count">'.number_format($sql->num_rows()).' completed applications</p>';
-			echo '<!--<p class="email_filter"><strong>Filter by Email:</strong> &nbsp;<input type="text" name="filter" id="filter_complete" value="" /></p>-->';
-			echo '<table class="application_stats">';
+			echo '<table class="application_stats" id="complete">';
 			echo '<thead>';
 			echo '<tr>';
-				// In the link we need to switch position to whatever it's currently set to
-				if ($pos == 'ASC') { $pos = 'DESC'; } else { $pos = 'ASC'; }
-				echo '<th><a href="http://www.conel.ac.uk/course-application/forgotten.php?show=2&amp;order=email_address&amp;pos='.$pos.'">Email</a></th>';
-				echo '<th width="130"><a href="http://www.conel.ac.uk/course-application/forgotten.php?show=2&amp;order=reference_id&amp;pos='.$pos.'">Reference ID</a></th>';
-				echo '<th><a href="http://www.conel.ac.uk/course-application/forgotten.php?show=2&amp;order=firtname&amp;pos='.$pos.'">Firstname</a></th>';
-				echo '<th><a href="http://www.conel.ac.uk/course-application/forgotten.php?show=2&amp;order=surname&amp;pos='.$pos.'">Surname</a></th>';
+				echo '<th>Email</th>';
+				echo '<th width="130">Reference ID</th>';
+				echo '<th>Firstname</th>';
+				echo '<th>Surname</th>';
 				echo '<th>Actions</th>';
 			echo '</tr>';
 			echo '</thead>';
@@ -339,7 +366,8 @@
 			echo '</tbody>';
 			echo '</table>';
 			echo '<br />';
-			
+			echo '<br />';
+			echo '<br />';
 		}
 	}
 						
