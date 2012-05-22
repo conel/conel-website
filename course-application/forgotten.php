@@ -4,9 +4,11 @@
 		$_SESSION['ca']['logged_in'] = FALSE;
 	}
 
-	include_once('../matrix_engine/config.php');
-	include_once('../matrix_engine/'.CLASSES_DIR.'db_mysql.php');
-	include_once('../matrix_engine/'.CLASSES_DIR.'class_mailer.php');
+	include('../matrix_engine/config.php');
+	include('../matrix_engine/'.CLASSES_DIR.'db_mysql.php');
+	include('../matrix_engine/'.CLASSES_DIR.'class_mailer.php');
+
+    include('Cache.class.php');
 
 	// instantiate the SQL classes
 	$sql = new DB_Sql();
@@ -146,56 +148,72 @@
 </script>
 		
 <?php
-		$query = "SELECT id, firstname, surname, email_address, reference_id, page_step FROM tbl_course_application WHERE form_completed = 0 ORDER BY email_address ASC";
+        Cache::init('incomplete-applications.cache', 10800);
 
-		$sql->query($query, $debug);
-		if ($sql->num_rows() > 0) {
-			
-			echo '<h2>Incomplete</h2>';
-			echo '<p id="incomplete_count">'.number_format($sql->num_rows()).' incomplete applications</p>';
-			echo '<table class="application_stats" id="incomplete">';
-			echo '<thead>';
-			echo '<tr>';
-				// In the link we need to switch position to whatever it's currently set to
-				echo '<th>Email</th>';
-				echo '<th width="130">Reference ID</th>';
-				echo '<th>Firstname</th>';
-				echo '<th>Surname</th>';
-				echo '<th>Complete</th>';
-				echo '<th>Actions</th>';
-			echo '</tr>';
-			echo '</thead>';
-			echo '<tbody>';
+        if (Cache::cacheFileExists()) {
+            $incompletes = Cache::getCache();
+        } else {
+            $query = "SELECT id, firstname, surname, email_address, reference_id, page_step FROM tbl_course_application WHERE form_completed = 0 ORDER BY email_address ASC";
+            $sql->query($query, $debug);
+            if ($sql->num_rows() > 0) {
+                $incompletes = array();
+                $i = 0;
+                while($sql->next_record()) {
+                    $incompletes[$i]['id'] = $sql->Record['id'];
+                    $incompletes[$i]['firstname'] = $sql->Record['firstname'];
+                    $incompletes[$i]['surname'] = $sql->Record['surname'];
+                    $incompletes[$i]['email_address'] = $sql->Record['email_address'];
+                    $incompletes[$i]['reference_id'] = $sql->Record['reference_id'];
+                    $incompletes[$i]['page_step'] = $sql->Record['page_step'];
+                    $i++;
+                }
+                Cache::setCache($incompletes);
+            }
+        }
 
-			$i = 0;
-			while($sql->next_record()) {
-				
-				$row_class = ($i % 2 == 0) ? 'r0' : 'r1';
-				
-				$id = (isset($sql->Record['id']) && $sql->Record['id'] != '') ? $sql->Record['id'] : '';
-				$firstname = (isset($sql->Record['firstname']) && $sql->Record['firstname'] != '') ? $sql->Record['firstname'] : '&#8211;';
-				$surname = (isset($sql->Record['surname']) && $sql->Record['surname'] != '') ? $sql->Record['surname'] : '&#8211;';
-				$page_step = (isset($sql->Record['page_step']) && $sql->Record['page_step'] != '')  ? $sql->Record['page_step'] : '';
-				$percent = ($page_step != '') ? round((($page_step / 9) * 100), 0) . '%' : '0%';
-				
-				echo '<tr class="'.$row_class.'">';
-					echo '<td class="email_add">'. $sql->Record['email_address'] . '</td>';
-					echo '<td class="ref_id">'. $sql->Record['reference_id'] . '</td>';
-					echo '<td>'. $firstname . '</td>';
-					echo '<td>'. $surname . '</td>';
-					echo '<td style="text-align:center;">'.$percent.'</td>';
-					$resume_link = 'http://www.conel.ac.uk/course-application/index.php?email='.$sql->Record['email_address'].'&ref_id='.$sql->Record['reference_id'];
-					$resume_link = urlencode($resume_link);
-					echo '<td style="text-align:center;"><a href="view-application.php?id='.$id.'" title="View Application"><img src="images/icon-view.png" width="16" height="16" alt="View User\'s Application" /></a> <a href="mailto:'.$sql->Record['email_address'].'&amp;subject=Resume Your Online Application&amp;Body=To resume your saved application visit: '.$resume_link.' and click \'Continue Application\'." title="Email User Their Reference ID"><img src="images/icon-email.png" width="16" height="16" alt="Email User Reference ID" /></a></td>';
-				echo '</tr>';
-				$i++;
-			}
-			echo '</tbody>';
-			echo '</table>';
-			echo '<br />';
-			echo '<br />';
-			echo '<br />';
-		}
+        $html = '<h2>Incomplete</h2>';
+        $html .= '<p id="incomplete_count">'.number_format(count($incompletes)).' incomplete applications</p>';
+        $html .= '<table class="application_stats" id="incomplete">';
+        $html .= '<thead>';
+        $html .= '<tr>';
+            $html .= '<th>Email</th>';
+            $html .= '<th width="130">Reference ID</th>';
+            $html .= '<th>Firstname</th>';
+            $html .= '<th>Surname</th>';
+            $html .= '<th>Complete</th>';
+            $html .= '<th>Actions</th>';
+        $html .= '</tr>';
+        $html .= '</thead>';
+        $html .= '<tbody>';
+
+        $c = 0;
+        foreach ($incompletes as $inc) {
+            $row_class = ($c % 2 == 0) ? 'r0' : 'r1';
+            
+            $id = (isset($inc['id']) && $inc['id'] != '') ? $inc['id'] : '';
+            $firstname = (isset($inc['firstname']) && $inc['firstname'] != '') ? $inc['firstname'] : '&#8211;';
+            $surname = (isset($inc['surname']) && $inc['surname'] != '') ? $inc['surname'] : '&#8211;';
+            $page_step = (isset($inc['page_step']) && $inc['page_step'] != '')  ? $inc['page_step'] : '';
+            $percent = ($page_step != '') ? round((($page_step / 9) * 100), 0) . '%' : '0%';
+            $resume_link = 'http://www.conel.ac.uk/course-application/index.php?email='.$inc['email_address'].'&ref_id='.$inc['reference_id'];
+            $resume_link = urlencode($resume_link);
+            
+            $html .= '<tr class="'.$row_class.'">';
+                $html .= '<td class="email_add">'. $inc['email_address'] . '</td>';
+                $html .= '<td class="ref_id">'. $inc['reference_id'] . '</td>';
+                $html .= '<td>'. $firstname . '</td>';
+                $html .= '<td>'. $surname . '</td>';
+                $html .= '<td style="text-align:center;">'.$percent.'</td>';
+                $html .= '<td style="text-align:center;"><a href="view-application.php?id='.$id.'" title="View Application"><img src="images/icon-view.png" width="16" height="16" alt="View User\'s Application" /></a> <a href="mailto:'.$inc['email_address'].'&amp;subject=Resume Your Online Application&amp;Body=To resume your saved application visit: '.$resume_link.' and click \'Continue Application\'." title="Email User Their Reference ID"><img src="images/icon-email.png" width="16" height="16" alt="Email User Reference ID" /></a></td>';
+            $html .= '</tr>';
+            $c++;
+        }
+        $html .= '</tbody>';
+        $html .= '</table>';
+        $html .= '<br />';
+        $html .= '<br />';
+        $html .= '<br />';
+        echo $html;
 	}
 							
 	if ($show == 3) {
