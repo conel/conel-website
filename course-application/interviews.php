@@ -129,9 +129,20 @@
 		$sql->query($query, $debug);
 		if ($sql->num_rows() > 0) {
             $interview_dates = array();
+            $c = 0;
+            $other_key = false;
 			while($sql->next_record()) {
                 $interview_dates[] = array('date' => $sql->Record['interview_time'], 'count' => $sql->Record['count']);
+                if ($sql->Record['interview_time'] == 'Other') $other_key = $c;
+                $c++;
             }
+            // Make 'Other' the first item
+            if ($other_key !== false) {
+                $other_array = $interview_dates[$other_key];
+                unset($interview_dates[$other_key]);
+                array_unshift($interview_dates, $other_array);
+            }
+
 			echo '<h2>Interview Dates</h2>';
             echo '<p>Click show to view applicants for date.</p>';
             echo '<br />';
