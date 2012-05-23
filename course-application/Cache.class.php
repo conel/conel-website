@@ -11,7 +11,7 @@
 class Cache {
 
     private static $cache_dir;
-    private static $cache_file;
+    public static $cache_file;
     private static $cache_life_secs;
     
     /**
@@ -25,8 +25,7 @@ class Cache {
     * @staticvar string $cache_file        Builds the cache_file string.
     */
     public static function init($cache_filename='', $cache_life='') {
-        $path = pathinfo(getcwd());
-        self::$cache_dir = $path['dirname'] . '/' . $path['basename'] . '/cache/';
+        self::$cache_dir = dirname($_SERVER['DOCUMENT_ROOT']) . '/secure/';
         self::$cache_life_secs = $cache_life;
         self::$cache_file = self::$cache_dir . $cache_filename;
     }

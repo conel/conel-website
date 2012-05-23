@@ -2556,8 +2556,8 @@ if ($step == 2) {
 		// Reference Details
 		$ref_details = '<h3>Reference Details</h3>';
 		$ref_details .= '<table>';
-		$ref_details .= '<tr><td width="120"><strong>Email Address:</strong></td><td> '.$_SESSION['caf']['email_address'].'</td></tr>';
-		$ref_details .= '<tr><td><strong>Reference ID:</strong></td><td>'.$_SESSION['caf']['reference_id'].' </td></tr>';
+		$ref_details .= '<tr><td width="120"><strong>Email Address:</strong></td><td> '.$email_address.'</td></tr>';
+		$ref_details .= '<tr><td><strong>Reference ID:</strong></td><td>'.$ref_id.' </td></tr>';
 		$ref_details .= '</table>';
 
 
@@ -2569,7 +2569,7 @@ if ($step == 2) {
 			$interview_details_app .= '<p><span class="hide"><strong>Date:</strong> </span><span class="interview_date">'.$interview_time.'</span></p>';
 			$interview_details_app .= $interview_address;
 			$interview_details_app .= '</div>';
-			$interview_details_app .= "<p>Unable to attend? <a href=\"mailto:admissions@conel.ac.uk?subject=Unable to attend my interview&body=%0D%0DPreferred Interview Date:%0D%0DMy Details%0DOld Interview Date: ".$interview_time."%0DEmail: ".$_SESSION['caf']['email_address']."%0DReference ID: ".$_SESSION['caf']['reference_id']."\">Contact us</a> to arrange a different interview date and time.</p>";
+			$interview_details_app .= "<p>Unable to attend? <a href=\"mailto:admissions@conel.ac.uk?subject=Unable to attend my interview&body=%0D%0DPreferred Interview Date:%0D%0DMy Details%0DOld Interview Date: ".$interview_time."%0DEmail: ".$email_address."%0DReference ID: ".$ref_id."\">Contact us</a> to arrange a different interview date and time.</p>";
 
 		} else {
 			$interview_details_app = '<div id="interview_details">';
@@ -2623,7 +2623,9 @@ if ($step == 2) {
         $applicant_html .= '<br />';
 		$applicant_html .= getAdmissionsFooter();
 
-		emailCompletedApplication($applicant_html, $email_address);
+        if ($email_address != '') {
+		    emailCompletedApplication($applicant_html, $email_address);
+        }
 
 		echo '<div class="section">';
 		echo '<h2>Course Application Complete</h2>';

@@ -1,6 +1,8 @@
 <?php
-	session_start();
+session_start();
 
+if ($_SESSION['caf']['signed_in'] == TRUE) {
+    
 	include_once('../matrix_engine/config.php');
 	include_once('../matrix_engine/'.CLASSES_DIR.'db_mysql.php');
 	include_once('../matrix_engine/'.CLASSES_DIR.'class_mailer.php');
@@ -15,8 +17,6 @@
 	$ucwords_keys = array('firstname', 'surname', 'home_address', 'language_spoken_at_home', 'job_title', 'employer', 'job_address', 'nationality', 'country_of_usual_reference');
 	// Array to hold values to be uppercased
 	$strtoupper_keys = array('postcode', 'job_postcode');
-	
-	if ($_SESSION['caf']['signed_in'] == TRUE) {
 		if (isset($_POST)) {
 			$sql_query = "UPDATE tbl_course_application SET ";
 			foreach ($_POST as $key => $value) {
@@ -59,5 +59,5 @@
 				}
 			}
 		}
-	}
+}
 ?>

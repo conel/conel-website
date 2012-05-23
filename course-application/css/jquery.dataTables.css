@@ -26,15 +26,13 @@ table.dataTable td.dataTables_empty {
 	text-align: center;
 }
 
-/*
-table.dataTable tr.odd { background-color: #E2E4FF; }
-table.dataTable tr.even { background-color: white; }
-*/
+table.dataTable tr.odd { background-color: #EEEEEE;}
+table.dataTable tr.even { background-color: #fff;}
 
-table.dataTable tr.odd td.sorting_1 { background-color: #E2E9BC; }
+table.dataTable tr.odd td.sorting_1 { background-color: #D7E8BD; }
 table.dataTable tr.odd td.sorting_2 { background-color: #DADCFF; }
 table.dataTable tr.odd td.sorting_3 { background-color: #E0E2FF; }
-table.dataTable tr.even td.sorting_1 { background-color: #F5F8E9; }
+table.dataTable tr.even td.sorting_1 { background-color: #F0F7E6; }
 table.dataTable tr.even td.sorting_2 { background-color: #F2F3FF; }
 table.dataTable tr.even td.sorting_3 { background-color: #F9F9FF; }
 
