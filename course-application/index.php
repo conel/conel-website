@@ -69,6 +69,8 @@
 		$_SESSION['caf']['signed_in'] = FALSE;
 	}
 
+	$required_fields = getRequiredFields();
+
 	// Check for required fields, redirect to previous page if blank
 	// Server-side checking - if people turn JavaScript off
 	if (!isset($_GET['error'])) {
@@ -88,9 +90,9 @@
 			
 			case 2:
 				$continue = TRUE;
-				$required_fields = array('course_title_1', 'college_centre_1', 'course_entry_date_1');
+				$required = $required_fields[2];
 				$_SESSION['caf']['missing_fields'] = '';
-				foreach ($required_fields as $field) {
+				foreach ($required as $field) {
 					if (isset($_POST[$field]) && $_POST[$field] == '') {
 						$_SESSION['caf']['missing_fields'][] = $field; 
 						$continue = FALSE;
@@ -99,7 +101,7 @@
 				if (!$continue) {
 					$_SESSION['caf']['errors'][] = "Required fields missing";
 					$_SESSION['caf']['page_step'] = $step - 1;
-					header('location:'.THIS_URL.'?step='.$_SESSION['caf']['page_step'].'&error=1');
+					header('location:'.THIS_URL.'?step='.$_SESSION['caf']['page_step']);
 					exit;
 				} else {
 					if (isset($_POST) && count($_POST) > 0) {
@@ -111,9 +113,9 @@
 			
 			case 3:
 				$continue = TRUE;
-				$required_fields = array('firstname', 'surname', 'gender', 'date_of_birth', 'home_address', 'postcode', 'ethnic_group', 'why_want_to_do_course');
+				$required = $required_fields[3];
 				$_SESSION['caf']['missing_fields'] = '';
-				foreach ($required_fields as $field) {
+				foreach ($required as $field) {
 					if (isset($_POST[$field]) && $_POST[$field] == '') {
 						$_SESSION['caf']['missing_fields'][] = $field; $continue = FALSE;
 					}
@@ -121,7 +123,7 @@
 				if (!$continue) {
 					$_SESSION['caf']['errors'][] = "Required fields missing";
 					$_SESSION['caf']['page_step'] = $step - 1;
-					header('location:'.THIS_URL.'?step='.$_SESSION['caf']['page_step'].'&error=1');
+					header('location:'.THIS_URL.'?step='.$_SESSION['caf']['page_step']);
 					exit;
 				} else {
 					if (isset($_POST) && count($_POST) > 0) {
@@ -133,15 +135,15 @@
 			
 			case 4:
 				$continue = TRUE;
-				$required_fields = array('do_you_have_a_learning_difficulty_or_disability');
+				$required = $required_fields[4];
 				$_SESSION['caf']['missing_fields'] = '';
-				foreach ($required_fields as $field) {
+				foreach ($required as $field) {
 					if (isset($_POST[$field]) && $_POST[$field] == '') {$_SESSION['caf']['missing_fields'][] = $field; $continue = FALSE;}
 				}
 				if (!$continue) {
 					$_SESSION['caf']['errors'][] = "Required fields missing";
 					$_SESSION['caf']['page_step'] = $step - 1;
-					header('location:'.THIS_URL.'?step='.$_SESSION['caf']['page_step'].'&error=1');
+					header('location:'.THIS_URL.'?step='.$_SESSION['caf']['page_step']);
 					exit;
 				} else {
 					if (isset($_POST) && count($_POST) > 0) {
@@ -160,15 +162,15 @@
 			
 			case 6:
 				$continue = TRUE;
-				$required_fields = array('are_you_employed','are_you_working_as_a_volunteer','relevant_skills_and_experience');
+				$required = $required_fields[6];
 				$_SESSION['caf']['missing_fields'] = '';
-				foreach ($required_fields as $field) {
+				foreach ($required as $field) {
 					if (isset($_POST[$field]) && $_POST[$field] == '') {$continue = FALSE; $_SESSION['caf']['missing_fields'][] = $field;}
 				}
 				if (!$continue) {
 					$_SESSION['caf']['errors'][] = "Required fields missing";
 					$_SESSION['caf']['page_step'] = $step - 1;
-					header('location:'.THIS_URL.'?step='.$_SESSION['caf']['page_step'].'&error=1');
+					header('location:'.THIS_URL.'?step='.$_SESSION['caf']['page_step']);
 					exit;
 				} else {
 					if (isset($_POST) && count($_POST) > 0) {
@@ -180,9 +182,9 @@
 			
 			case 7:
 				$continue = TRUE;
-				$required_fields = array('nationality','permanent_right_to_live_in_uk','are_you_an_international_student');
+				$required = $required_fields[7];
 				$_SESSION['caf']['missing_fields'] = '';
-				foreach ($required_fields as $field) {
+				foreach ($required as $field) {
 					if (isset($_POST[$field]) && $_POST[$field] == '') {
 						$continue = FALSE; 
 						$_SESSION['caf']['missing_fields'][] = $field;
@@ -191,7 +193,7 @@
 				if (!$continue) {
 					$_SESSION['caf']['errors'][] = "Required fields missing";
 					$_SESSION['caf']['page_step'] = $step - 1;
-					header('location:'.THIS_URL.'?step='.$_SESSION['caf']['page_step'].'&error=1');
+					header('location:'.THIS_URL.'?step='.$_SESSION['caf']['page_step']);
 					exit;
 				} else {
 					if (isset($_POST) && count($_POST) > 0) {
@@ -203,15 +205,15 @@
 			
 			case 8:
 				$continue = TRUE;
-				$required_fields = array('how_heard_about_course', 'correct_info_confirm');
+				$required = $required_fields[8];
 				$_SESSION['caf']['missing_fields'] = '';
-				foreach ($required_fields as $field) {
+				foreach ($required as $field) {
 					if (isset($_POST[$field]) && $_POST[$field] == '') {$continue = FALSE; $_SESSION['caf']['missing_fields'][] = $field;}
 				}
 				if (!$continue) {
 					$_SESSION['caf']['errors'][] = "Required fields missing";
 					$_SESSION['caf']['page_step'] = $step - 1;
-					header('location:'.THIS_URL.'?step='.$_SESSION['caf']['page_step'].'&error=1');
+					header('location:'.THIS_URL.'?step='.$_SESSION['caf']['page_step']);
 					exit;
 				} else {
 					if (isset($_POST) && count($_POST) > 0) {
@@ -224,15 +226,15 @@
 			
 			case 9:
 				$continue = TRUE;
-				$required_fields = array('interview_time', 'interview_location');
+				$required = $required_fields[9];
 				$_SESSION['caf']['missing_fields'] = '';
-				foreach ($required_fields as $field) {
+				foreach ($required as $field) {
 					if (isset($_POST[$field]) && $_POST[$field] == '') {$continue = FALSE; $_SESSION['caf']['missing_fields'][] = $field;}
 				}
 				if (!$continue) {
 					$_SESSION['caf']['errors'][] = "Required fields missing";
 					$_SESSION['caf']['page_step'] = $step - 1;
-					header('location:'.THIS_URL.'?step='.$_SESSION['caf']['page_step'].'&error=1');
+					header('location:'.THIS_URL.'?step='.$_SESSION['caf']['page_step']);
 					exit;
 				} else {
 					if ($_SESSION['caf']['step_complete'][8] === true) {
@@ -319,6 +321,9 @@
 			}
 		}
 	}
+
+	// Check that for the current step: all fields are required
+	requiredsCheck($step);
 	
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -2333,8 +2338,8 @@ if ($step == 2) {
 			}
 
 			// check if interview location is blank
-			var interview_loc = $("input[name='interview_location']:checked").val();
-			if (typeof interview_loc == 'undefined') {
+			var interview_loc = $("input[name='interview_location']").val();
+			if (typeof interview_loc == '') {
 				alert('Please choose an interview location');
 				return false;
 			}
@@ -2363,7 +2368,7 @@ if ($step == 2) {
 		// Book an interview time
 		echo '<h2>Book your Interview</h2>';
 		echo '<p>We interview every Monday from 4-6 PM. Interviews start at 4 PM.</p>
-			<p>Please select a convenient interview date and location below.</p>
+			<p>Please select a convenient interview date below.</p>
 		   <p>If you can\'t attend a date below select \'Other\'. We will contact you to arrange an alternative interview date and time.</p>';
 
 		$mondays = getNextFourMondays();
@@ -2395,54 +2400,48 @@ if ($step == 2) {
 		echo '</td>';
 		echo '</table>';
 
-        echo '<br />';
-        echo '<p>Please select your interview location.</p>';
-        echo '<table width="312" class="interview_time">';
-        echo '<tr><th colspan="4">Interview Location<span class="required">*</span></th></tr>';
-        echo '<tr><td valign="top">
-            <input type="radio" name="interview_location" value="Tottenham" id="interview_tottenham" class="radio" ';
-        if ($_SESSION['caf']['interview_location'] == 'Tottenham') { 
-            echo 'checked="checked"';
-        }
-        echo ' /></td>
-            <td valign="top">
-            <label for="interview_tottenham">Tottenham Centre<br />
+		$interview_location = $_SESSION['caf']['college_centre_1'];
+		$alt_location = '';
+		if ($interview_location != '') {
+			$alt_location = ($interview_location == 'Tottenham') ? 'Enfield' : 'Tottenham';
+		}
+
+		echo '<h3 class="interview_location">Interview Location</h3>';
+        echo '<input type="hidden" name="interview_location" value="'.$interview_location.'" id="interview_tottenham" class="text" />';
+		if ($interview_location != '') {
+        echo '<p>Your interview location is <strong>'.$interview_location.' Centre</strong>. This is based on your Course 1 choice in <a href="index.php?step=1">Section 1</a>.</p>';
+		echo "<p>If you'd prefer to study at $alt_location Centre, please <a href=\"index.php?step=1\">select a course</a> that runs at $alt_location.</p>";
+		} else {
+			echo '<p>You need to <a href="index.php?step=1">select a Course</a> to proceed.</p>';
+		}
+
+		if ($interview_location == 'Tottenham') {
+
+		echo '<div class="address_links">
+			<h4>Tottenham Centre</h4>
             High Road<br />
             London<br />
             N15 4RU<br />
-            </label>
 
-            <br />
-            <div class="address_links">
-                <p><a href="http://www.conel.ac.uk/docs/tottenham_centres_map_0.pdf" target="_blank" style="text-decoration: underline; text-color: #0000ff;">Download a Map</a></p>
-                <p><a href="http://maps.google.co.uk/maps?q=The+College+of+Haringey,+Enfield+and+North+East+London+High+Road+London+N15+4RU&hl=en&ll=51.586187,-0.072296&spn=0.00269,0.006866&sll=51.65291,-0.046177&sspn=0.005372,0.009645&t=h&z=18" target="_blank" style="text-decoration: underline; text-color: #0000ff;">Google Map</a></p>
-            </div>
-        </td>';
+			<p><a href="http://www.conel.ac.uk/docs/tottenham_centres_map_0.pdf" target="_blank" style="text-decoration: underline; text-color: #0000ff;">Download a Map</a></p>
+			<p><a href="http://maps.google.co.uk/maps?q=The+College+of+Haringey,+Enfield+and+North+East+London+High+Road+London+N15+4RU&hl=en&ll=51.586187,-0.072296&spn=0.00269,0.006866&sll=51.65291,-0.046177&sspn=0.005372,0.009645&t=h&z=18" target="_blank" style="text-decoration: underline; text-color: #0000ff;">Google Map</a></p>
+            </div>';
+	
+		} else if ($interview_location == 'Enfield') {
 
-        echo '<td valign="top">
-            <input type="radio" name="interview_location" value="Enfield" id="interview_enfield" class="radio" ';
-        if ($_SESSION['caf']['interview_location'] == 'Enfield') { 
-            echo 'checked="checked"';
-        }
-        echo ' />
-            </td>
-            <td valign="top">
-            <label for="interview_enfield">Enfield Centre<br />
+        echo '<div class="address_links">
+			<h4>Enfield Centre</h4>
             73 Hertford Road<br />
             Enfield<br />
             Middlesex<br />
             EN3 5HA<br />
-            </label>
 
-            <br />
-            <div class="address_links">
-                <p><a href="http://www.conel.ac.uk/docs/enfield_centre_map_0.pdf" target="_blank" style="text-decoration: underline; text-color: #0000ff;">Download a Map</a></p>
-                <p><a href="http://maps.google.co.uk/maps?q=73+Hertford+Road+Enfield+Middlesex+EN3+5HA&hl=en&ll=51.65291,-0.046177&spn=0.005372,0.009645&sll=51.654843,-0.046713&sspn=0.002686,0.004823&t=h&z=17" target="_blank" style="text-decoration: underline; text-color: #0000ff;">Google Map</a></p>
-            </div>
-        </td>';
+			<p><a href="http://www.conel.ac.uk/docs/enfield_centre_map_0.pdf" target="_blank" style="text-decoration: underline; text-color: #0000ff;">Download a Map</a></p>
+			<p><a href="http://maps.google.co.uk/maps?q=73+Hertford+Road+Enfield+Middlesex+EN3+5HA&hl=en&ll=51.65291,-0.046177&spn=0.005372,0.009645&sll=51.654843,-0.046713&sspn=0.002686,0.004823&t=h&z=17" target="_blank" style="text-decoration: underline; text-color: #0000ff;">Google Map</a></p>
+			</div>';
 
+		}
 
-        echo '</tr></table>';
         echo '<br />';
 
 ?>

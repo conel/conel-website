@@ -715,10 +715,31 @@ span.interview_date {
 }
 .ui-datepicker {
 }
+h3.interview_location {
+	font-size:1.4em;
+	margin-top:7px;
+}
+div.address_links {
+	display:block;
+	margin-top:22px;
+	margin-bottom:15px;
+	line-height:1.5em;
+	background-color:#F3F3F3;
+	width:300px;
+	padding:10px;
+	border:1px solid #C8C8C8;
+}
 div.address_links p {
     margin:0 !important;
     padding:0 !important;
+    margin-top:6px !important;
     margin-bottom:4px !important;
+}
+div.address_links h4 {
+	margin:0;
+	padding:0;
+	margin-bottom:5px;
+	font-size:1.15em;
 }
 #reference_details_show h3 {
     font-size:1.4em;

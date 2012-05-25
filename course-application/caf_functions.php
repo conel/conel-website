@@ -13,6 +13,44 @@
 		return $years;
 	}
 
+	function getRequiredFields() {
+		$required_fields = array();
+
+		$required_fields[2] = array('course_title_1', 'college_centre_1', 'course_entry_date_1');
+		$required_fields[3] = array('firstname', 'surname', 'gender', 'date_of_birth', 'home_address', 'postcode', 'ethnic_group', 'why_want_to_do_course');
+		$required_fields[4] = array('do_you_have_a_learning_difficulty_or_disability');
+		$required_fields[6] = array('are_you_employed','are_you_working_as_a_volunteer','relevant_skills_and_experience');
+		$required_fields[7] = array('nationality','permanent_right_to_live_in_uk','are_you_an_international_student');
+		$required_fields[8] = array('how_heard_about_course', 'correct_info_confirm');
+		$required_fields[9] = array('interview_time', 'interview_location');
+
+		return $required_fields;
+	}
+
+	function checkRequiredsSet(Array $requireds_for_step) {
+		foreach ($requireds_for_step as $step) {
+			if (!isset($_SESSION['caf'][$step]) || $_SESSION['caf'][$step] == '') {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	// Check that all required fields exist in the session
+	function requiredsCheck($step) {
+		$requireds = getRequiredFields();
+		foreach ($requireds as $key => $req) {
+			if ($key > $step) break;
+			if (checkRequiredsSet($req) === false) {
+				$step = $key - 1;
+				$_SESSION['caf']['page_step'] = $step;
+				$_SESSION['caf']['errors'][] = "Required fields missing";
+				header('location:'.THIS_URL.'?step='.$step);
+				exit;
+			}
+		}
+	}
+
 	// Make sure people can't get to steps they should'nt be able to
 	// Must be "signed in" to be in a step
 	function securityStepCheck($step) {
