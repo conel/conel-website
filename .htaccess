@@ -102,6 +102,7 @@
 	RewriteRule ^prebusiness$ /our_courses/pre_apprenticeships_business_administration [R=301,L]
 	RewriteRule ^preit$ /our_courses/pre_apprenticeships_it [R=301,L]
 	RewriteRule ^mentors$ /our_college/volunteer_mentors  [R=301,L]
+	RewriteRule ^sports_sponsorship$ /for_learners/sponsored_athlete_programme  [R=301,L]
 
 	RewriteRule ^dynamic(.*)$ dynamic.php?url=$1 [QSA,L]
 	RewriteCond %{REQUEST_FILENAME} !-f

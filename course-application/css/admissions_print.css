@@ -1,0 +1,10 @@
+#interview_dates .location {
+   padding-left:0;
+   border-left:none;
+}
+.header, #logout, p.page_choice {
+    display:none;
+}
+td, th {
+    background-color:#fff;
+}

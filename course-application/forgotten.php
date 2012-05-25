@@ -137,6 +137,9 @@
 <div id="holder">
 	<img src="../layout/img/banner_new.gif" width="955" height="84" alt="The College of Haringey, Enfield and North East London" id="banner" />
 	<h1>Course Applications</h1>
+
+    <noscript><div id="js_error">This page requires JavaScript.<br />Follow <a href="http://www.enable-javascript.com/" target="_blank">these instructions</a> to enable JavaScript in your web browser.</div></noscript>
+	
 	
 <?php
 	if ($_SESSION['ca']['logged_in'] == FALSE) {
@@ -203,7 +206,7 @@ $(document).ready(function() {
             aoData.push({"name":"wcY2E7kmMKDfyMB0E2", "value":"incomplete"});
         },
         'bDeferRender': true,
-        'iDisplayLength':15,
+        'iDisplayLength':10,
         'aoColumns': [
                 /* email */     null,
                 /* ref id */    null,
@@ -289,7 +292,7 @@ $(document).ready(function() {
 		});
 
         $('#since_sept').dataTable({
-            'iDisplayLength':15,
+            'iDisplayLength':10,
             'aoColumns': [
                     /* no */        null,
                     /* email */     null,
@@ -398,7 +401,7 @@ $(document).ready(function() {
             aoData.push({"name":"wcY2E7kmMKDfyMB0E2", "value":"complete"});
         },
         'bDeferRender': true,
-        'iDisplayLength':15,
+        'iDisplayLength':10,
         'aoColumns': [
                 /* email */     null,
                 /* ref id */    null,
