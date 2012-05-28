@@ -11,6 +11,8 @@
 	function isValidCourseCode($course_code='') {
 		if (strlen($course_code) != 8) {
 			return false;
+		} else {
+			return true;
 		}
 	}
 		
@@ -51,7 +53,7 @@
 				$redirect_url = 'http://' . $_SERVER['HTTP_HOST'] . '/course-application/index.php?step=1';
 				header("location: $redirect_url");
 				exit;
-			} else if ((!isset($_SESSION['caf']['course_title_2']) || $_SESSION['caf']['course_title_2'] == '') && (!isset($_SESSION['caf']['course_code_2']) || $_SESSION['caf']['course_code_2'] == '')) {
+			} else if (!isset($_SESSION['caf']['course_code_2']) || $_SESSION['caf']['course_code_2'] == '' || isValidCourseCode($_SESSION['caf']['course_code_2'] === false)) {
 				// Use slot 2
 				$_SESSION['caf']['course_title_2'] = $course_title;
 				$_SESSION['caf']['course_code_2'] = $course_code;
