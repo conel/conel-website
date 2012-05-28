@@ -655,4 +655,12 @@
 
 	}
 
+	function isValidCourseCode($course_code='') {
+		if (strlen($course_code) != 8) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 ?>

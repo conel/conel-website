@@ -7,6 +7,12 @@
 		include_once('../matrix_engine/config.php');
 		include_once('../matrix_engine/'.CLASSES_DIR.'db_mysql.php');
 		include_once('../matrix_engine/'.CLASSES_DIR.'class_mailer.php');
+
+	function isValidCourseCode($course_code='') {
+		if (strlen($course_code) != 8) {
+			return false;
+		}
+	}
 		
 		// instantiate the SQL classes
 		$sql = new DB_Sql();
@@ -30,7 +36,7 @@
 			}
 			
 			// Check which slot this course selection should be placed into
-			if ((!isset($_SESSION['caf']['course_title_1']) || $_SESSION['caf']['course_title_1'] == '') && (!isset($_SESSION['caf']['course_code_1']) || $_SESSION['caf']['course_code_1'] == '')) {
+			if (!isset($_SESSION['caf']['course_code_1']) || $_SESSION['caf']['course_code_1'] == '' || isValidCourseCode($_SESSION['caf']['course_code_1']) === false) {
 				// Use slot 1
 				$_SESSION['caf']['course_title_1'] = $course_title;
 				$_SESSION['caf']['course_code_1'] = $course_code;

@@ -107,6 +107,9 @@ div.section {
 div.section p {
 	line-height:1.2em;
 }
+input[readonly] {
+	/*background-color:#EAEAEA;*/
+}
 strong {
 	font-weight:bold;
 }
@@ -199,9 +202,15 @@ input.browse {
 	text-align:center;
 	padding:2px;
 }
+input.browse {
+	-webkit-box-shadow:rgba(0, 0, 0, 0.1) 0px 1px 3px;
+	box-shadow:rgba(0, 0, 0, 0.1) 0px 1px 3px;
+}
 input.browse:hover {
 	color:#002953;
 	border-color:#4B6578;
+	-webkit-box-shadow:rgba(0, 0, 0, 0.3) 0px 1px 3px;
+	box-shadow:rgba(0, 0, 0, 0.3) 0px 1px 3px;
 }
 .note {
 	color:#666;
@@ -665,7 +674,7 @@ h2.fee_status {
 	height:21px;
 }
 #charlimitinfo {
-	color:#000;
+	color:#3E3E3E;
     display:block;
     margin-top:4px;
 }
@@ -795,4 +804,10 @@ h3 a.toggle, h4 a.toggle_centre {
     margin-bottom:20px;
     padding-left:15px;
     line-height:1.5em;
+}
+p.ref_note {
+	line-height:1.7em !important;
+}
+.print_hide h2 {
+	margin-top:15px;
 }

@@ -657,9 +657,9 @@ if ($step > 0) {
 			echo '</div>';
 
 			echo '<p class="important">Print your reference details &mdash; required to resume a saved application.</p> ';
-            echo '<p>Your reference details will be emailed to you after entering a correct security code below.</p>';
 			echo '<p class="print_this"><img src="../images/printer.png" width="16" height="16" border="0" alt="printer icon" /> <strong><a href="javascript:window.print()">Print</a></strong></p>';
-			echo '<br />';
+            echo '<p class="ref_note">Your reference details will be emailed to you ('.$_SESSION['caf']['email_address'].') after entering a correct security code below.';
+            echo '<br />If you\'ve accidentally entered an incorrect email address you can <a href="logout.php">click here</a> to logout, then start a new application.</p>';
 			
 			echo '<div class="print_hide">';
 			echo '<hr />';
@@ -787,6 +787,17 @@ if ($step > 0) {
 				$("#s1_course_title_1").focus();
 				return false;
 			}
+
+			// Check for valid course code
+			var course_code1 = $("#s1_course_code_1").val();
+			if (course_code1 != '' && !isValidCourseCode(course_code1)) {
+				$("#browse_course_1").attr('class', 'submit browse');
+				$("#s1_course_code_1").val('');
+				$("#s1_course_code_1").attr('readonly','');
+				alert('Invalid course code entered for Course 1.\nPlease leave \'Course Code\' blank or click the \'Select Course 1\' button to select an existing course.');
+				$("#s1_course_code_1").focus();
+				return false;
+			}
 			
 			// check if college centre 1 is blank
 			if ($("#s1_college_centre_1").val() == '') {
@@ -799,6 +810,16 @@ if ($step > 0) {
 			if ($("#s1_course_entry_date_1").val() == '') {
 				alert('Please enter an entry date');
 				$("#s1_course_entry_date_1").focus();
+				return false;
+			}
+
+			// Check for valid course code
+			var course_code2 = $("#s1_course_code_2").val();
+			if (course_code2 != '' && !isValidCourseCode(course_code2)) {
+				$("#browse_course_2").attr('class', 'submit browse');
+				$("#s1_course_code_2").attr('readonly','');
+				alert('Invalid course code entered for Course 2.\nPlease leave \'Course Code\' blank or click the \'Select Course 2\' button to select an existing course.');
+				$("#s1_course_code_2").focus();
 				return false;
 			}
 			
@@ -817,8 +838,8 @@ if ($step > 0) {
 		$_SESSION['caf']['course_title_2'] == '' || $_SESSION['caf']['course_code_2'] == '' || $_SESSION['caf']['college_centre_2'] == '' || $_SESSION['caf']['course_entry_date_2'] == '') {
 	?>
 	<div class="browse_instructions">
-		<h3>Browse for Course: Instructions</h3>
-		<p class="note">Clicking the <strong>'Browse for Course'</strong> buttons will take you to our course subjects page.</p>
+		<h3>Selecting Courses: Instructions</h3>
+		<p class="note">Clicking the <strong>'Select Course'</strong> buttons will take you to our course subjects page.</p>
 		<div id="browse_steps" class="note">
 		<ol>
 			<li>Select the Subject, then Course you wish to apply for.</li>
@@ -831,7 +852,7 @@ if ($step > 0) {
 	<table summary="Course 1 Details">
 		<tr>
 			<td><h3 class="courses">Course 1</h3></td>
-			<td><input type="submit" id="browse_course_1" value="+ Browse for Course 1" class="submit browse<?php if ((!isset($_SESSION['caf']['course_title_1']) || $_SESSION['caf']['course_title_1'] == '') && (!isset($_SESSION['caf']['course_code_1']) || $_SESSION['caf']['course_code_1'] == '')) { echo ''; } else { echo ' hidden'; } ?>" /></td>
+			<td><input type="submit" id="browse_course_1" value="+ Select Course 1" class="submit browse<?php if ((!isset($_SESSION['caf']['course_code_1']) || $_SESSION['caf']['course_code_1'] == '') || isValidCourseCode($_SESSION['caf']['couse_code_1'] === false)) { echo ''; } else { echo ' hidden'; } ?>" /></td>
 		</tr>
 		<tr class="<?php addMissingFieldClass('course_title_1'); ?>">
 			<?php if (isset($_SESSION['caf']['course_title_1']) && $_SESSION['caf']['course_title_1'] != '') { $readonly = ' readonly="readonly"'; } else { $readonly = ''; } ?>
@@ -839,7 +860,7 @@ if ($step > 0) {
 			<td><input type="text" name="course_title_1" class="text" id="s1_course_title_1" maxlength="100" value="<?php getValue('text', 'course_title_1'); ?>" <?php echo $readonly; ?> required /></td>
 		</tr>
 		<tr>
-			<?php if (isset($_SESSION['caf']['course_code_1']) && $_SESSION['caf']['course_code_1'] != '') { $readonly = ' readonly="readonly"'; } else { $readonly = ''; } ?>
+			<?php if (isset($_SESSION['caf']['course_code_1']) && $_SESSION['caf']['course_code_1'] != '' && isValidCourseCode($_SESSION['caf']['course_code_1']) === true) { $readonly = ' readonly="readonly"'; } else { $readonly = ''; } ?>
 			<td><label for="s1_course_code_1">Course Code:</label></td>
 			<td><input type="text" name="course_code_1" class="text" id="s1_course_code_1" maxlength="15" value="<?php getValue('text', 'course_code_1'); ?>" <?php echo $readonly; ?> /></td>
 		</tr>
@@ -908,7 +929,7 @@ if ($step > 0) {
 	<table summary="Course 2 Details">
 		<tr>
 			<td><h3 class="courses">Course 2</h3></td>
-			<td><input type="submit" id="browse_course_2" value="+ Browse for Course 2" class="submit browse<?php if ((!isset($_SESSION['caf']['course_title_2']) || $_SESSION['caf']['course_title_2'] == '') && (!isset($_SESSION['caf']['course_code_2']) || $_SESSION['caf']['course_code_2'] == '')) { echo ''; } else { echo ' hidden'; } ?>" /></td>
+			<td><input type="submit" id="browse_course_2" value="+ Select Course 2" class="submit browse<?php if (!isset($_SESSION['caf']['course_code_2']) || $_SESSION['caf']['course_code_2'] == '' || isValidCourseCode($_SESSION['caf']['course_code_2']) === false) { echo ''; } else { echo ' hidden'; } ?>" /></td>
 		</tr>
 		<tr>
 			<?php if (isset($_SESSION['caf']['course_title_2']) && $_SESSION['caf']['course_title_2'] != '') { $readonly = ' readonly="readonly"'; } else { $readonly = ''; } ?>
@@ -916,7 +937,7 @@ if ($step > 0) {
 			<td><input type="text" name="course_title_2" class="text" id="s1_course_title_2" maxlength="100" value="<?php getValue('text', 'course_title_2'); ?>" <?php echo $readonly; ?> /></td>
 		</tr>
 		<tr>
-			<?php if (isset($_SESSION['caf']['course_code_2']) && $_SESSION['caf']['course_code_2'] != '') { $readonly = ' readonly="readonly"'; } else { $readonly = ''; } ?>
+			<?php if (isset($_SESSION['caf']['course_code_2']) && $_SESSION['caf']['course_code_2'] != '' && isValidCourseCode($_SESSION['caf']['course_code_2']) === true) { $readonly = ' readonly="readonly"'; } else { $readonly = ''; } ?>
 			<td><label for="s1_course_code_2">Course Code:</label></td>
 			<td><input type="text" name="course_code_2" class="text" id="s1_course_code_2" maxlength="15" value="<?php getValue('text', 'course_code_2'); ?>" <?php echo $readonly; ?> /></td>
 		</tr>
@@ -2568,7 +2589,7 @@ if ($step == 2) {
 			$interview_details_app .= '<p><span class="hide"><strong>Date:</strong> </span><span class="interview_date">'.$interview_time.'</span></p>';
 			$interview_details_app .= $interview_address;
 			$interview_details_app .= '</div>';
-			$interview_details_app .= "<p>Unable to attend? <a href=\"mailto:admissions@conel.ac.uk?subject=Unable to attend my interview&body=%0D%0DPreferred Interview Date:%0D%0DMy Details%0DOld Interview Date: ".$interview_time."%0DEmail: ".$email_address."%0DReference ID: ".$ref_id."\">Contact us</a> to arrange a different interview date and time.</p>";
+			$interview_details_app .= "<p>Unable to attend? <a href=\"mailto:admissions@conel.ac.uk?subject=Unable to attend my interview&body=%0D%0DPreferred Interview Date:%0D%0DMy Details%0DInterview Centre: $interview_centre%0DOld Interview Date: ".$interview_time."%0DEmail: ".$email_address."%0DReference ID: ".$ref_id."\">Contact us</a> to arrange a different interview date and time.</p>";
 
 		} else {
 			$interview_details_app = '<div id="interview_details">';

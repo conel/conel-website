@@ -10,6 +10,11 @@ function isValidEmailAddress(emailAddress) {
 	return pattern.test(emailAddress);  
 }
 
+function isValidCourseCode(courseCode) {  
+	return courseCode.length == 8;
+}
+
+
 $(document).ready(function() {
 
 	$("#s0_email").keyup(function(){
@@ -141,16 +146,20 @@ $(document).ready(function() {
 	// Clear functions
 	$('#clear_course_1').click(function(el) {
 		el.preventDefault();
+		$('#s1_course_title_1').attr('readonly','');
 		$('#s1_course_title_1').val('');
+		$('#s1_course_code_1').attr('readonly','');
 		$('#s1_course_code_1').val('');
 		if ($('#s1_college_centre_1').attr('selectedIndex')) {
 			$('#s1_college_centre_1').attr('selectedIndex', 0);
 		} else {
+			$('#s1_college_centre_1').attr('readonly','');
 			$('#s1_college_centre_1').val('');
 		}
 		$('#browse_course_1').removeClass('hidden');
 		$('#s1_course_title_1').focus();
 		$('#s1_course_entry_date_1').attr('disabled', '');
+		$('#s1_course_entry_date_1').attr('readonly', '');
 		$('#s1_course_entry_date_1').val('');
 		$('#s1_preferred_entry_month_1').val('');
 		$('#s1_preferred_entry_year_1').val('');
@@ -158,16 +167,20 @@ $(document).ready(function() {
 	
 	$('#clear_course_2').click(function(el) {
 		el.preventDefault();
+		$('#s1_course_title_2').attr('readonly', '');
 		$('#s1_course_title_2').val('');
+		$('#s1_course_code_2').attr('readonly','');
 		$('#s1_course_code_2').val('');
 		if ($('#s1_college_centre_2').attr('selectedIndex')) {
 			$('#s1_college_centre_2').attr('selectedIndex', 0);
 		} else {
+			$('#s1_college_centre_2').attr('readonly', '');
 			$('#s1_college_centre_2').val('');
 		}
 		$('#browse_course_2').removeClass('hidden');
 		$('#s1_course_title_2').focus();
 		$('#s1_course_entry_date_2').attr('disabled', '');
+		$('#s1_course_entry_date_2').attr('readonly', '');
 		$('#s1_course_entry_date_2').val('');
 		$('#s1_preferred_entry_month_2').val('');
 		$('#s1_preferred_entry_year_2').val('');
