@@ -333,8 +333,8 @@
 <meta name="robots" content="noindex" />
 <meta name="googlebot" content="noindex" />
 <title>Course Application Form</title>
-<link href="css/application_form.css" rel="stylesheet" type="text/css" media="all" />
-<link href="css/application_form_print.css" rel="stylesheet" type="text/css" media="print" />
+<link href="css/application.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/application_print.css" rel="stylesheet" type="text/css" media="print" />
 <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="js/caf_functions.js"></script>
 <link media="screen" rel="stylesheet" href="css/colorbox.css" />

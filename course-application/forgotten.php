@@ -124,8 +124,8 @@
 <meta name="robots" content="noindex" />
 <meta name="googlebot" content="noindex" />
 <title>Reference ID Search - Online Course Applications</title>
-<link href="css/application_form.css" rel="stylesheet" type="text/css" media="all" />
-<link href="css/application_form_print.css" rel="stylesheet" type="text/css" media="print" />
+<link href="css/application.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/application_print.css" rel="stylesheet" type="text/css" media="print" />
 <link href="css/jquery.dataTables.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="js/fl_functions.js"></script>
