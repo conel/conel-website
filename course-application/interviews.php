@@ -332,12 +332,12 @@ echo "</script>\n";
             $print_html .= '<a id="close_list" href="#">&lt; Back to list</a>';
             $print_html .= "<h2>$interview_date</h2>";
             $print_html .= "<h3>$centre_name</h3>";
-            $print_html .= '<table class="application_stats"><thead><tr><th width="280">Name</th><th width="140">Curriculum Area</th><th width="30">Accepted</th><th>Notes</th></tr></thead>';
+            $print_html .= '<table class="application_stats"><thead><tr><th width="280">Name</th><th width="140">Curriculum Area</th><th width="30">Attended</th><th>Comments</th></tr></thead>';
             $print_html .= '<tbody>';
             foreach ($print_data[$date][$centre] as $no => $data) {
                 $row_class = ($no % 2 == 0) ? 'r0' : 'r1';
                 $curric_colour = (isset($curric_colours[$data[1]])) ? ' style="color:'.$curric_colours[$data[1]].'; font-weight:bold;"' : ' style="color:#000;" ';
-                $print_html .= '<tr class="'.$row_class.'"><td>'.($no + 1).'. &nbsp; '.$data[0].'</td><td'.$curric_colour.'>'.$data[1].'</td><td>&nbsp;</td><td>&nbsp;</td></tr>';
+                $print_html .= '<tr class="'.$row_class.'"><td width="280">'.($no + 1).'. &nbsp; '.$data[0].'</td><td'.$curric_colour.' width="140">'.$data[1].'</td><td width="30">&nbsp;</td><td>&nbsp;</td></tr>';
             }
             $print_html .= '</tbody></table>';
             $print_html .= '<script type="text/javascript">window.print();</script>';
