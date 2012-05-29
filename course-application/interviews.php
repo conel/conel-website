@@ -177,7 +177,7 @@
         }
         return $app_by_loc;
     }
-    
+
     $query = "SELECT DISTINCT interview_time, COUNT(*) AS count FROM tbl_course_application WHERE interview_time != '' AND form_completed = 1 GROUP BY interview_time ORDER BY interview_time ASC";
     $sql->query($query, $debug);
     if ($sql->num_rows() > 0) {
@@ -228,11 +228,39 @@ $(document).ready(function() {
             $(this).html('show');
         }
     });
+
+    // Hide print list on click
+    $('a#close_list').click(function(e) {
+        e.preventDefault();
+        $('#print_list').hide();
+    });
+
 })";
 echo "</script>\n";
 
         $locations = array('', 'Tottenham', 'Enfield');
+        // Setup colours for each curriculum area
+        $curric_colours = array(
+            'AGRICULTUR' => '#603C20',
+            'APMEDFRSCI' => '#344354',
+            'ARTSMEDIA' => '#691F2B',
+            'BUSIACCNTS' => '#2F6A1E',
+            'CAREHEALTH' => '#F76C77',
+            'COMPUTING' => '#626262',
+            'CONSTRBUI' => '#A57C41',
+            'ENGMATHICT' => '#2C3345',
+            'ESOL' => '#7B8318',
+            'FORGNLANG' => '#7B8318',
+            'HAIRBEAU' => '#BD7DDF',
+            'LEISTOUR' => '#53B58B',
+            'SPORTFIT' => '#32AAD1',
+            'SUPPLEARN' => '#625A70',
+            'TEACHSUP' => '#F2AA00',
+            'UNISERV' => '#223166'
+        );
+        
 
+        $print_data = array();
         foreach ($interview_dates as $key => $date) {
             $date_chosen = $date['date'];
             echo '<h3>'.$date_chosen.' <span> &mdash; '.$date['count'].' applicants</span> &nbsp;<a href="#" class="toggle" id="view_'.$key.'">show</a></h3>';
@@ -249,9 +277,10 @@ echo "</script>\n";
                 $loc_name = ($loc == '') ? 'No Centre' : $loc;
                 $applicants = getApplicantsByLocation($all_applicants, $loc);
                 if (count($applicants) > 0) {
-                echo '<h4>'.$loc_name.' <span>&ndash; '.count($applicants).' applicants</span> &nbsp;<a href="#" class="toggle_centre" id="centre_'.$key.'_'.$kee.'">show</a></h4>' . "\n";
+                    echo '<h4>'.$loc_name.' <span>&ndash; '.count($applicants).' applicants</span> &nbsp;<a href="#" class="toggle_centre" id="centre_'.$key.'_'.$kee.'">show</a></h4>' . "\n";
                     echo '<div class="centre location_'.$key.'_'.$kee.'">' . "\n";
                     if ($loc == '') echo '<p>Contact applicant asking which location they want to attend.</p>';
+                    echo '<p><a href="interviews.php?date='.$key.'&amp;centre='.$kee.'">Print this list</a></p>';
                     echo '<table class="application_stats">' . "\n";
                     echo '<tr><th>&nbsp;</th><th>Name</th><th>Completed</th><th>Curriculum Area</th><th class="center">Application</th></tr>' . "\n";
                     $c = 0;
@@ -262,10 +291,13 @@ echo "</script>\n";
                         echo '<td>'.($c + 1).'.</td>';
                         echo '<td width="270">'.$app['name'].'</td>';
                         echo '<td width="200">'.$app['completed'].'</td>';
-                        echo '<td width="230">'.$curric_area.'</td>';
+                        // Curric colour
+                        $curric_colour = (isset($curric_colours[$curric_area])) ? ' style="color:'.$curric_colours[$curric_area].'; font-weight:bold;"' : ' style="color:#000;" ';
+                        echo '<td width="230"'.$curric_colour.'>'.$curric_area.'</td>';
                         echo '<td class="center"><a href="http://www.conel.ac.uk/course-application/view-application.php?id='.$app['id'].'" target="_blank">View</a></td>';
                         echo '</tr>' . "\n";
                         $c++;
+                        $print_data[$key][$kee][] = array($app['name'], $curric_area);
                     }
                     echo "</table>\n";
                     echo "</div>\n";
@@ -279,13 +311,42 @@ echo "</script>\n";
     } else {
         echo '<p>No interview dates found</p>';
     }
+    
 
-    echo '</div>';
-    echo '</div>';
-    echo '</div>';
-}
+    echo '</div>' . "\n";
+    echo '</div>' . "\n";
+    echo '</div>' . "\n";
+    echo '</div>' . "\n";
 
 ?>
-</div>
+<?php
+    if (isset($_GET['date']) && is_numeric($_GET['date'])) {
+        if (isset($_GET['centre']) && in_array($_GET['centre'], array(0,1,2))) {
+            $date = $_GET['date'];
+            $centre = $_GET['centre'];
+            $centre_name = $locations[$centre];
+            $interview_date = $interview_dates[$date]['date'];
+            
+            $print_html = '<div id="print_list">';
+            $print_html .= '<div class="padding">';
+            $print_html .= '<a id="close_list" href="#">&lt; Back to list</a>';
+            $print_html .= "<h2>$interview_date</h2>";
+            $print_html .= "<h3>$centre_name</h3>";
+            $print_html .= '<table class="application_stats"><thead><tr><th width="280">Name</th><th width="140">Curriculum Area</th><th width="30">Accepted</th><th>Notes</th></tr></thead>';
+            $print_html .= '<tbody>';
+            foreach ($print_data[$date][$centre] as $no => $data) {
+                $row_class = ($no % 2 == 0) ? 'r0' : 'r1';
+                $curric_colour = (isset($curric_colours[$data[1]])) ? ' style="color:'.$curric_colours[$data[1]].'; font-weight:bold;"' : ' style="color:#000;" ';
+                $print_html .= '<tr class="'.$row_class.'"><td>'.($no + 1).'. &nbsp; '.$data[0].'</td><td'.$curric_colour.'>'.$data[1].'</td><td>&nbsp;</td><td>&nbsp;</td></tr>';
+            }
+            $print_html .= '</tbody></table>';
+            $print_html .= '<script type="text/javascript">window.print();</script>';
+            $print_html .= '</div>';
+            $print_html .= '</div>';
+            echo $print_html;
+        }
+    }
+}
+?>
 </body>
 </html>

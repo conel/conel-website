@@ -372,7 +372,7 @@ table.missing_field {
 .section ol li {
 	margin-bottom:8px;
 }
-.section a {
+.section a, #print_list a {
 	color:#898C00;
 }
 .section a:hover {
@@ -810,4 +810,46 @@ p.ref_note {
 }
 .print_hide h2 {
 	margin-top:15px;
+}
+#print_list {
+    background-color:#fff;
+    width:100%;
+    min-height:100%;
+    z-index:666;
+    position:absolute;
+    top:0;
+    left:0;
+}
+#print_list table.application_stats {
+   width:100%; 
+}
+#print_list table.application_stats {
+    border:0;
+    border-top:1px solid #C0C0C0;
+    border-left:1px solid #C0C0C0;
+}
+#print_list table.application_stats td {
+    border-right:1px solid #C0C0C0;
+    border-bottom:1px solid #C0C0C0;
+}
+#print_list table.application_stats th {
+    border-bottom:1px solid #C0C0C0;
+    border-right:1px solid #C0C0C0;
+}
+#print_list div.padding {
+    display:block;
+    padding:20px;
+}
+#print_list a#close_list {
+    font-size:2.2em;
+    font-weight:bold;
+    position:absolute;
+    top:25px;
+    right:25px;
+}
+#print_list h2 {
+    font-size:1.5em;
+}
+#print_list h3 {
+    font-size:1.3em;
 }

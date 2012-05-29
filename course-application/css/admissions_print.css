@@ -2,9 +2,16 @@
    padding-left:0;
    border-left:none;
 }
-.header, #logout, p.page_choice {
+.header, #logout, p.page_choice, #close_list, #interview_dates {
     display:none;
 }
 td, th {
     background-color:#fff;
+}
+#print_list {
+    background-color:#fff !important;
+    z-index:1000 !important;
+}
+#print_list div.padding {
+    padding:0 !important;
 }
