@@ -576,8 +576,8 @@
 		}
 	}
 
-	function tenDaysNotice($unixtime) {
-		$processing_date = strtotime('-10 days', $unixtime);
+	function daysNotice($unixtime) {
+		$processing_date = strtotime('-14 days', $unixtime);
 		if (time() > $processing_date) {
 			return true;
 		}
@@ -585,7 +585,7 @@
 	}
 
 	function isValidMonday($unixtime) {
-		if (!isExcludedMonday($unixtime) && !tenDaysNotice($unixtime)) {
+		if (!isExcludedMonday($unixtime) && !daysNotice($unixtime)) {
 			return true;
 		} else {
 			return false;
