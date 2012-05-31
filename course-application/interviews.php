@@ -271,8 +271,8 @@ echo "</script>\n";
             'UNISERV' => '#223166'
         );
         
-        $active = '<img src="images/s-active.png" alt="active" width="16" height="16" title="Date can be chosen" />';
-        $inactive = '<img src="images/s-inactive.png" alt="inactive" width="16" height="16" title="Date can no longer be chosen" />';
+        $active = '<img src="images/active.png" alt="active" width="16" height="16" title="Date can be chosen" />';
+        $inactive = '<img src="images/inactive.png" alt="inactive" width="16" height="16" title="Date can no longer be chosen" />';
 
         $print_data = array();
         foreach ($interview_dates as $key => $date) {
