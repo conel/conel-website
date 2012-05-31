@@ -128,7 +128,6 @@
 <link href="css/application_print.css" rel="stylesheet" type="text/css" media="print" />
 <link href="css/jquery.dataTables.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="js/fl_functions.js"></script>
 <script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
 </head>
 

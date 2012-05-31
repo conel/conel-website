@@ -39,7 +39,11 @@
 			$password = mysql_real_escape_string($password, $sql->Link_ID);
 			$encrypted_password = md5($password);
 			
-			$query = "SELECT * FROM tbl_ca_logins WHERE username='$username' AND password='$encrypted_password'";
+            $query = sprintf(
+                "SELECT * FROM tbl_ca_logins WHERE username='%s' AND password='%s'", 
+                $username,
+                $encrypted_password
+            );
 			$sql->query($query, $debug);
 			
 			if ($sql->num_rows() > 0) {
@@ -65,7 +69,6 @@
 <link href="css/application_print.css" rel="stylesheet" type="text/css" media="print" />
 <link href="css/admissions_print.css" rel="stylesheet" type="text/css" media="print" />
 <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="js/fl_functions.js"></script>
 </head>
 
 <body>
@@ -91,21 +94,22 @@
 			</table>
 		</form>
 	<!-- //Login -->
+
 <?php
-		if (isset($_SESSION['ca']['errors']) && count($_SESSION['ca']['errors']) > 0) {
-			echo '<div class="error">';
-			echo '<h2>Errors</h2>';
-			echo '<ul>';
-			foreach ($_SESSION['ca']['errors'] as $error) {
-				echo "<li>$error</li>";
-			}
-			echo '</ul>';
-			echo '</div>';
-		}
-	
-	echo '</div>';
-	
-	}
+    if (isset($_SESSION['ca']['errors']) && count($_SESSION['ca']['errors']) > 0) {
+        echo '<div class="error">';
+        echo '<h2>Errors</h2>';
+        echo '<ul>';
+        foreach ($_SESSION['ca']['errors'] as $error) {
+            echo "<li>$error</li>";
+        }
+        echo '</ul>';
+        echo '</div>';
+    }
+
+    echo '</div>';
+
+    }
 ?>
 	
 <?php
@@ -115,16 +119,17 @@
 </div>
 <div class="section">
 
-
     <div id="forgot_details">
     <p class="page_choice">
         <strong>Show:</strong>&nbsp;
-        <a href="forgotten.php?show=1"<?php if ($show == 1) echo ' class="active"'; ?>>Incomplete</a> | 
-        <a href="forgotten.php?show=2"<?php if ($show == 2) echo ' class="active"'; ?>>Completed</a> | 
+        <a href="forgotten.php?show=1">Incomplete</a> | 
+        <a href="forgotten.php?show=2">Completed</a> | 
         <a href="interviews.php" class="active">Interviews</a>
     </p>
-    <div id="logout"><a href="forgotten.php?logout=1">Log out</a></div>
+    <div id="logout"><a href="interviews.php?logout=1">Log out</a></div>
     <br />
+
+
     <div id="interview_dates">
     
 <?php
@@ -145,8 +150,11 @@
 
         $query = sprintf(
             "SELECT ca.id, ca.datetime_submitted_last, ca.interview_location, CONCAT(ca.title, ' ', ca.firstname, ' ', ca.surname) as name, ca.course_title_1, tu.Subject_ID
-            FROM tbl_course_application ca LEFT JOIN tblunits tu ON ca.course_code_1 = tu.id WHERE ca.interview_time = '%s' AND ca.form_completed = 1 ORDER BY ca.interview_location, tu.Subject_ID, ca.datetime_submitted_last
-            ",
+            FROM tbl_course_application ca 
+            LEFT JOIN tblunits tu ON ca.course_code_1 = tu.id 
+            WHERE ca.interview_time = '%s' 
+            AND ca.form_completed = 1 
+            ORDER BY ca.interview_location, tu.Subject_ID, ca.datetime_submitted_last",
             $date
         );
 
@@ -213,7 +221,7 @@
         echo '<br />';
 
         // jQuery slide toggle
-echo "\n" . '<script type="text/javascript">';
+echo PHP_EOL . '<script type="text/javascript">';
 echo "
 $(document).ready(function() {
     // Date Slide Toggle
@@ -247,97 +255,86 @@ $(document).ready(function() {
         $('#print_list').hide();
     });
 
-})";
-echo "</script>\n";
+})" . PHP_EOL;
+echo "</script>" . PHP_EOL;
 
-        $locations = array('', 'Tottenham', 'Enfield');
-        // Setup colours for each curriculum area
-        $curric_colours = array(
-            'AGRICULTUR' => '#603C20',
-            'APMEDFRSCI' => '#344354',
-            'ARTSMEDIA' => '#691F2B',
-            'BUSIACCNTS' => '#2F6A1E',
-            'CAREHEALTH' => '#F76C77',
-            'COMPUTING' => '#626262',
-            'CONSTRBUI' => '#A57C41',
-            'ENGMATHICT' => '#2C3345',
-            'ESOL' => '#7B8318',
-            'FORGNLANG' => '#7B8318',
-            'HAIRBEAU' => '#BD7DDF',
-            'LEISTOUR' => '#53B58B',
-            'SPORTFIT' => '#32AAD1',
-            'SUPPLEARN' => '#625A70',
-            'TEACHSUP' => '#F2AA00',
-            'UNISERV' => '#223166'
-        );
-        
-        $active = '<img src="images/active.png" alt="active" width="16" height="16" title="Date can be chosen" />';
-        $inactive = '<img src="images/inactive.png" alt="inactive" width="16" height="16" title="Date can no longer be chosen" />';
+    $locations = array('', 'Tottenham', 'Enfield');
 
-        $print_data = array();
-        foreach ($interview_dates as $key => $date) {
-            $date_chosen = $date['date'];
-            $icon = $active;
-            if ($date_chosen != 'Other') {
-                // Show via an icon if this date is currently selectable
-                $expired = daysNotice($date['unixtime']);
-                $icon = ($expired === true) ? $inactive : $active;
+    $curric_areas = array('AGRICULTUR', 'APMEDFRSCI', 'ARTSMEDIA', 'BUSIACCNTS', 'CAREHEALTH', 'COMPUTING', 'CONSTRBUI', 'ENGMATHICT', 'ESOL', 'FORGNLANG', 'HAIRBEAU', 'LEISTOUR', 'SPORTFIT', 'SUPPLEARN', 'TEACHSUP', 'UNISERV');
+    
+    $active = '<img src="images/active.png" alt="active" width="16" height="16" title="Date can be chosen" />';
+    $inactive = '<img src="images/inactive.png" alt="inactive" width="16" height="16" title="Date can no longer be chosen" />';
+
+    $print_data = array();
+
+    foreach ($interview_dates as $key => $date) {
+        $date_chosen = $date['date'];
+        $icon = $active;
+        if ($date_chosen != 'Other') {
+            // Show via an icon if this date is currently selectable
+            $expired = daysNotice($date['unixtime']);
+            $icon = ($expired === true) ? $inactive : $active;
+        }
+
+        echo '<h3>'.$icon.'&nbsp; '.$date_chosen.' <span> &mdash; '.$date['count'].' applicants</span> &nbsp;<a href="#" class="toggle" id="view_'.$key.'">show</a></h3>';
+
+        $all_applicants = getApplicantsForDate($date_chosen);
+        if ($all_applicants === false) {
+            echo '<p>No applicants chose this date.</p>';
+            continue;
+        }
+    
+        // Show applicants by location
+        echo '<div class="location date_'.$key.'">';
+        foreach ($locations as $kee => $loc) {
+
+            $centre = ($loc == '') ? 'No Centre' : $loc;
+            $applicants = getApplicantsByLocation($all_applicants, $loc);
+            if (empty($applicants)) continue;
+
+            echo PHP_EOL . PHP_EOL . '<h4>'.$centre.' <span>&ndash; '.count($applicants).' applicants</span> &nbsp;<a href="#" class="toggle_centre" id="centre_'.$key.'_'.$kee.'">show</a></h4>' . PHP_EOL;
+            echo '<div class="centre location_'.$key.'_'.$kee.'">' . PHP_EOL;
+            if ($loc == '') echo '<p>Contact applicant asking which location they want to attend.</p>';
+            echo '<p><a href="interviews.php?date='.$key.'&amp;centre='.$kee.'">Print this list</a></p>' . PHP_EOL;
+
+            echo '<table class="application_stats">' . PHP_EOL;
+            echo "\t" . '<tr><th>&nbsp;</th><th>Name</th><th>Completed</th><th>Curriculum Area</th><th class="center">Application</th></tr>' . PHP_EOL;
+            $c = 0;
+            foreach ($applicants as $app) {
+                $row_class = ($c % 2 == 0) ? 'r0' : 'r1';
+                $curric_area = (strlen($app['curric_area']) > 30) ? substr($app['curric_area'], 0, 30) . '...' : $app['curric_area'];
+                echo "\t" . '<tr class="'.$row_class.'">' . PHP_EOL;
+                echo "\t\t" . '<td>'.($c + 1).'.</td>' . PHP_EOL;
+                echo "\t\t" . '<td width="270">'.$app['name'].'</td>' . PHP_EOL;
+                echo "\t\t" . '<td width="200">'.$app['completed'].'</td>' . PHP_EOL;
+                // Curric colour
+                $curric_colour = (in_array($curric_area, $curric_areas)) ? $curric_area : 'no_curric';
+                echo "\t\t" . '<td width="230" class="'.$curric_colour.'">'.$curric_area.'</td>' . PHP_EOL;
+                echo "\t\t" . '<td class="center"><a href="view-application.php?id='.$app['id'].'" target="_blank">View</a></td>' . PHP_EOL;
+                echo "\t" . '</tr>'. PHP_EOL;
+                $c++;
+                $print_data[$key][$kee][] = array($app['name'], $curric_area);
             }
+            echo '</table>' . PHP_EOL;
 
-            echo '<h3>'.$icon.'&nbsp; '.$date_chosen.' <span> &mdash; '.$date['count'].' applicants</span> &nbsp;<a href="#" class="toggle" id="view_'.$key.'">show</a></h3>';
+            echo '</div>' . PHP_EOL;
+            echo '<br />';
 
-            $all_applicants = getApplicantsForDate($date_chosen);
-            if ($all_applicants === false) {
-                echo '<p>No applicants chose this date.</p>';
-                continue;
-            }
-        
-            // Show applicants by location
-            echo '<div class="location date_'.$key.'">';
-            foreach ($locations as $kee => $loc) {
-                $loc_name = ($loc == '') ? 'No Centre' : $loc;
-                $applicants = getApplicantsByLocation($all_applicants, $loc);
-                if (count($applicants) > 0) {
-                    echo '<h4>'.$loc_name.' <span>&ndash; '.count($applicants).' applicants</span> &nbsp;<a href="#" class="toggle_centre" id="centre_'.$key.'_'.$kee.'">show</a></h4>' . "\n";
-                    echo '<div class="centre location_'.$key.'_'.$kee.'">' . "\n";
-                    if ($loc == '') echo '<p>Contact applicant asking which location they want to attend.</p>';
-                    echo '<p><a href="interviews.php?date='.$key.'&amp;centre='.$kee.'">Print this list</a></p>';
-                    echo '<table class="application_stats">' . "\n";
-                    echo '<tr><th>&nbsp;</th><th>Name</th><th>Completed</th><th>Curriculum Area</th><th class="center">Application</th></tr>' . "\n";
-                    $c = 0;
-                    foreach ($applicants as $app) {
-                        $row_class = ($c % 2 == 0) ? 'r0' : 'r1';
-                        $curric_area = (strlen($app['curric_area']) > 30) ? substr($app['curric_area'], 0, 30) . '...' : $app['curric_area'];
-                        echo '<tr class="'.$row_class.'">';
-                        echo '<td>'.($c + 1).'.</td>';
-                        echo '<td width="270">'.$app['name'].'</td>';
-                        echo '<td width="200">'.$app['completed'].'</td>';
-                        // Curric colour
-                        $curric_colour = (isset($curric_colours[$curric_area])) ? ' style="color:'.$curric_colours[$curric_area].'; font-weight:bold;"' : ' style="color:#000;" ';
-                        echo '<td width="230"'.$curric_colour.'>'.$curric_area.'</td>';
-                        echo '<td class="center"><a href="http://www.conel.ac.uk/course-application/view-application.php?id='.$app['id'].'" target="_blank">View</a></td>';
-                        echo '</tr>' . "\n";
-                        $c++;
-                        $print_data[$key][$kee][] = array($app['name'], $curric_area);
-                    }
-                    echo "</table>\n";
-                    echo "</div>\n";
-                    echo '<br />';
-                }
-            }
-            echo '</div>';
-        } // foreach
+        }
+        echo '</div>' . PHP_EOL;
 
-        echo '<br />';
-    } else {
-        echo '<p>No interview dates found</p>';
-    }
+    } // foreach
+
+    echo '<br />';
+} else {
+    echo '<p>No interview dates found</p>';
+}
 
 
-    echo '</div>' . "\n";
-    echo '</div>' . "\n";
-    echo '</div>' . "\n";
-    echo '</div>' . "\n";
+echo '</div>' . PHP_EOL;
+echo '</div>' . PHP_EOL;
+echo '</div>' . PHP_EOL;
+echo '</div>' . PHP_EOL;
 
 ?>
 <?php

@@ -853,3 +853,55 @@ p.ref_note {
 #print_list h3 {
     font-size:1.3em;
 }
+.no_curric {
+    color:#000;
+    font-weight:normal;
+}
+.AGRICULTUR, .APMEDFRSCI, .ARTSMEDIA, .BUSIACCNTS, .CAREHEALTH, .COMPUTING, .CONSTRBUI, .ENGMATHICT, .ESOL, .FORGNLANG, .HAIRBEAU, .LEISTOUR, .SPORTFIT, .SUPPLEARN, .TEACHSUP, .UNISERV {
+    font-weight:bold;
+}
+.AGRICULTUR {
+    color:#603C20;
+}
+.APMEDFRSCI {
+    color:#344354;
+}
+.ARTSMEDIA {
+    color:#691F2B;
+}
+.BUSIACCNTS {
+    color:#2F6A1E;
+}
+.CAREHEALTH {
+    color:#F76C77;
+}
+.COMPUTING {
+    color:#626262;
+}
+.CONSTRBUI {
+    color:#A57C41;
+}
+.ENGMATHICT {
+    color:#2C3345;
+}
+.ESOL, .FORGNLANG {
+    color:#7B8318;
+}
+.HAIRBEAU {
+    color:#BD7DDF;
+}
+.LEISTOUR {
+    color:#53B58B;
+}
+.SPORTFIT {
+    color:#32AAD1;
+}
+.SUPPLEARN {
+    color:#625A70;
+}
+.TEACHSUP {
+    color:#F2AA00;
+}
+.UNISERV {
+    color:#223166;
+}
