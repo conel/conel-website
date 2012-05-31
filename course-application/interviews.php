@@ -69,6 +69,7 @@
 <link href="css/application_print.css" rel="stylesheet" type="text/css" media="print" />
 <link href="css/admissions_print.css" rel="stylesheet" type="text/css" media="print" />
 <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/interviews.js"></script>
 </head>
 
 <body>
@@ -78,8 +79,6 @@
 	<img src="../layout/img/banner_new.gif" width="955" height="84" alt="The College of Haringey, Enfield and North East London" id="banner" />
 	<h1>Course Applications</h1>
 
-    <noscript><div id="js_error">This page requires JavaScript.<br />Follow <a href="http://www.enable-javascript.com/" target="_blank">these instructions</a> to enable JavaScript in your web browser.</div></noscript>
-	
 <?php
 	if ($_SESSION['ca']['logged_in'] == FALSE) {
 ?>
@@ -115,6 +114,9 @@
 <?php
 	if ($_SESSION['ca']['logged_in'] == TRUE) {
 ?>
+
+<noscript><div id="js_error">This page requires JavaScript.<br />Follow <a href="http://www.enable-javascript.com/" target="_blank">these instructions</a> to enable JavaScript in your web browser.</div></noscript>
+
 <!-- Dates View -->
 </div>
 <div class="section">
@@ -133,20 +135,12 @@
     <div id="interview_dates">
     
 <?php
-    function getSubjectFromCourseID($course_id) {
-        $query = sprintf("SELECT Subject_ID FROM tblunits WHERE id = '%s'", $course_id);
-        $sql->query($query, $debug);
-        if ($sql->num_rows() > 0) {
-            while($sql->next_record()) {
-                $applicants[$c]['location'] = $sql->Record['interview_location'];
-            }
-            return $applicants;
-        }
-    }
 
     function getApplicantsForDate($date) {
         global $sql;
         global $debug;
+
+        $applicants = array();
 
         $query = sprintf(
             "SELECT ca.id, ca.datetime_submitted_last, ca.interview_location, CONCAT(ca.title, ' ', ca.firstname, ' ', ca.surname) as name, ca.course_title_1, tu.Subject_ID
@@ -160,7 +154,6 @@
 
         $sql->query($query, $debug);
         if ($sql->num_rows() > 0) {
-            $applicants = array();
             $c = 0;
             while($sql->next_record()) {
                 $applicants[$c]['id'] = $sql->Record['id'];
@@ -170,10 +163,8 @@
                 $applicants[$c]['curric_area'] = ($sql->Record['Subject_ID'] != '') ? $sql->Record['Subject_ID'] : $sql->Record['course_title_1'];
                 $c++;
             }
-            return $applicants;
-        } else {
-            return false;
         }
+        return $applicants;
     }
 
     function getApplicantsByLocation(Array $applicants, $location) {
@@ -188,6 +179,7 @@
 
     $query = "SELECT DISTINCT interview_time, COUNT(*) AS count FROM tbl_course_application WHERE interview_time != '' AND form_completed = 1 GROUP BY interview_time ORDER BY interview_time ASC";
     $sql->query($query, $debug);
+
     if ($sql->num_rows() > 0) {
         $interview_dates = array();
         $c = 0;
@@ -220,44 +212,6 @@
         echo '<p>Click show to view applicants for date and location.</p>';
         echo '<br />';
 
-        // jQuery slide toggle
-echo PHP_EOL . '<script type="text/javascript">';
-echo "
-$(document).ready(function() {
-    // Date Slide Toggle
-    $('a.toggle').click(function(e) {
-        e.preventDefault();
-        var num = $(this).attr('id').replace('view_', '');
-        var toggle_div = '.date_' + num;
-        $(toggle_div).slideToggle();
-        if ($(this).html() == 'show') {
-            $(this).html('hide');
-        } else {
-            $(this).html('show');
-        }
-    });
-    // Centre Slide Toggle
-    $('a.toggle_centre').click(function(e) {
-        e.preventDefault();
-        var unique = $(this).attr('id').replace('centre_', '');
-        var toggle_div2 = '.location_' + unique;
-        $(toggle_div2).slideToggle();
-        if ($(this).html() == 'show') {
-            $(this).html('hide');
-        } else {
-            $(this).html('show');
-        }
-    });
-
-    // Hide print list on click
-    $('a#close_list').click(function(e) {
-        e.preventDefault();
-        $('#print_list').hide();
-    });
-
-})" . PHP_EOL;
-echo "</script>" . PHP_EOL;
-
     $locations = array('', 'Tottenham', 'Enfield');
 
     $curric_areas = array('AGRICULTUR', 'APMEDFRSCI', 'ARTSMEDIA', 'BUSIACCNTS', 'CAREHEALTH', 'COMPUTING', 'CONSTRBUI', 'ENGMATHICT', 'ESOL', 'FORGNLANG', 'HAIRBEAU', 'LEISTOUR', 'SPORTFIT', 'SUPPLEARN', 'TEACHSUP', 'UNISERV');
@@ -271,7 +225,7 @@ echo "</script>" . PHP_EOL;
         $date_chosen = $date['date'];
         $icon = $active;
         if ($date_chosen != 'Other') {
-            // Show via an icon if this date is currently selectable
+            // Show if this date is currently choosable on the application form - via an icon
             $expired = daysNotice($date['unixtime']);
             $icon = ($expired === true) ? $inactive : $active;
         }
@@ -279,7 +233,8 @@ echo "</script>" . PHP_EOL;
         echo '<h3>'.$icon.'&nbsp; '.$date_chosen.' <span> &mdash; '.$date['count'].' applicants</span> &nbsp;<a href="#" class="toggle" id="view_'.$key.'">show</a></h3>';
 
         $all_applicants = getApplicantsForDate($date_chosen);
-        if ($all_applicants === false) {
+
+        if (empty($all_applicants)) {
             echo '<p>No applicants chose this date.</p>';
             continue;
         }
@@ -303,15 +258,16 @@ echo "</script>" . PHP_EOL;
             foreach ($applicants as $app) {
                 $row_class = ($c % 2 == 0) ? 'r0' : 'r1';
                 $curric_area = (strlen($app['curric_area']) > 30) ? substr($app['curric_area'], 0, 30) . '...' : $app['curric_area'];
+                $curric_colour = (in_array($curric_area, $curric_areas)) ? $curric_area : 'no_curric';
+
                 echo "\t" . '<tr class="'.$row_class.'">' . PHP_EOL;
                 echo "\t\t" . '<td>'.($c + 1).'.</td>' . PHP_EOL;
                 echo "\t\t" . '<td width="270">'.$app['name'].'</td>' . PHP_EOL;
                 echo "\t\t" . '<td width="200">'.$app['completed'].'</td>' . PHP_EOL;
-                // Curric colour
-                $curric_colour = (in_array($curric_area, $curric_areas)) ? $curric_area : 'no_curric';
                 echo "\t\t" . '<td width="230" class="'.$curric_colour.'">'.$curric_area.'</td>' . PHP_EOL;
                 echo "\t\t" . '<td class="center"><a href="view-application.php?id='.$app['id'].'" target="_blank">View</a></td>' . PHP_EOL;
                 echo "\t" . '</tr>'. PHP_EOL;
+
                 $c++;
                 $print_data[$key][$kee][] = array($app['name'], $curric_area);
             }
@@ -336,8 +292,6 @@ echo '</div>' . PHP_EOL;
 echo '</div>' . PHP_EOL;
 echo '</div>' . PHP_EOL;
 
-?>
-<?php
     if (isset($_GET['date']) && is_numeric($_GET['date'])) {
         if (isset($_GET['centre']) && in_array($_GET['centre'], array(0,1,2))) {
             $date = $_GET['date'];
@@ -364,6 +318,7 @@ echo '</div>' . PHP_EOL;
             echo $print_html;
         }
     }
+
 }
 ?>
 </body>
