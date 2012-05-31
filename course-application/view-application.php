@@ -121,8 +121,16 @@
 		unset($_SESSION['caf']);
 		
 		echo '<div class="hide_print">';
-		echo '<p style="font-size:1.1em;"><strong><a href="forgotten.php?show=1">&lt; Back to Applications</a></strong></p>';
-		echo '<div id="logout"><a href="view-application.php?logout=1">Log out</a></div>';
+?>
+    <p class="page_choice">
+        <strong>Show:</strong>&nbsp;
+        <a href="forgotten.php?show=1"<?php if ($show == 1) echo ' class="active"'; ?>>Incomplete</a> | 
+        <a href="forgotten.php?show=2"<?php if ($show == 2) echo ' class="active"'; ?>>Completed</a> | 
+        <a href="interviews.php">Interviews</a>
+    </p>
+    <div id="logout"><a href="forgotten.php?logout=1">Log out</a></div>
+
+<?php
 		echo '</div>';
 		echo "<br /><h2>$firstname $lastname</h2>";
 		echo "<p><strong>Started:</strong> $datetime_submitted_first</p>";

@@ -181,10 +181,10 @@
 		<div id="forgot_details">
 		<p>
 			<strong>Show:</strong>&nbsp;
-			<a href="/course-application/forgotten.php?show=1"<?php if ($show == 1) echo ' class="active"'; ?>>Incomplete</a> | 
-			<a href="/course-application/forgotten.php?show=2"<?php if ($show == 2) echo ' class="active"'; ?>>Complete</a> | 
+			<a href="forgotten.php?show=1"<?php if ($show == 1) echo ' class="active"'; ?>>Incomplete</a> | 
+			<a href="forgotten.php?show=2"<?php if ($show == 2) echo ' class="active"'; ?>>Complete</a> | 
 			<!--<a href="/course-application/forgotten.php?show=3"<?php //if ($show == 3) echo ' class="active"'; ?>>Incomplete (since 01/09/11)</a> | -->
-			<a href="/course-application/interviews.php">Interviews</a>
+			<a href="interviews.php">Interviews</a>
 		</p>
 		<div id="logout"><a href="forgotten.php?logout=1">Log out</a></div>
 		<br />

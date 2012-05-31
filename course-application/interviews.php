@@ -7,6 +7,7 @@
 	include_once('../matrix_engine/config.php');
 	include_once('../matrix_engine/'.CLASSES_DIR.'db_mysql.php');
 	include_once('../matrix_engine/'.CLASSES_DIR.'class_mailer.php');
+	include_once('caf_functions.php');
 
 	// instantiate the SQL classes
 	$sql = new DB_Sql();
@@ -118,10 +119,9 @@
     <div id="forgot_details">
     <p class="page_choice">
         <strong>Show:</strong>&nbsp;
-        <a href="/course-application/forgotten.php?show=1"<?php if ($show == 1) echo ' class="active"'; ?>>Incomplete</a> | 
-        <a href="/course-application/forgotten.php?show=2"<?php if ($show == 2) echo ' class="active"'; ?>>Completed</a> | 
-        <!--<a href="/course-application/forgotten.php?show=3"<?php //if ($show == 3) echo ' class="active"'; ?>>Incomplete (since 01/09/11)</a> | -->
-        <a href="/course-application/interview-dates.php" class="active">Interviews</a>
+        <a href="forgotten.php?show=1"<?php if ($show == 1) echo ' class="active"'; ?>>Incomplete</a> | 
+        <a href="forgotten.php?show=2"<?php if ($show == 2) echo ' class="active"'; ?>>Completed</a> | 
+        <a href="interviews.php" class="active">Interviews</a>
     </p>
     <div id="logout"><a href="forgotten.php?logout=1">Log out</a></div>
     <br />
@@ -185,8 +185,20 @@
         $c = 0;
         $other_key = false;
         while($sql->next_record()) {
-            $interview_dates[] = array('date' => $sql->Record['interview_time'], 'count' => $sql->Record['count']);
-            if ($sql->Record['interview_time'] == 'Other') $other_key = $c;
+            $date = $sql->Record['interview_time'];
+            $date_days = substr($date, 0, strlen($date) - 8);
+            $unixtime = strtotime($date_days);
+            // add a day (should show interview dates for current day)
+            $unixtime_plus_a_day = strtotime('+1 day', $unixtime);
+
+            if ($date == 'Other' || $unixtime_plus_a_day > time()) {
+                $interview_dates[] = array(
+                    'date' => $date, 
+                    'count' => $sql->Record['count'], 
+                    'unixtime' => $unixtime
+                );
+            }
+            if ($date == 'Other') $other_key = $c;
             $c++;
         }
         // Make 'Other' the first item
@@ -259,11 +271,20 @@ echo "</script>\n";
             'UNISERV' => '#223166'
         );
         
+        $active = '<img src="images/s-active.png" alt="active" width="16" height="16" title="Date can be chosen" />';
+        $inactive = '<img src="images/s-inactive.png" alt="inactive" width="16" height="16" title="Date can no longer be chosen" />';
 
         $print_data = array();
         foreach ($interview_dates as $key => $date) {
             $date_chosen = $date['date'];
-            echo '<h3>'.$date_chosen.' <span> &mdash; '.$date['count'].' applicants</span> &nbsp;<a href="#" class="toggle" id="view_'.$key.'">show</a></h3>';
+            $icon = $active;
+            if ($date_chosen != 'Other') {
+                // Show via an icon if this date is currently selectable
+                $expired = daysNotice($date['unixtime']);
+                $icon = ($expired === true) ? $inactive : $active;
+            }
+
+            echo '<h3>'.$icon.'&nbsp; '.$date_chosen.' <span> &mdash; '.$date['count'].' applicants</span> &nbsp;<a href="#" class="toggle" id="view_'.$key.'">show</a></h3>';
 
             $all_applicants = getApplicantsForDate($date_chosen);
             if ($all_applicants === false) {
@@ -311,7 +332,7 @@ echo "</script>\n";
     } else {
         echo '<p>No interview dates found</p>';
     }
-    
+
 
     echo '</div>' . "\n";
     echo '</div>' . "\n";
