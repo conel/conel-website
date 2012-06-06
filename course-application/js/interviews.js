@@ -1,3 +1,7 @@
+function isIE() {
+    return (navigator.appName == 'Microsoft Internet Explorer') ? true : false;
+}
+        
 $(document).ready(function() {
 
     // Date Slide Toggle
@@ -30,6 +34,17 @@ $(document).ready(function() {
     $('a#close_list').click(function(e) {
         e.preventDefault();
         $('#print_list').hide();
+    });
+
+    $('a.email').click(function(e) {
+        e.preventDefault();
+        // Get link
+        var mailto = $(this).attr('href');
+        if (isIE()) {
+            window.open(mailto);
+        } else {
+            document.location.href = mailto;
+        }
     });
 
 });

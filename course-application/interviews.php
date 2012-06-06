@@ -143,7 +143,7 @@
         $applicants = array();
 
         $query = sprintf(
-            "SELECT ca.id, ca.datetime_submitted_last, ca.interview_location, CONCAT(ca.title, ' ', ca.firstname, ' ', ca.surname) as name, ca.course_title_1, tu.Subject_ID
+            "SELECT ca.id, ca.datetime_submitted_last, ca.interview_location, ca.email_address, ca.firstname, CONCAT(ca.title, ' ', ca.firstname, ' ', ca.surname) as name, ca.course_title_1, tu.Subject_ID
             FROM tbl_course_application ca 
             LEFT JOIN tblunits tu ON ca.course_code_1 = tu.id 
             WHERE ca.interview_time = '%s' 
@@ -158,6 +158,8 @@
             while($sql->next_record()) {
                 $applicants[$c]['id'] = $sql->Record['id'];
                 $applicants[$c]['name'] = $sql->Record['name'];
+                $applicants[$c]['email'] = $sql->Record['email_address'];
+                $applicants[$c]['firstname'] = $sql->Record['firstname'];
                 $applicants[$c]['completed'] = $sql->Record['datetime_submitted_last'];
                 $applicants[$c]['location'] = $sql->Record['interview_location'];
                 $applicants[$c]['curric_area'] = ($sql->Record['Subject_ID'] != '') ? $sql->Record['Subject_ID'] : $sql->Record['course_title_1'];
@@ -165,6 +167,17 @@
             }
         }
         return $applicants;
+    }
+
+    // @param: $applicant array containing: 'email', 'firstname', 'interview date', 'centre'
+    function generate_mailto(Array $applicant) {
+
+        if ($applicant == '' && !is_array($applicant)) return '';
+        if ($applicant['interview_date'] == 'Other') $applicant['interview_date'] = '   <XXXX-INSERT-INTERVIEW-DATE-HERE-XXXX>   ';
+
+        $link = "mailto:".$applicant['email']."&subject=Your Interview&Body=Dear ".$applicant['firstname'].",%0D%0DThank you for your application to join a course at The College of Haringey, Enfield and North East London.%0D%0DAn interview has been scheduled for you on ".$applicant['interview_date']." at the ".$applicant['centre']." Centre. Please report to the main reception on arrival.%0D%0DIf you have any enquiries regarding your Interview, please contact the Learner Recruitment Team on 0208 442 3103 or via email admissions@conel.ac.uk.%0D%0DRegards%0D%0DLearner Recruitment Team%0D%0DTottenham Centre%0DHigh Road%0DTottenham%0DN15 4RU";
+
+        return $link;
     }
 
     function getApplicantsByLocation(Array $applicants, $location) {
@@ -259,13 +272,22 @@
                 $row_class = ($c % 2 == 0) ? 'r0' : 'r1';
                 $curric_area = (strlen($app['curric_area']) > 30) ? substr($app['curric_area'], 0, 30) . '...' : $app['curric_area'];
                 $curric_colour = (in_array($curric_area, $curric_areas)) ? $curric_area : 'no_curric';
+                $app_details = array(
+                    'email' => $app['email'],
+                    'firstname' => $app['firstname'],
+                    'interview_date' => str_replace(', 4-6 PM', ' between 4-6pm', $date_chosen),
+                    'centre' => $centre
+                );
+                $mailto = generate_mailto($app_details);
 
                 echo "\t" . '<tr class="'.$row_class.'">' . PHP_EOL;
                 echo "\t\t" . '<td>'.($c + 1).'.</td>' . PHP_EOL;
                 echo "\t\t" . '<td width="270">'.$app['name'].'</td>' . PHP_EOL;
-                echo "\t\t" . '<td width="200">'.$app['completed'].'</td>' . PHP_EOL;
-                echo "\t\t" . '<td width="230" class="'.$curric_colour.'">'.$curric_area.'</td>' . PHP_EOL;
-                echo "\t\t" . '<td class="center"><a href="view-application.php?id='.$app['id'].'" target="_blank">View</a></td>' . PHP_EOL;
+                echo "\t\t" . '<td width="195">'.$app['completed'].'</td>' . PHP_EOL;
+                echo "\t\t" . '<td width="240" class="'.$curric_colour.'">'.$curric_area.'</td>' . PHP_EOL;
+                echo "\t\t" . '<td class="center">
+                    <a href="view-application.php?id='.$app['id'].'" target="_blank"><img src="/course-application/images/icon-view.png" width="16" height="16" alt="View"></a> 
+                    <a href="'.$mailto.'" class="email"><img src="/course-application/images/icon-email.png" width="16" height="16" alt="Email"></a></td>' . PHP_EOL;
                 echo "\t" . '</tr>'. PHP_EOL;
 
                 $c++;
