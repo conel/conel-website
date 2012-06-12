@@ -175,7 +175,7 @@
         if ($applicant == '' && !is_array($applicant)) return '';
         if ($applicant['interview_date'] == 'Other') $applicant['interview_date'] = '   <XXXX-INSERT-INTERVIEW-DATE-HERE-XXXX>   ';
 
-        $link = "mailto:".$applicant['email']."&subject=Your Interview&Body=Dear ".$applicant['firstname'].",%0D%0DThank you for your application to join a course at The College of Haringey, Enfield and North East London.%0D%0DAn interview has been scheduled for you on ".$applicant['interview_date']." at the ".$applicant['centre']." Centre. Please report to the main reception on arrival.%0D%0DIf you have any enquiries regarding your Interview, please contact the Learner Recruitment Team on 0208 442 3103 or via email admissions@conel.ac.uk.%0D%0DRegards%0D%0DLearner Recruitment Team%0D%0DTottenham Centre%0DHigh Road%0DTottenham%0DN15 4RU";
+        $link = "mailto:".$applicant['email']."&subject=Interview Schedule&Body=Dear ".$applicant['firstname'].",%0D%0DThank you for your application to join a course at The College of Haringey, Enfield and North East London.%0D%0DAn interview has been scheduled for you on ".$applicant['interview_date']." at the ".$applicant['centre']." Centre. Please report to the main reception on arrival.%0D%0DIf you have any enquiries regarding your Interview, please contact the Learner Recruitment Team on 0208 442 3103 or via email admissions@conel.ac.uk.%0D%0DRegards%0D%0DLearner Recruitment Team%0D%0DTottenham Centre%0DHigh Road%0DTottenham%0DN15 4RU";
 
         return $link;
     }
@@ -210,9 +210,9 @@
                     'count' => $sql->Record['count'], 
                     'unixtime' => $unixtime
                 );
+                if ($date == 'Other') $other_key = $c;
+                $c++;
             }
-            if ($date == 'Other') $other_key = $c;
-            $c++;
         }
         // Make 'Other' the first item
         if ($other_key !== false) {
@@ -220,6 +220,7 @@
             unset($interview_dates[$other_key]);
             array_unshift($interview_dates, $other_array);
         }
+
 
         echo '<h2>Interview Dates</h2>';
         echo '<p>Click show to view applicants for date and location.</p>';
@@ -275,7 +276,7 @@
                 $app_details = array(
                     'email' => $app['email'],
                     'firstname' => $app['firstname'],
-                    'interview_date' => str_replace(', 4-6 PM', ' between 4-6pm', $date_chosen),
+                    'interview_date' => str_replace(', 4-6 PM', ', 4 PM', $date_chosen),
                     'centre' => $centre
                 );
                 $mailto = generate_mailto($app_details);
