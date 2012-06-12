@@ -2403,7 +2403,7 @@ if ($step == 2) {
 				echo '<tr>';
 				echo "<td>$mon_format</td>";
 				$value1 = $mon_format .', 4 PM';
-				echo '<td><input type="radio" name="interview_time" value="'.$value1.'" id="time_'.$key.'_4" class="radio" ';
+				echo '<td valign="top"><input type="radio" name="interview_time" value="'.$value1.'" id="time_'.$key.'_4" class="radio" ';
 				if ($_SESSION['caf']['interview_time'] == $value1) { 
 					echo 'checked="checked"';
 				}

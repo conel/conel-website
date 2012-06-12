@@ -199,7 +199,7 @@
         $other_key = false;
         while($sql->next_record()) {
             $date = $sql->Record['interview_time'];
-            $date_days = substr($date, 0, strlen($date) - 8);
+            $date_days = substr($date, 0, strlen($date) - 6);
             $unixtime = strtotime($date_days);
             // add a day (should show interview dates for current day)
             $unixtime_plus_a_day = strtotime('+1 day', $unixtime);
@@ -276,7 +276,7 @@
                 $app_details = array(
                     'email' => $app['email'],
                     'firstname' => $app['firstname'],
-                    'interview_date' => str_replace(', 4-6 PM', ', 4 PM', $date_chosen),
+                    'interview_date' => $date_chosen,
                     'centre' => $centre
                 );
                 $mailto = generate_mailto($app_details);
