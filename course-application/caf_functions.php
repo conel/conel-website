@@ -577,7 +577,7 @@
 	}
 
 	function daysNotice($unixtime) {
-		$processing_date = strtotime('-14 days', $unixtime);
+		$processing_date = strtotime('-7 days', $unixtime);
 		if (time() > $processing_date) {
 			return true;
 		}

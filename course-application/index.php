@@ -2388,7 +2388,7 @@ if ($step == 2) {
 <?php
 		// Book an interview time
 		echo '<h2>Book your Interview</h2>';
-		echo '<p>We interview every Monday from 4-6 PM. Interviews start at 4 PM.</p>
+		echo '<p>We interview every Monday at 4 PM.</p>
 			<p>Please select a convenient interview date below.</p>
 		   <p>If you can\'t attend a date below select \'Other\'. We will contact you to arrange an alternative interview date and time.</p>';
 
@@ -2402,12 +2402,12 @@ if ($step == 2) {
 				$mon_format = date('l, j F Y', $mon);
 				echo '<tr>';
 				echo "<td>$mon_format</td>";
-				$value1 = $mon_format .', 4-6 PM';
-				echo '<td><input type="radio" name="interview_time" value="'.$value1.'" id="time_'.$key.'_4-6" class="radio" ';
+				$value1 = $mon_format .', 4 PM';
+				echo '<td><input type="radio" name="interview_time" value="'.$value1.'" id="time_'.$key.'_4" class="radio" ';
 				if ($_SESSION['caf']['interview_time'] == $value1) { 
 					echo 'checked="checked"';
 				}
-				echo '/><label for="time_'.$key.'_4-6">4:00 &ndash; 6:00 PM</label> &nbsp;';
+				echo '/><label for="time_'.$key.'_4">4:00 PM</label> &nbsp;';
 				echo '</tr>';
 			}
 		}
