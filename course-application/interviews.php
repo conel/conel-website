@@ -223,7 +223,11 @@
 
 
         echo '<h2>Interview Dates</h2>';
-        echo '<p>Click show to view applicants for date and location.</p>';
+		if (count($interview_dates) == 0) {
+			echo '<p>No interview dates are currently selectable</p>';
+		} else {
+			echo '<p>Click show to view applicants for date and location.</p>';
+		}
         echo '<br />';
 
     $locations = array('', 'Tottenham', 'Enfield');
@@ -235,6 +239,7 @@
 
     $print_data = array();
 
+
     foreach ($interview_dates as $key => $date) {
         $date_chosen = $date['date'];
         $icon = $active;
@@ -242,7 +247,9 @@
             // Show if this date is currently choosable on the application form - via an icon
             $expired = daysNotice($date['unixtime']);
             $icon = ($expired === true) ? $inactive : $active;
-        }
+		} else {
+			$icon = $inactive;
+		}
 
         echo '<h3>'.$icon.'&nbsp; '.$date_chosen.' <span> &mdash; '.$date['count'].' applicants</span> &nbsp;<a href="#" class="toggle" id="view_'.$key.'">show</a></h3>';
 

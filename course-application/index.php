@@ -2345,6 +2345,7 @@ if ($step == 2) {
 <script type="text/javascript" src="js/jquery-ui-1.8.20.custom.min.js"></script>
 -->
 <script type="text/javascript">
+/*
 	$(document).ready(function() {
 
 		// New applicant form check
@@ -2370,6 +2371,7 @@ if ($step == 2) {
 		});
 
 	});
+ */
 </script>
 <div class="section">
 
@@ -2387,6 +2389,7 @@ if ($step == 2) {
 <br />
 <?php
 		// Book an interview time
+		/*
 		echo '<h2>Book your Interview</h2>';
 		echo '<p>We interview every Monday at 4 PM.</p>
 			<p>Please select a convenient interview date below.</p>
@@ -2462,6 +2465,8 @@ if ($step == 2) {
 			</div>';
 
 		}
+		 */
+
 
         echo '<br />';
 
@@ -2542,10 +2547,11 @@ if ($step == 2) {
 		$email_address = $_SESSION['caf']['email_address'];
 		$datetime_last_submitted = $_SESSION['caf']['datetime_submitted_last'];
 		$ref_id = $_SESSION['caf']['reference_id'];
-		$interview_time = $_SESSION['caf']['interview_time'];
-        $interview_centre = $_SESSION['caf']['interview_location'];
+		//$interview_time = $_SESSION['caf']['interview_time'];
+        //$interview_centre = $_SESSION['caf']['interview_location'];
 
         // Build interview address
+		/*
         if ($interview_centre == 'Tottenham') {
             $interview_address = 
                 '<h4>Address</h4>
@@ -2568,6 +2574,7 @@ if ($step == 2) {
                 <p><a href="http://www.conel.ac.uk/docs/enfield_centre_map_0.pdf" target="_blank" style="text-decoration: underline; text-color: #0000ff;">Download a Map</a><br />
                 <a href="http://maps.google.co.uk/maps?q=73+Hertford+Road+Enfield+Middlesex+EN3+5HA&hl=en&ll=51.65291,-0.046177&spn=0.005372,0.009645&sll=51.654843,-0.046713&sspn=0.002686,0.004823&t=h&z=17" target="_blank" style="text-decoration: underline; text-color: #0000ff;">Google Map</a></p>';
         }
+		 */
 
 		$date_now = date('d/m/Y, H:i:s');
 		$is_email = TRUE;
@@ -2582,6 +2589,7 @@ if ($step == 2) {
 
 
 		// Interview Details - Applicant
+		/*
 		if ($interview_time != 'Other') {
 			$interview_details_app = '<p>Your interview is confirmed.</p>';
 			$interview_details_app .= '<div id="interview_details">';
@@ -2597,9 +2605,11 @@ if ($step == 2) {
 			$interview_details_app .= '<p>We will contact you to arrange an interview date and time.</p>';
 			$interview_details_app .= '</div>';
 		}
+		 */
 
 
 		// Interview Details - Admissions
+		/*
 		if ($interview_time != 'Other') {
 			$interview_details_admis .= '<div id="interview_details">';
 			$interview_details_admis .= '<h3>Interview Chosen</h3>';
@@ -2616,13 +2626,14 @@ if ($step == 2) {
 			$interview_details_admis .= '<strong>Location:</strong> '.$interview_centre.'</p>';
 			$interview_details_admis .= '</div>';
         }
+		 */
 
 
 		/* Email Admissions */
 		$staff_html = '<h2>Course Application</h2>';
 		$staff_html .= '<p>You have received a new course application.</p>';
 		$staff_html .= $ref_details;
-		$staff_html .= $interview_details_admis;
+		//$staff_html .= $interview_details_admis;
 		$staff_html .= $body_html;
         $staff_html .= '<p><b>Submitted:</b> '.$date_now.'</p>';
 
@@ -2631,8 +2642,8 @@ if ($step == 2) {
 		/* Email Applicant */
 		$applicant_html = '<h2>Your Completed Application</h2>';
 		$applicant_html .= '<p>Thank you '.$firstname.' for completing a course application with the College of Haringey, Enfield and North East London.</p>'; 
-		$applicant_html .= $interview_details_app;
-        $applicant_html .= '<br />';
+		//$applicant_html .= $interview_details_app;
+        //$applicant_html .= '<br />';
 		$applicant_html .= $ref_details;
 		$applicant_html .= '<p>Please quote these reference details for all enquiries relating to this application.</p>';
         $applicant_html .= '<br />';
@@ -2651,10 +2662,10 @@ if ($step == 2) {
 		echo '<h2>Course Application Complete</h2>';
 		//echo "<p><strong>Completed:</strong> ".$datetime_last_submitted."</p><br />";
 		echo '<p>Thank you '.$firstname.' for completing a course application.</p>';
-		echo '<br />';
+		//echo '<br />';
 
-		echo $interview_details_app;
-		echo '<br />';
+		//echo $interview_details_app;
+		//echo '<br />';
 		echo '<br />';
 
 		echo '<div id="reference_details_show">';

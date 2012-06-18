@@ -22,7 +22,7 @@
 		$required_fields[6] = array('are_you_employed','are_you_working_as_a_volunteer','relevant_skills_and_experience');
 		$required_fields[7] = array('nationality','permanent_right_to_live_in_uk','are_you_an_international_student');
 		$required_fields[8] = array('how_heard_about_course', 'correct_info_confirm');
-		$required_fields[9] = array('interview_time', 'interview_location');
+		//$required_fields[9] = array('interview_time', 'interview_location');
 
 		return $required_fields;
 	}
@@ -289,10 +289,13 @@
 			'how_can_we_improve_the_form' => 'If not, please tell us how we could improve it'
 		);
 
+		/*
 		$section_8_keys = array(
 			'interview_time' => 'Interview Time',
 			'interview_location' => 'Interview Location'
 		);
+		 */
+		$section_8_keys = array();
 
 		
 		$body_html .= '<h3>Section 1 &#8211; Course Details</h3>';
@@ -374,7 +377,7 @@
 
 		$body_html .= '<h3>Section 8 &#8211; Interview</h3>';
 		if (!$is_email) {
-			$body_html .= "<a href=\"".THIS_URL."?step=8\">Edit these details</a><br class=\"clear_both\" />";
+			$body_html .= "<a href=\"".THIS_URL."?step=8\">Instructions</a><br class=\"clear_both\" />";
 		}
 		$body_html .= getSectionHTML($section_8_keys, $is_email);
 
