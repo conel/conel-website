@@ -375,11 +375,11 @@
 		}
 		$body_html .= getSectionHTML($section_7_keys, $is_email);
 
-		$body_html .= '<h3>Section 8 &#8211; Interview</h3>';
 		if (!$is_email) {
+		    $body_html .= '<h3>Section 8 &#8211; Interview</h3>';
 			$body_html .= "<a href=\"".THIS_URL."?step=8\">Instructions</a><br class=\"clear_both\" />";
+		    $body_html .= getSectionHTML($section_8_keys, $is_email);
 		}
-		$body_html .= getSectionHTML($section_8_keys, $is_email);
 
 		return $body_html;
 	}

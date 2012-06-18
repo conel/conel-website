@@ -223,8 +223,9 @@
 
 
         echo '<h2>Interview Dates</h2>';
-		if (count($interview_dates) == 0) {
-			echo '<p>No interview dates are currently selectable</p>';
+        $cant_select_any = true;
+		if ($cant_select_any || count($interview_dates) == 0) {
+			echo '<p>Interview date selection has been removed from online applications.</p>';
 		} else {
 			echo '<p>Click show to view applicants for date and location.</p>';
 		}
