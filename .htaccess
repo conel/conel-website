@@ -105,6 +105,7 @@
 	RewriteRule ^sports_sponsorship$ /for_learners/sponsored_athlete_programme  [R=301,L]
 	RewriteRule ^salons$ our_college/hair_and_beauty_salons/stylezone_enfield_and_tottenham_centres [R=301,L]
 	RewriteRule ^preapprenticeships$ /our_courses/pre_apprenticeships [R=301,L]
+	RewriteRule ^hncs$ /our_courses/higher_national_certificates_hncs [R=301,L]
 
 	RewriteRule ^dynamic(.*)$ dynamic.php?url=$1 [QSA,L]
 	RewriteCond %{REQUEST_FILENAME} !-f
