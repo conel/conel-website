@@ -1346,7 +1346,7 @@ function _page_generatePage($page_id,$template) {
 		
 		// Get video tag from page_id
 		$db = new DB_Sql();
-		$query = "SELECT * FROM webmatrix_extra_checkboxgroup WHERE page_id = $page_id";
+		$query = "SELECT text FROM webmatrix_extra_checkboxgroup WHERE page_id = $page_id";
 		$db->query($query);
 
 		$subject_code = '';

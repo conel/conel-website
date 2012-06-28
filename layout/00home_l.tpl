@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 </div>
-                <div id="header_right">{RANDOM_PROFILE}</div>
+                <div id="header_right"><a href="/contact_us/online_enquiry"><img src="/images/online-enquiry.jpg" alt="Online Enquiry" width="227" height="221" style="border:0;" /></a></div>
                 <br class="clear_both" />
             </div>
         </div>

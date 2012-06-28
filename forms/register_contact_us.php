@@ -116,8 +116,8 @@
 			//$mail->AddAddress('NKowald@staff.conel.ac.uk', 'Nathan Kowald');
 			$mail->AddAddress('courseinfo@conel.ac.uk', 'Course Information');
 			$mail->Subject = "Online Enquiry";
-			$mail->From = 'webmaster@staff.conel.ac.uk';
-			$mail->FromName = 'Conel Website Notifications';
+			$mail->From = 'courseinfo@conel.ac.uk';
+			$mail->FromName = 'Course Information';
 			$mail->Body = $body_html;
 			$mail->SMTPDebug = FALSE;
 

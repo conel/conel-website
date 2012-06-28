@@ -1,1 +1,35 @@
-<?xml version="1.0"?><page>	<page_head>		<title>Conel</title>		<description> </description>		<creation_date>2008-09</creation_date>		<owner>Webmatrix</owner>	</page_head>	<page_body>		<text name="HEADLINE">			<tag>Title</tag>			<description> </description>				</text>		<alias name="PAGE">			<tag>Choose the first homepage to show</tag>			<description> </description>		</alias>		<divider><tag>Global banner</tag></divider>		<image name="AD" width="110" height="114" showalt="TRUE">			<tag>Banner image</tag>			<description>JPG or GIF image 110 pixels wide and 114 pixels tall.</description>		</image>		<linklist name="ADLINK" template="l_linkl">			<tag>Select a link for the banner</tag>			<description> </description>		</linklist>		<divider><tag>Footer</tag></divider>		<listview name="FOOTER" template="l_footer" category="05content,02sitemap" scope="local" count="999"></listview>		<linklist name="EXTRAFOOTER" template="l_footer">			<tag>Select extra links for the footer</tag>			<description> </description>		</linklist>	</page_body></page>
+<?xml version="1.0"?>
+<page>
+	<page_head>
+		<title>Conel</title>
+		<description> </description>
+		<creation_date>2008-09</creation_date>
+		<owner>Webmatrix</owner>
+	</page_head>
+
+	<page_body>
+		<text name="HEADLINE">
+			<tag>Title</tag>
+			<description> </description>		
+		</text>
+		<alias name="PAGE">
+			<tag>Choose the first homepage to show</tag>
+			<description> </description>
+		</alias>
+		<divider><tag>Global banner</tag></divider>
+		<image name="AD" width="110" height="114" showalt="TRUE">
+			<tag>Banner image</tag>
+			<description>JPG or GIF image 110 pixels wide and 114 pixels tall.</description>
+		</image>
+		<linklist name="ADLINK" template="l_linkl">
+			<tag>Select a link for the banner</tag>
+			<description> </description>
+		</linklist>
+		<divider><tag>Footer</tag></divider>
+		<listview name="FOOTER" template="l_footer" category="05content,02sitemap" scope="local" count="999"></listview>
+		<linklist name="EXTRAFOOTER" template="l_footer">
+			<tag>Select extra links for the footer</tag>
+			<description> </description>
+		</linklist>
+	</page_body>
+</page>
