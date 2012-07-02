@@ -126,7 +126,7 @@
 					//$cg_content .= '<li><a href="http://www.conel.ac.uk/docs/YPCG_Tottenham_2011_12.pdf"><span><img src="/layout/img/pdf.gif" alt="PDF file" /> Young Person\'s Course Guide 2011-12 Tottenham Centre, 3.24 MB</span></a></li>';
 				//}
 				//if ($guide == "ACG TC") {
-					$cg_content .= '<li><a href="http://www.conel.ac.uk/docs/ACG_2012_13.pdf" target="_blank"><span><img src="/layout/img/pdf.gif" alt="PDF file" /> Adult Course Guide 2012-13, 2.57 MB</span></a></li>';
+					$cg_content .= '<li><a href="http://www.conel.ac.uk/docs/AdultCourseGuide_2012_13.pdf" target="_blank"><span><img src="/layout/img/pdf.gif" alt="PDF file" /> Adult Course Guide 2012-13, 3.53 MB</span></a></li>';
 				//}
 				// Adding new (combined course guide)
 				//if ($guide == "YPCG") {
