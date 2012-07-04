@@ -1324,17 +1324,18 @@ function _page_generatePage($page_id,$template) {
 		);
 		
 		// output a random number
-		$no_profiles = count($profile_alts);
-		$rand_num = rand(1, $no_profiles);
+		//$no_profiles = count($profile_alts);
+		//$rand_num = rand(1, $no_profiles);
 		
-		$rand_quote = '<a href="http://www.conel.ac.uk/course-application/three-easy-steps.php"><img src="/layout/img/banner-apply-now-2012.gif" alt="Apply Now" width="363" height="136" /></a>';
-		$rand_profile_pic = '<a href="'.$profile_alts[$rand_num]['url'].'"><img src="/layout/img/profile'.$rand_num.'.jpg" alt="'.$profile_alts[$rand_num]['name'].'" width="227" height="221" style="border:0;" /></a>';
+		//$rand_quote = '<a href="http://www.conel.ac.uk/course-application/three-easy-steps.php"><img src="/layout/img/banner-apply-now-2012.gif" alt="Apply Now" width="363" height="136" /></a>';
+		//$rand_profile_pic = '<a href="'.$profile_alts[$rand_num]['url'].'"><img src="/layout/img/profile'.$rand_num.'.jpg" alt="'.$profile_alts[$rand_num]['name'].'" width="227" height="221" style="border:0;" /></a>';
 		
 		// nkowald - 2012-01-18 - Changing the image and link temporarily
 		
 		//$rand_profile_pic = '<a href="http://www.conel.ac.uk/arkacademyenfield"><img src="/layout/img/arkweb.jpg" alt="ARK Schools" width="227" height="221" style="border:0;" /></a>';
 		
-		return array('RANDOM_QUOTE'=>$rand_quote, 'RANDOM_PROFILE'=>$rand_profile_pic);
+		//return array('RANDOM_QUOTE'=>$rand_quote, 'RANDOM_PROFILE'=>$rand_profile_pic);
+		return array('RANDOM_QUOTE'=>'', 'RANDOM_PROFILE'=>'');
 	}
 	
 	function module_setUpTubepress($id, $params) {

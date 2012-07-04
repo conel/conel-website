@@ -236,7 +236,7 @@ div.padding-top {
 	padding:14px 0 12px 5px;
 	margin-top:2px;
 }
-#header_left #navigation div ul{margin:0; width:720px; height:30px; overflow:hidden;}
+#header_left #navigation div ul{margin:0; width:950px; height:30px; overflow:hidden;}
 
 
 .intro_c,.intro_l, .intro_v{margin:0;background:url(../img/hr.gif) no-repeat bottom left;padding-bottom:8px;padding-top:8px}
@@ -1008,7 +1008,11 @@ h1.search_category_pages, p.search_text_pages {
 }
 #header_left {
 	float:left;
-	width:728px;
+}
+#home_buttons {
+	float:left;
+	width:670px;
+	text-align:right;
 }
 #header_right {
 	float:left;
