@@ -107,6 +107,8 @@
 	RewriteRule ^preapprenticeships$ /our_courses/pre_apprenticeships [R=301,L]
 	RewriteRule ^hncs$ /our_courses/higher_national_certificates_hncs [R=301,L]
 	RewriteRule ^creative$ /our_courses/careers_and_courses_in_art_music_and_media [R=301,L]
+	RewriteRule ^times$ /our_courses/enrolment/enrolment_times [R=301,L]
+	RewriteRule ^enrolment$ /our_courses/enrolment [R=301,L]
 
 	RewriteRule ^dynamic(.*)$ dynamic.php?url=$1 [QSA,L]
 	RewriteCond %{REQUEST_FILENAME} !-f
