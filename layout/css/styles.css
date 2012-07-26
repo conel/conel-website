@@ -292,7 +292,7 @@ p.caption{font-size:0.9167em;margin-bottom:20px}
 .colcont3 .col2 h3 a:hover,.colcont3 .col2 p a:hover{color:#009EDB; text-decoration:underline;}
 .colcont3 .col2 ul{margin-bottom:10px}
 .colcont3 .col2 ul li{list-style:disc;list-style-position:inside}
-.colcont3 .col2 table{width:440px;border-top:1px solid #ececec;margin-bottom:20px}
+.colcont3 .col2 table{width:440px; border-top:1px solid #ececec; margin-bottom:20px}
 .colcont3 .col2 table td{border-bottom:1px solid #ececec;vertical-align:top;padding-right:10px}
 .colcont3 .col2 div.factgrey table{border-top:0px solid;background-color:#f4f4f4;margin-bottom:0px}
 .colcont3 .col2 div.factgrey table td{border:0px solid;padding-right:0px;}
@@ -1308,4 +1308,17 @@ p.print_this {
 }
 p.print_this img {
 	margin-right:2px;
+}
+.col2 table th {
+    background-color:#F4F4F4;
+}
+.col2 table td, .col2 table th {
+    border:1px solid #CCC !important;
+}
+.col2 table a {
+    color:#009EDB;
+    text-decoration:underline;
+}
+body.contact_us .col2 table td, body.contact_us .col2 table th, form#conel_form table td, form#conel_form table th {
+    border:none !important;
 }
