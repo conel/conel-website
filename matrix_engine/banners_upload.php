@@ -33,6 +33,7 @@ ini_set('display_errors', 1);
 	$banner_pos = (isset($_REQUEST['pos']) && $_REQUEST['pos'] != '') ? $_REQUEST['pos'] : '' ;
 
 	// Insert banner details into table then redirect to banner page
+	
 	$host = 'localhost';
 	$user = 'root';
 	$pass = '1ctsql';
@@ -40,7 +41,7 @@ ini_set('display_errors', 1);
 
 	$link = mysql_connect($host, $user, $pass) or die("Can not connect." . mysql_error());
 	mysql_select_db($db) or die("Can not connect.");
-
+	
 	// This should be run after every 'delete'.
 	function updateOrder() {
 		$query = "SELECT * FROM webmatrix_banners ORDER BY position ASC";
@@ -260,7 +261,8 @@ ini_set('display_errors', 1);
 		case 'disable':
 			if ($banner_pos != '') {
 				$date_modified = date('Y-m-d H:i:s'); // "2009-06-21 14:34:04": MySQL timestamp format
-				$query = "UPDATE webmatrix_banners SET active=0, position=100, date_modified = '$date_modified' WHERE position = $banner_pos";
+				//$query = "UPDATE webmatrix_banners SET active=0, position=100, date_modified = '$date_modified' WHERE position = $banner_pos";
+				$query = "UPDATE webmatrix_banners SET active=0, date_modified = '$date_modified' WHERE position = $banner_pos";
 				if ($result = mysql_query($query)) {
 					$order_update = updateOrder();
 					if (!$order_update) {
@@ -282,7 +284,8 @@ ini_set('display_errors', 1);
 		case 'enable':
 			if ($banner_pos != '') {
 				$date_modified = date('Y-m-d H:i:s'); // "2009-06-21 14:34:04": MySQL timestamp format
-				$query = "UPDATE webmatrix_banners SET active=1, position=100, date_modified = '$date_modified' WHERE position = $banner_pos";
+				//$query = "UPDATE webmatrix_banners SET active=1, position=100, date_modified = '$date_modified' WHERE position = $banner_pos";
+				$query = "UPDATE webmatrix_banners SET active=1, date_modified = '$date_modified' WHERE position = $banner_pos";
 				if ($result = mysql_query($query)) {
 					$order_update = updateOrder();
 					if (!$order_update) {

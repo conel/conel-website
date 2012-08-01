@@ -25,6 +25,8 @@
 	}
 
 	$session = $_GET['Session'];
+	
+	/*
 	$host = 'localhost';
 	$user = 'root';
 	$pass = '1ctsql';
@@ -32,28 +34,37 @@
 
 	$link = mysql_connect($host, $user, $pass) or die("Can not connect." . mysql_error());
 	mysql_select_db($db) or die("Can not connect.");
-
+	*/
+	
+	$sql = new DB_Sql();
+	$sql->connect();
+	
 	// Get a list of tables we should be able to export data from
-	$query = "SELECT id, position, link, img_url, active, author FROM webmatrix_banners ORDER BY position ASC";
+	$query = "SELECT id, position, link, img_url, active, author FROM webmatrix_banners ORDER BY active DESC, position";
 
-	$result = mysql_query($query);
+	//$result = mysql_query($query);
+	$result = $sql->query($query);
+	
 	$banners = array();
 	$banners_exist = FALSE;
 	$position = 1;
 	$active_banners = 0;
-	if (mysql_num_rows($result) > 0) {
+	
+	//if (mysql_num_rows($result) > 0) {
+	if ($sql->num_rows() > 0) {
 		$banners_exist = TRUE;
 		$c = 0;
-		while ($row = mysql_fetch_assoc($result)) {
-			$banners[$c]['id']			= $row['id'];
-			$banners[$c]['position']	= $row['position'];
-			$banners[$c]['link']		= $row['link'];
-			$banners[$c]['img_url']		= $row['img_url'];
-			$banners[$c]['author']		= $row['author'];
-			$banners[$c]['active']		= $row['active'];
-			$position					= $row['position'];
+		//while ($row = mysql_fetch_assoc($result)) {
+		while ($sql->next_record(MYSQL_ASSOC)) {
+			$banners[$c]['id']			= $sql->Record['id'];
+			$banners[$c]['position']	= $sql->Record['position'];
+			$banners[$c]['link']		= $sql->Record['link'];
+			$banners[$c]['img_url']		= $sql->Record['img_url'];
+			$banners[$c]['author']		= $sql->Record['author'];
+			$banners[$c]['active']		= $sql->Record['active'];
+			$position					= $sql->Record['position'];
 			$c++;
-			if ($row['active']) $active_banners++;
+			if ($sql->Record['active']) $active_banners++;
 		}
 		$position++;
 	}
@@ -130,26 +141,26 @@ $(document).ready(function(){
 			<div class="position">
 				<div class="moveup">';
 			if ($c > 1 && $active == 1) {
-				echo '<a href="banners_upload.php?Session='.$session.'&amp;action=moveup&amp;pos='.$c.'" title="Move Up"><img src="../layout/img/icon-moveup.png" /></a>';
+				echo '<a href="banners_upload.php?Session='.$session.'&amp;action=moveup&amp;pos='.$banner['position'].'" title="Move Up"><img src="../layout/img/icon-moveup.png" /></a>';
 			}
 			echo '</div>
 				<div class="count">'.$c.'</div>
 				<div class="movedown">';
 			if ($c != $active_banners && $active == 1) {
-				echo '<a href="banners_upload.php?Session='.$session.'&amp;action=movedown&amp;pos='.$c.'" title="Move Down"><img src="../layout/img/icon-movedown.png" /></a>';
+				echo '<a href="banners_upload.php?Session='.$session.'&amp;action=movedown&amp;pos='.$banner['position'].'" title="Move Down"><img src="../layout/img/icon-movedown.png" /></a>';
 			}
 			echo '</div>
 			</div>
 				<div class="banner_details">
 					<img src="'.$banner['img_url'].'" width="700" height="143" alt="" /><br />
 					<div class="actions">
-						<a href="banner_edit.php?Session='.$session.'&amp;pos='.$c.'" class="edit"><span class="'.$c.'">Edit</span></a>
-						<a href="banners_upload.php?Session='.$session.'&amp;action=delete&amp;pos='.$c.'" class="delete"><span class="'.$c.'">Delete</span></a>
+						<a href="banner_edit.php?Session='.$session.'&amp;pos='.$banner['position'].'" class="edit"><span class="'.$c.'">Edit</span></a>
+						<a href="banners_upload.php?Session='.$session.'&amp;action=delete&amp;pos='.$banner['position'].'" class="delete"><span class="'.$c.'">Delete</span></a>
 					';	
 					if ($active) {
-						echo '<a href="banners_upload.php?Session='.$session.'&amp;action=disable&amp;pos='.$c.'" class="disable"><span class="'.$c.'">Disable</span></a>';
+						echo '<a href="banners_upload.php?Session='.$session.'&amp;action=disable&amp;pos='.$banner['position'].'" class="disable"><span class="'.$c.'">Disable</span></a>';
 					} else {
-						echo '<a href="banners_upload.php?Session='.$session.'&amp;action=enable&amp;pos='.$c.'" class="enable"><span class="'.$c.'">Enable</span></a>';
+						echo '<a href="banners_upload.php?Session='.$session.'&amp;action=enable&amp;pos='.$banner['position'].'" class="enable"><span class="'.$c.'">Enable</span></a>';
 					}
 					// Reduce size of banner link if over a certain amount of characters
 					$banner_link_title = $banner['link'];
