@@ -1,1 +1,27 @@
-<?xml version="1.0"?><page>	<page_head>		<title>Conel</title>		<description> </description>		<creation_date>2008-09</creation_date>		<owner>Webmatrix</owner>	</page_head>	<page_body>		<include name="PANEL" function="module_getPanelsCourse" />		<include name="NEWS" function="module_getNewsCourses" />		<include name="EVENTS" function="module_getEventsCourses" />		<include name="GLOBALS" function="module_getGlobals" />		<include name="COURSE" function="module_getCourse" />		<include name="NAVIGATION" function="module_navigation" />		<box name="INFO" template="b_info" boxtemplate="b_info" entry="TEXT:HEADLINE">			<tag>Optional contact information</tag>			<description> </description>		</box>		<copytext name="DISCLAIMER" lines="3">			<tag>Disclaimer</tag>			<description> </description>		</copytext>		<listview name="FOOTER" template="l_footerh" category="00home" highlight="true" scope="global" count="1"></listview>	</page_body></page>
+<?xml version="1.0"?>
+<page>
+	<page_head>
+		<title>Conel</title>
+		<description> </description>
+		<creation_date>2008-09</creation_date>
+		<owner>Webmatrix</owner>
+	</page_head>
+
+	<page_body>
+		<include name="PANEL" function="module_getPanelsCourse" />
+		<include name="NEWS" function="module_getNewsCourses" />
+		<include name="EVENTS" function="module_getEventsCourses" />
+		<include name="GLOBALS" function="module_getGlobals" />
+		<include name="COURSE" function="module_getCourse" />
+		<include name="NAVIGATION" function="module_navigation" />
+		<box name="INFO" template="b_info" boxtemplate="b_info" entry="TEXT:HEADLINE">
+			<tag>Optional contact information</tag>
+			<description> </description>
+		</box>
+		<copytext name="DISCLAIMER" lines="3">
+			<tag>Disclaimer</tag>
+			<description> </description>
+		</copytext>
+		<listview name="FOOTER" template="l_footerh" category="00home" highlight="true" scope="global" count="1"></listview>
+	</page_body>
+</page>
