@@ -65,7 +65,7 @@
 	RewriteRule ^excellenceawards$ /for_learners/college_excellence_awards/college_excellence_awards_2010 [R=301,L]
 	RewriteRule ^safeguarding$ /for_learners/safeguarding [R=301,L]
 	RewriteRule ^stylezone$ http://www.conel.ac.uk/our_college/hair_and_beauty_salons/stylezone_enfield_and_tottenham_centres [R=301,L]
-	RewriteRule ^apprenticeships$ /our_courses/subjects/apprenticeships [R=301,L]
+	RewriteRule ^apprenticeships$ our_courses/subjects/apprenticeships [R=301,L]
 	RewriteRule ^science_tasters$ http://www.conel.ac.uk/news_events/events_calendar/march_2011/science_taster_sessions [R=301,L]
 	RewriteRule ^higher$ http://www.conel.ac.uk/our_courses/higher_education [R=301,L]
 	RewriteRule ^recruit$ http://system.newzapp.co.uk/GPage.asp?LID=OSwxNjk1NzI3Mjg [R=301,L]
@@ -109,6 +109,8 @@
 	RewriteRule ^creative$ /our_courses/careers_and_courses_in_art_music_and_media [R=301,L]
 	RewriteRule ^times$ /our_courses/enrolment/enrolment_times [R=301,L]
 	RewriteRule ^enrolment$ /our_courses/enrolment [R=301,L]
+	RewriteRule ^apprenticeships1$ our_courses/subjects/apprenticeships [R=301,L]
+	RewriteRule ^construction$ /our_courses/careers_and_courses_in_construction [R=301,L]
 
 	RewriteRule ^dynamic(.*)$ dynamic.php?url=$1 [QSA,L]
 	RewriteCond %{REQUEST_FILENAME} !-f
