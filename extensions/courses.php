@@ -320,7 +320,7 @@
 					$choice_html = $start_html . " - " . $end_html;
 					$occurrences .= '<input type="hidden" name="course_entry_date" value="'.$choice_html.'" />';
 			
-					$occurrences .= '<p class="clearfix"><span class="title1"></span><span class="info"><input type="submit" value="'.$submit_value.'" class="submit browse" /></span></p>';
+					$occurrences .= '<p class="clearfix"><span class="title1"></span><!--span class="info"><input type="submit" value="'.$submit_value.'" class="submit browse" /></span--></p>';
 					$occurrences .= '</form>';
 				}
 

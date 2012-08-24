@@ -732,6 +732,14 @@ if ($step > 0) {
 		}
 		echo '<br class="clear_both" />';
 		echo '<br class="clear_both" />';
+?>
+<b>Enrolment 2012: Don`t Apply - Come in and Enrol*</b>
+<p>Application forms are <b><u>not</b></u> being processed at present because we are enrolling students.<br>
+Please visit our College Centres in person to enrol on the course you are interested in.<br> 
+For details about enrolment, visit:  <a href='http://www.conel.ac.uk/our_courses/enrolment'>www.conel.ac.uk/our_courses/enrolment</a>
+</p>
+<p>*Enrolling on a course is subject to meeting the course entry criteria.</p>
+<?php
 		echo '</div>';
 	}
 
