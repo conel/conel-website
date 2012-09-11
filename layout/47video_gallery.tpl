@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<title>conel - {HEADLINE}</title>
+	<title>College of North East London - {HEADLINE}</title>
 	<meta name="keywords" content="conel, college, college of north east london, further education, london, north east london, short courses, esol, adult learning, employer courses" />
 	<meta name="description" content="College of North East London" />
 	<meta name="robots" content="index,follow" />
