@@ -288,7 +288,8 @@ form#searchnews{display:block;background:url(../img/searchform.gif) no-repeat;pa
 form#searchnews label{font-size:1.25em;line-height:1.2em;color:#e4fc00;margin-right:80px}
 p.caption{font-size:0.9167em;margin-bottom:20px}
 .colcont3 .col2 h3,.colcont3 .col2 p{margin-bottom:10px;width:440px}
-.colcont3 .col2 h3 a,.colcont3 .col2 p a,.colcont3 .col2 h3 a:visited,.colcont3 .col2 p a:visited{color:#009EDB; text-decoration:none;}
+.colcont3 .col2 h3 a,.colcont3 .col2 p a, .col2 li a, .intro p a, .intro li a, .colcont3 .col2 h3 a:visited,.colcont3 .col2 p a:visited {color:#009EDB! important; text-decoration:none !important;}
+.col2 ul, .intro ul, .col2 li, .intro li    {list-style: disc outside none; margin-left: 10px;}
 .colcont3 .col2 h3 a:hover,.colcont3 .col2 p a:hover{color:#009EDB; text-decoration:underline;}
 .colcont3 .col2 ul{margin-bottom:10px}
 .colcont3 .col2 ul li{list-style:disc;list-style-position:inside}
@@ -423,7 +424,7 @@ a.head:hover{background-position:0px -300px;color:#464646}
 a.head span{padding:6px 0 20px 26px;display:block}
 h2.head{display:block;width:440px;background:#555 url(../img/coursef.gif) no-repeat;font-size:1.25em;color:#fff;margin-bottom:0px}
 h2.head span{padding:6px 0 20px 10px;display:block}
-.colcont3 .col2 ul.extra{margin-bottom:20px}
+.colcont3 .col2 ul.extra{margin-bottom:20px;list-style: none outside none;}
 .greybox{padding-top:2px;background:#f4f4f4 url(../img/coursef_g.gif) no-repeat;width:430px;padding:5px 0 10px 10px}
 .colcont3 .col2 div.greybox p{width:410px;margin-bottom:0px;}
 a.greyb,ul#faq li a{display:block;width:440px;background:url(../img/head.gif) no-repeat;font-size:1.25em}

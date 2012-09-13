@@ -111,6 +111,8 @@
 	RewriteRule ^enrolment$ /our_courses/enrolment [R=301,L]
 	RewriteRule ^apprenticeships1$ our_courses/subjects/apprenticeships [R=301,L]
 	RewriteRule ^construction$ /our_courses/careers_and_courses_in_construction [R=301,L]
+	RewriteRule ^barbering$ our_courses/careers_in_hairdressing_and_beauty_therapy/barbering [R=301,L]
+	RewriteRule ^nails$ our_courses/careers_in_hairdressing_and_beauty_therapy/nail_services  [R=301,L]
 
 	RewriteRule ^dynamic(.*)$ dynamic.php?url=$1 [QSA,L]
 	RewriteCond %{REQUEST_FILENAME} !-f

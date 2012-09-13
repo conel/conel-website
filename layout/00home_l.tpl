@@ -78,7 +78,7 @@
                 <div class="colhp">
                     <h2>{HEAD1}</h2>
                     <p>{DESC}</p>
-                    <div class="hrcolhp"><hr /></div>
+                    <!--div class="hrcolhp"><hr /></div-->
                     {LINKS}
                 </div>
                 <div class="colhp">
@@ -106,7 +106,7 @@
                             </div>
                         </form>
                     </div>
-                    <div class="hrcolhp"><hr /></div>
+                    <!--div class="hrcolhp"><hr /></div-->
                     <p>{CONTACT}</p>
                     <div class="hrcolhp"><hr /></div>
 					<br />
