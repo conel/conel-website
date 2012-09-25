@@ -304,7 +304,7 @@
 					|| 
 					(!isset($_SESSION['caf']['course_code_2']) || $_SESSION['caf']['course_code_2'] == '') 
 				) {
-                    $occurrences .= '<form action="'.SITE_ROOT.'course-application/caf_add_to_application.php" method="post">';
+					$occurrences .= '<form action="'.SITE_ROOT.'course-application/caf_add_to_application.php" method="post">';
 					$occurrences .= '<input type="hidden" name="course_title" value="'.$course_title.'" />';
 					$occurrences .= '<input type="hidden" name="course_code" value="'.$course_code.'" />';
 					// strip 'center from location'
@@ -320,7 +320,7 @@
 					$choice_html = $start_html . " - " . $end_html;
 					$occurrences .= '<input type="hidden" name="course_entry_date" value="'.$choice_html.'" />';
 			
-					$occurrences .= '<p class="clearfix"><span class="title1"></span><!--span class="info"><input type="submit" value="'.$submit_value.'" class="submit browse" /></span--></p>';
+					$occurrences .= '<p class="clearfix"><span class="title1"></span><span class="info"><input type="submit" value="'.$submit_value.'" class="submit browse" /></span></p>';
 					$occurrences .= '</form>';
 				}
 
@@ -636,34 +636,80 @@
 		} else {
 			return '';
 		}
+	}	
+	// sszabo - 2012-09-25 - Get Housing Courses
+	function module_getHousingCourses($id, $params) {
+		// Only run if current page is 'housing'
+		if ($params['page_id'] == 4378) {
+		
+			$db = new DB_Sql();
+            $query = "SELECT id, Description FROM tblunits WHERE Description LIKE '%Housing%' AND id NOT LIKE 'AP%' ORDER BY Subject_ID, id, Description";
+			$rp = $db->query($query);
+			while($db->next_record(MYSQL_ASSOC)) {
+				$courses[] = $db->Record;        
+			}
+			if(is_array($courses)) {			
+				// now prepare the output
+				$output = '';
+				foreach($courses as $current_course) {
+					$output .= '<li class="clearfix"><a href="/our_courses/course_search/course/'.$current_course['id'].'" class="clearfix"><span class="title">'.$current_course['id'].'</span><span class="info">'.htmlentities($current_course['Description'], ENT_QUOTES,'UTF-8').'</span></a></li>';
+				}
+				
+				if(!empty($output)) {
+					$output = '<ul class="rel_courses topbg">'.$output.'</ul><div class="hrc1"><hr /></div>';
+				}
+				return $output;
+			}
+		} else {
+			return '';
+		}
 	}
-	
+
 	## =======================================================================
 	## module_getSubjectCoursesCount										
 	## =======================================================================
 	## gets name and link of parent page
 	## =======================================================================	
 	function module_getSubjectCoursesCount($id,$params) {
-		$data = array();
-		subject_checkboxgroup_getData($params['page_id'],$data);
-		if(isset($data['SUBJECT']['text'])) {
-			$cnt = 0;
-			$db = new DB_Sql();
-			$subjects = $data['SUBJECT']['text']; 
-			
-			// nkowald - modified 22/06/2009 - need to removed multiple subject values in array
-			$subjects = array_unique($subjects);
-			
-			foreach($subjects as $current_subject) {
-				$query = "SELECT id FROM tblunits WHERE Subject_ID='$current_subject'";
-				$rp = $db->query($query);
-				while($db->next_record(MYSQL_ASSOC)) {
-					$cnt++; // how many courses
-				}//while
-       
-			} //foreach
-			
-		} //if
+
+		$db = new DB_Sql();
+		$cnt = 0;
+					
+		switch($params['page_id']) {
+			case 4424:	
+				$query = "SELECT COUNT(id) as cnt FROM tblunits WHERE (Description LIKE ('%Pre Apprenticeship%') AND id NOT LIKE ('AP%')) OR id LIKE ('AP%')";
+				$db->query($query);	
+				$db->next_record();
+				$cnt = $db->Record["cnt"];				
+			break;
+			case 4378:
+				$query = "SELECT COUNT(id) as cnt FROM tblunits WHERE Description LIKE '%Housing%' AND id NOT LIKE 'AP%'";
+				$db->query($query);	
+				$db->next_record();
+				$cnt = $db->Record["cnt"];							
+			break;
+			default:
+				$data = array();
+				subject_checkboxgroup_getData($params['page_id'],$data);
+				
+				if(isset($data['SUBJECT']['text'])) {
+
+					$subjects = $data['SUBJECT']['text']; 
+					
+					// nkowald - modified 22/06/2009 - need to removed multiple subject values in array
+					$subjects = array_unique($subjects);
+					
+					foreach($subjects as $current_subject) {
+						$query = "SELECT id FROM tblunits WHERE Subject_ID='$current_subject'";
+						$rp = $db->query($query);
+						while($db->next_record(MYSQL_ASSOC)) {
+							$cnt++; // how many courses
+						}//while
+			   
+					} //foreach
+				} //if
+			break;
+		}
 		
 		if ($cnt == 0) {
 			$output = '';
@@ -672,8 +718,7 @@
 		} else {
 			$output = $cnt.' courses';
 		}
-
-		return $output;
-	}	
-
+		
+		return $output;	
+	}
 ?>

@@ -59,6 +59,8 @@
 			</div>
 			<div class="col3">
 				{RELATED}
+				<p class="rss-icon-small"><a href="http://feeds.feedburner.com/College-of-Haringey-Enfield-North-East-London">Subscribe to College News</a></p>
+				<p class="email-icon-large"><a href="http://feedburner.google.com/fb/a/mailverify?uri=College-of-Haringey-Enfield-North-East-London&amp;loc=en_US">Subscribe to Email Alerts</a></p>
 				<div id="social_media_rhs">
 					<h2>Share this news article</h2>
 					<a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="collegeNELondon">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>

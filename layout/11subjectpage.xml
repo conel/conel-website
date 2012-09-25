@@ -51,6 +51,7 @@
 		</box>
 		<include name="COURSES" function="module_getSubjectCourses" />
 		<include name="APP_COURSES" function="module_getApprenticeshipCourses" />
+		<include name="HOU_COURSES" function="module_getHousingCourses" />
 		<listview name="FOOTER" template="l_footerh" category="00home" highlight="true" scope="global" count="1"></listview>
 	</page_body>
 </page>

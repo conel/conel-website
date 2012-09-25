@@ -54,6 +54,7 @@
 				{LINKS}
 				{COURSES}
 				{APP_COURSES}
+				{HOU_COURSES}
 				
 				{INFO}
 			</div>

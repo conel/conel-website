@@ -289,6 +289,10 @@ form#searchnews label{font-size:1.25em;line-height:1.2em;color:#e4fc00;margin-ri
 p.caption{font-size:0.9167em;margin-bottom:20px}
 .colcont3 .col2 h3,.colcont3 .col2 p{margin-bottom:10px;width:440px}
 .colcont3 .col2 h3 a,.colcont3 .col2 p a, .col2 li a, .intro p a, .intro li a, .colcont3 .col2 h3 a:visited,.colcont3 .col2 p a:visited {color:#009EDB! important; text-decoration:none !important;}
+ul.fact{margin-left:0 !important;}
+li.clearfix{margin-left:0 !important;}
+ul.news, ul.news li {margin-left:0 !important;}
+ul.news a {color:#000000 !important;} 
 .col2 ul, .intro ul, .col2 li, .intro li    {list-style: disc outside none; margin-left: 10px;}
 .colcont3 .col2 h3 a:hover,.colcont3 .col2 p a:hover{color:#009EDB; text-decoration:underline;}
 .colcont3 .col2 ul{margin-bottom:10px}
@@ -1146,6 +1150,20 @@ form#stewarding span.dob {
 #tweet_butt {
 	float:left;
 	width:70px;
+}
+p.rss-icon-small {
+	margin-left: 10px !important;
+}
+p.rss-icon-small a {
+    background: url("../img/rss-icon-small.gif") no-repeat;
+	padding-left: 25px !important;
+}
+p.email-icon-large {
+	margin-left: 10px !important;
+}
+p.email-icon-large a {
+    background: url("../img/email-icon-large.gif") 0 0 no-repeat;
+	padding-left: 25px !important;
 }
 #face_butt {
 	float:left;

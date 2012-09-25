@@ -32,12 +32,12 @@
   
   // Setting the channel elements
   // Use wrapper functions for common channel elements
-  $TestFeed->setTitle('CONEL - News & Events');
+  $TestFeed->setTitle('College of Haringey, Enfield and North East London - News & Events');
   $TestFeed->setLink('http://www.conel.ac.uk/news_events');
   $TestFeed->setDescription('College of Haringey, Enfield and North East London - Latest News & Events');
   
   // Image title and link must match with the 'title' and 'link' channel elements for valid RSS 2.0
-  $TestFeed->setImage('CONEL - News & Events','http://www.conel.ac.uk/news_events','http://www.conel.ac.uk/layout/img/logo.gif');
+  $TestFeed->setImage('College of Haringey, Enfield and North East London - News & Events','http://www.conel.ac.uk/news_events','http://www.conel.ac.uk/layout/img/logo.gif');
   
 	// Detriving informations from database addin feeds
 	// Get all News and Events Items - ordered by latest first
