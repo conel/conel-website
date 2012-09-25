@@ -415,7 +415,9 @@ p.searchtop{display:block;background:#f4f4f4 url(../img/search_list_t.gif) no-re
 .colcont3 .col2 div.factgrey div.notes img{margin-right:3px}
 .colcont3 .col2 div.factgrey p span.title1{display:block;font-size:1.25em;padding-left:26px;width:114px;float:left;margin-top:4px}
 .colcont3 .col2 div.factgrey p span.info{display:block;float:left;width:250px;padding-left:10px;margin-top:4px}
-ul.rel_courses li a span.info,.colcont3 .col2 ul.fact li p span.info,.colcont3 .col2 ul.factgrey li p span.info{background:none;width:250px;padding-left:10px}
+ul.rel_courses li a span.info,.colcont3 .col2 ul.fact li p span.info,.colcont3 .col2 ul.factgrey li p span.info{background:none;width:280px;padding-left:10px}
+span.ccode {margin:0 !important}
+span.hbook {float:right !important;background-color:#ffffff;color:#000000;padding:2px 5px !important;margin:0 !important;line-height:1em;}
 .colcont3 .col2 ul.factgrey,.colcont3 .col2 ul.fact{margin-bottom:0px}
 ul.fact li{display:block;background:url(../img/coursef_line.gif) no-repeat bottom left;padding-bottom:1px}
 ul.fact li.noborder {background:none; padding:0;}

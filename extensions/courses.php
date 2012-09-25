@@ -39,7 +39,7 @@
 			$course_title = htmlentities($output['Description'], ENT_QUOTES,'UTF-8');
 			$course_code = htmlentities($output['id'], ENT_QUOTES,'UTF-8');
 			$output['Description'] = htmlentities($output['Description'], ENT_QUOTES,'UTF-8');
-			    
+			
 			// nkowald - 2011-007-19 - Set up array of subject images
 			$pbanners = array();
 			$pbanners['AGRICULTUR'] = '';
@@ -72,7 +72,17 @@
 			   
 			// Course Code
 			if (!empty($output['id'])) {
-				$output['id'] = '<li class="clearfix"><p class="clearfix"><span class="title1">Course Code</span><span class="info">'.htmlentities($output['id'], ENT_QUOTES,'UTF-8').'</span></p></li>';
+					
+				$output['id'] = '<li class="clearfix"><p class="clearfix"><span class="title1">Course Code</span><span class="info"><span class="ccode">'.htmlentities($output['id'], ENT_QUOTES,'UTF-8').'</span>';
+				
+				$hbook = $course_code.'.doc';
+				
+				if(is_file(MATRIX_UPLOADDIR_DOCS.$hbook)) {
+				
+					$output['id'] .= '<span class="hbook"><a href="'.SITE_URL.'/'.UPLOAD_DIR_DOCS.$hbook.'">Download handbook</a></span>';
+				}
+				
+				$output['id'] .= '</span></p></li>';
 			}
 			// What qualifications do I need?
 			if (!empty($output['Prerequisites'])) {
