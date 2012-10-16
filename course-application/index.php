@@ -362,7 +362,7 @@
 </div>
 <?php } ?>
 
-<h1>Course Application Form 2013 - 14</h1>
+<h1>Course Application Form</h1>
 <?php
 if ($step != 0) {
 	// remove duplicate errors if they exist

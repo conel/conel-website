@@ -10,8 +10,9 @@
 		// get the course id
 		$baseURL = getTargetURL($params['page_id']);
 		$course_id = substr($_GET['url'],strlen($baseURL));
-    
+
 		if(!empty($course_id) && strlen($course_id) > 2) {
+			
 			// we have a three level hierachy- we have:
 			// units -> occurences -> timetable
 
