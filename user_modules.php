@@ -130,7 +130,8 @@
 				//}
 				// Adding new (combined course guide)
 				//if ($guide == "YPCG") {
-					$cg_content .= '<li><a href="http://www.conel.ac.uk/docs/YPCG_2012_13.pdf" target="_blank"><span><img src="/layout/img/pdf.gif" alt="PDF file" /> Young Person\'s Course Guide 2012-13, 15.45 MB</span></a></li>';
+					//$cg_content .= '<li><a href="http://www.conel.ac.uk/docs/YPCG_2012_13.pdf" target="_blank"><span><img src="/layout/img/pdf.gif" alt="PDF file" /> Young Person\'s Course Guide 2012-13, 15.45 MB</span></a></li>';
+					$cg_content .= '<li><a href="http://www.conel.ac.uk/docs/YPCG_2013_14.pdf" target="_blank"><span><img src="/layout/img/pdf.gif" alt="PDF file" /> Young Person\'s Course Guide 2013-14, 15.45 MB</span></a></li>';
 				//}
 			//}
 			$cg_content .= '</ul>';

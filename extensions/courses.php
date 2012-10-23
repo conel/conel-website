@@ -7,6 +7,7 @@
 	## =======================================================================
 	//--------------------------------------------------------------------
 	function module_getCourse($id,$params) {
+
 		// get the course id
 		$baseURL = getTargetURL($params['page_id']);
 		$course_id = substr($_GET['url'],strlen($baseURL));
@@ -72,19 +73,28 @@
 			}
 			   
 			// Course Code
-			if (!empty($output['id'])) {
+			if (! empty($output['id'])) {
 					
 				$output['id'] = '<li class="clearfix"><p class="clearfix"><span class="title1">Course Code</span><span class="info"><span class="ccode">'.htmlentities($output['id'], ENT_QUOTES,'UTF-8').'</span>';
+
+				$hdir = MATRIX_UPLOADDIR_DOCS.'handbooks/'.$subject.'/';
+
+				if(is_dir($hdir)) {
+					
+					$hbooks = array("$course_code.doc","$course_code.pdf",'default.doc','default.docx');
+									
+					foreach($hbooks as $hbook) {					
 				
-				$hbook = $course_code.'.doc';
-				
-				if(is_file(MATRIX_UPLOADDIR_DOCS.$hbook)) {
-				
-					$output['id'] .= '<span class="hbook"><a href="'.SITE_URL.'/'.UPLOAD_DIR_DOCS.$hbook.'">Download handbook</a></span>';
+						if(is_file($hdir.$hbook)) {					
+							$output['id'] .= '<span class="hbook"><a href="'.SITE_URL.'/docs/handbooks/'.$subject.'/'.$hbook.'">Download handbook</a></span>';
+							break;
+						}					
+					}				
 				}
-				
+
 				$output['id'] .= '</span></p></li>';
 			}
+			
 			// What qualifications do I need?
 			if (!empty($output['Prerequisites'])) {
 				$output['Prerequisites'] = '<li class="clearfix"><p class="clearfix"><span class="title1">What qualifications do I need?</span><span class="info">'.htmlentities($output['Prerequisites'], ENT_QUOTES,'UTF-8').'</span></p></li>';
