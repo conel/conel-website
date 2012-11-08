@@ -1,6 +1,7 @@
 cache/*
 docs/*
 images/*
+stat/*.log
 VRD*
 forms/sendmail.php
 matrix_engine/config.php
