@@ -1,13 +1,14 @@
 <?php
 
 	function get_duration($start_date, $end_date) {
-	
+		
 		$this_year = date('Y'); // Get current date as year
 		$this_month = strtolower(date('F')); // Get current date as month
 
 		$months = array('january','february','march','april','may','june','july','august','september','october','november','december');
 
 		$past_months = array();
+		
 		// nkowald - 2010-05-24 - Break happened after the array add, updated
 		foreach ($months as $month) {
 			if ($this_month == $month) {
@@ -22,10 +23,12 @@
 		$days_full_year = array_sum($days_per_month);
 
 		$qual_start = ereg_replace("[^0-9]", "", $start_date);
+		
 		// nkowald - 2012-02-17 - strip first two characters from string
 		$qual_start = substr($qual_start, 2);
 		$qual_start_month = eregi_replace("[^A-Z]", "", $start_date);
 		$qual_end = ereg_replace("[^0-9]", "", $end_date);
+		
 		// nkowald - 2012-02-17 - strip first two characters from string
 		$qual_end = substr($qual_end, 2);
 		$qual_end_month = eregi_replace("[^A-Z]", "", $end_date);
@@ -44,7 +47,8 @@
 		
 		// Work out the number of months
 		if ($qual_end > $qual_start) {
-			$no_years = $qual_end - $qual_start;
+		
+		$no_years = $qual_end - $qual_start;
 			
 			if ($no_years == 1) {
 			
@@ -111,7 +115,7 @@
 
 	// $filter is an array of occurrence ids to filter by
 	function export_csv($filter='') {
-
+		
 		$host = 'localhost';
 		$user = 'root';
 		$pass = '1ctsql';
@@ -123,6 +127,7 @@
 		mysql_select_db($db) or die("Can not connect.");
 
 		$result = mysql_query("SHOW COLUMNS FROM tbloccurrences");
+		
 		$i = 0;
 		if (mysql_num_rows($result) > 0) {
 			while ($row = mysql_fetch_assoc($result)) {
@@ -130,9 +135,10 @@
 				$i++;
 			}
 		}
+		
 		// nkowald - add value for course duration
 		$values[] = '"Duration"';
-		
+
 		// implode values
 		
 		$csv_output .= implode(',', $values);
@@ -149,23 +155,25 @@
 		$values = mysql_query($query);
 		
 		while ($rowr = mysql_fetch_row($values)) {
+			
 			for ($j=0; $j < $i; $j++) {
+		
 				// check if separator is used in value, if so enclose in quotes
-					$value = '"'.$rowr[$j].'"';
-					
-					if ($j == ($i - 1)) {
-						$csv_output .= $value;	
-					} else {
-						$csv_output .= $value . $separator;	
-					}
-					
-					if ($j == 4) {
-						$start_date = $value;
-					} else if ($j == 5) {
-						$end_date = $value;
-					}
-						
+				$value = '"'.$rowr[$j].'"';
+				
+				if ($j == ($i - 1)) {
+					$csv_output .= $value;	
+				} else {
+					$csv_output .= $value . $separator;	
+				}
+				
+				if ($j == 6) {
+					$start_date = $value;
+				} else if ($j == 7) {
+					$end_date = $value;
+				}
 			}
+
 			// Get duration based on start and end dates
 			$duration = get_duration($start_date, $end_date);
 			// strip commas
@@ -173,7 +181,9 @@
 			$duration = '"'.$duration.'"';
 			
 			$csv_output .= "," . $duration;
+
 			$csv_output .= "\n";
+
 		}
 
 		// Convert underscores to hyphens

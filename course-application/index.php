@@ -1,4 +1,5 @@
 <?php
+	exit;
 	session_start();
 	// Session security
 	if (!isset($_SESSION['caf']['initiated'])) {

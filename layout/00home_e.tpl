@@ -22,7 +22,8 @@
 						<div id="home_top">
 							<div id="home_logo"><h1>The College of Haringey, Enfield and North East London</h1><span><a id="access-navigation" href="/home" name="access-navigation"></a></span></div>
                             <div id="home_buttons">
-                                <a href="/course-application/three-easy-steps.php"><img src="/images/home-apply-now.gif" width="300" height="140" alt="Apply Now" style="border:0;" /></a><a href="/contact_us/online_enquiry"><img src="/images/online-enquiry.gif" alt="Online Enquiry" width="300" height="140" style="border:0;" /></a>
+                                <!--a href="/course-application/three-easy-steps.php"><img src="/images/home-apply-now.gif" width="300" height="140" alt="Apply Now" style="border:0;" /></a-->
+								<!--a href="/contact_us/online_enquiry"><img src="/images/online-enquiry.gif" alt="Online Enquiry" width="300" height="140" style="border:0;" /></a-->
                             </div>
 							<br class="clear_both" />
 						</div>

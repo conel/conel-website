@@ -187,6 +187,9 @@
 				$tuition_actual = ($tuition_fee != '') ? $tuition_fee : 0;
 				$examreg_actual = ($examreg_fee != '') ? $examreg_fee : 0;
 				$total_fees = $material_actual + $tuition_actual + $examreg_actual;
+				
+				$course_code = $db->Record['COURSE_CODE'];
+				$calocc_code = $db->Record['CALOCC_CODE'];
 			
 				$occurrences = "";
 				
@@ -302,7 +305,6 @@
 					$occurrences .= '<p class="clearfix"><span class="title1"></span><span class="info"><strong style="font-weight:bold;">Total fee:</strong> &nbsp;&pound;'.$total_fees.'<br /> </span></p>';
 				}
 				
-				
 				// If Location column set
 				if (($location != "") && (strtolower($location) == "tottenham centre" || strtolower($location) == "enfield centre")) {			
 					$occurrences .= '<p class="clearfix"><span class="title1"></span><span class="info">Location: &nbsp;'.$location.'<br /> </span></p>';
@@ -313,11 +315,13 @@
 				
 				// nkowald - 2010-07-08 - If Course application session is open, and courses free then show the add to application button
 				// nkowald - 2010-02-15 - Karen wants this to show always
+				/* OLD ONLINE APPLICATION
 				if (isset($_SESSION['caf']['signed_in'])) {
 					$submit_value = '&nbsp;Add to Application&nbsp;';
 				} else {
-					$submit_value = '&nbsp;Apply Now&nbsp;';
+				$submit_value = '&nbsp;Apply Now&nbsp;';
 				}
+				
 				
 				// free course slots?
 				if ( 
@@ -340,11 +344,13 @@
 					$end_html = $qual_end_month . ' ' . $qual_end;
 					$choice_html = $start_html . " - " . $end_html;
 					$occurrences .= '<input type="hidden" name="course_entry_date" value="'.$choice_html.'" />';
-			
+
 					$occurrences .= '<p class="clearfix"><span class="title1"></span><span class="info"><input type="submit" value="'.$submit_value.'" class="submit browse" /></span></p>';
 					$occurrences .= '</form>';
 				}
-
+				*/
+				
+				$occurrences .= '<p class="clearfix"><span class="title1"></span><span class="info"><a href="https://apply.conel.ac.uk/Redirect.ashx?Show=UIO&CourseCode='.$course_code.'&CaloccCode='.$calocc_code.'" class="button_apply_now">Apply Now</a></span></p>';
 				
 				$year_i = $qual_end . $i;
 				$occur_array[$year_i] = $occurrences;
