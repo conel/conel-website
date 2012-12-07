@@ -46,7 +46,7 @@
 				<a name="access-content" id="access-content">&nbsp;</a>
 				{CONTENT}
 				<ul>
-					<li class="art_design_and_media"><a href="/video_gallery/art_design_and_media"><span>Art, Design and Media</span></a></li>
+					<li class="art_design_and_media"><a href="/video_gallery/creative_and_media"><span>Creative and Media</span></a></li>
 					<li class="business_administration_and_accounting"><a href="/video_gallery/business_administration_and_accounting"><span>Business, Administration and Accounting</span></a></li>
 					<li class="construction_and_the_built_environment"><a href="/video_gallery/construction_and_the_built_environment"><span>Construction and the Built Environment</span></a></li>
 					<li class="english_for_speakers_of_other_languages"><a href="/video_gallery/english_for_speakers_of_other_languages"><span>English for Speakers of Other Languages</span></a></li>

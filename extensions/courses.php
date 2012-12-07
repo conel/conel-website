@@ -188,8 +188,9 @@
 				$examreg_actual = ($examreg_fee != '') ? $examreg_fee : 0;
 				$total_fees = $material_actual + $tuition_actual + $examreg_actual;
 				
-				$course_code = $db->Record['COURSE_CODE'];
-				$calocc_code = $db->Record['CALOCC_CODE'];
+				$course_code  = $db->Record['COURSE_CODE'];
+				$calocc_code  = $db->Record['CALOCC_CODE'];
+				$external_url = $db->Record['EXTERNAL_URL'];
 			
 				$occurrences = "";
 				
@@ -350,7 +351,10 @@
 				}
 				*/
 				
-				$occurrences .= '<p class="clearfix"><span class="title1"></span><span class="info"><a href="https://apply.conel.ac.uk/Redirect.ashx?Show=UIO&CourseCode='.$course_code.'&CaloccCode='.$calocc_code.'" class="button_apply_now">Apply Now</a></span></p>';
+				if(empty($external_url)) $external_url = "https://apply.conel.ac.uk/Redirect.ashx?Show=UIO&CourseCode=$course_code&CaloccCode=$calocc_code"; 
+
+				$occurrences .= '<p class="clearfix"><span class="title1"></span><span class="info"><a href="'.$external_url.'" class="button_apply_now">Apply Now</a></span></p>';				
+				//$occurrences .= '<p class="clearfix"><span class="title1"></span><span class="info"><a href="https://apply.conel.ac.uk/Redirect.ashx?Show=UIO&CourseCode='.$course_code.'&CaloccCode='.$calocc_code.'" class="button_apply_now">Apply Now</a></span></p>';
 				
 				$year_i = $qual_end . $i;
 				$occur_array[$year_i] = $occurrences;

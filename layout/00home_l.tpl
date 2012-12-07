@@ -142,5 +142,9 @@
 <script type="text/javascript" src="/layout/js/keyfacts.js"></script>
 <script type="text/javascript" src="/layout/js/system.js"></script>
 {ENFIELD_INC}
+
+<script type="text/javascript" src="/layout/js/cookies-directive.js"></script>
+<script type="text/javascript">cookiesDirective('bottom',0,'privacy.html');</script>
+
 </body>
 </html><!-- END body -->

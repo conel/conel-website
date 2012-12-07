@@ -6,7 +6,7 @@
 	//error_reporting(E_ALL);
 
 	// First make sure this file hasn't been directly accessed and only run if coming from open day page
-	if (isset($_POST['firstname']) && (isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'],'our_courses/pre_apprenticeships_hairdressing_and_beauty_therapy')) ) {
+	if (isset($_POST['firstname']) && (isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'],'our_courses/pre_apprenticeship_hairdressing_and_beauty_therapy')) ) {
 	
 		// This variable holds whether database input is successful
 		$added = FALSE;
@@ -52,6 +52,9 @@
 		$query = "INSERT INTO tbl_pre_apprenticeships_hair_and_beauty    
 		(firstname, surname, date_of_birth, email, telephone_landline, telephone_mobile, address_line_1, address_line_2, address_line_3, postcode, borough_county, what_secondary_school_did_you_attend, how_did_you_hear_about_us, receive_communications, datetime_submitted) 
 		VALUES('$firstname', '$surname', '$date_of_birth', '$email', '$telephone_landline', '$telephone_mobile', '$address_line_1', '$address_line_2', '$address_line_3', '$postcode', '$borough_county', '$what_secondary_school_did_you_attend', '$how_did_you_hear_about_us', '$receive_communications', '$date_now_mysql')";
+		
+		//print $_SERVER['REMOTE_ADDR'];
+		
 		$sql->query($query,$debug);
 
 		if ($sql->num_rows_affected() > 0) {
