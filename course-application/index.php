@@ -1,5 +1,7 @@
 <?php
-	exit;
+	
+	exit('<p>Our online application system is changed.</p><p>You cannot log in to the old system any more.</p><p>Please <a href="http://www.conel.ac.uk/how-to-apply-online/">click here</a> and use the new system.</p>');
+	
 	session_start();
 	// Session security
 	if (!isset($_SESSION['caf']['initiated'])) {

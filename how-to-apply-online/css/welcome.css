@@ -107,7 +107,7 @@ h1 {
 	margin-bottom:30px;
 	width:695px;
 	height:81px;
-	background:transparent url(../images/how-to-apply-online2.gif) no-repeat 0 0;
+	background:transparent url(../images/how-to-apply-online.gif) no-repeat 0 0;
 }
 h1 span {
 	display:none;
@@ -160,14 +160,13 @@ h2.step3 {
 	padding: 10px 220px;
 }
 #footer p {
-	margin-bottom:10px;
-	font-size:1.34em;
-	line-height:1.27em;
+	font-size:1.3em;
+	line-height:1.2em;
 }
 #application_form {
 	position:relative;
 	z-index:23;
-	top:-250px;
+	top:-235px;
 	left:30px;
 	width:160px;
 	height:220px;
@@ -179,7 +178,7 @@ h2.step3 {
     height: 220px;
     left: 760px;
     position: relative;
-    top: -470px;
+    top: -455px;
     width: 160px;
     z-index: 23
 }

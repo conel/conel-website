@@ -1211,7 +1211,7 @@ p.email-icon-large a {
 }
 /* Set background image for video gallery buttons */
 #video_gallery ul li.art_design_and_media a {
-    background:#fff url(../img/button_vg_art.png) no-repeat 0 0;
+    background:#fff url(../img/button_vg_creative_media.png) no-repeat 0 0;
 }
 #video_gallery ul li.business_administration_and_accounting a {
     background:#fff url(../img/button_vg_business.png) no-repeat 0 0;
@@ -1256,7 +1256,7 @@ p.email-icon-large a {
     background:#fff url(../img/button_vg_travel.png) no-repeat 0 0;
 }
 #video_gallery ul li.other a {
-    background:#fff url(../img/button_vg_other.png) no-repeat 0 0;
+    background:#fff url(../img/button_vg_virtual.png) no-repeat 0 0;
 }
 #video_gallery ul li a span {
     display:none;
