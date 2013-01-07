@@ -134,6 +134,9 @@
 					$cg_content .= '<li><a href="http://www.conel.ac.uk/docs/YPCG_2013_14.pdf" target="_blank"><span><img src="/layout/img/pdf.gif" alt="PDF file" /> Young Person\'s Course Guide 2013-14, 15.45 MB</span></a></li>';
 				//}
 			//}
+			
+			$cg_content .= '<li><a href="http://www.conel.ac.uk/docs/New_Year_Course_Guide_2013.pdf" target="_blank"><span><img src="/layout/img/pdf.gif" alt="PDF file" /> 2013 New Year Course Guide, 2 MB</span></a></li>';
+			
 			$cg_content .= '</ul>';
 		//}
 	//} else {

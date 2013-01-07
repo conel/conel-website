@@ -1220,10 +1220,11 @@ p.email-icon-large a {
     background:#fff url(../img/button_vg_construction.png) no-repeat 0 0;
 }
 #video_gallery ul li.english_for_speakers_of_other_languages a {
+	display:none;
     background:#fff url(../img/button_vg_ESOL.png) no-repeat 0 0;
 }
 #video_gallery ul li.english_literacy_and_maths_numeracy a {
-    background:#fff url(../img/button_vg_english.png) no-repeat 0 0;
+    background:#fff url(../img/button_vg_esol_math.png) no-repeat 0 0;
 }
 #video_gallery ul li.foreign_languages a {
     background:#fff url(../img/button_vg_languages.png) no-repeat 0 0;
@@ -1256,6 +1257,9 @@ p.email-icon-large a {
     background:#fff url(../img/button_vg_travel.png) no-repeat 0 0;
 }
 #video_gallery ul li.other a {
+    background:#fff url(../img/button_vg_apprenticeships.png) no-repeat 0 0;
+}
+#video_gallery ul li.virtual a {
     background:#fff url(../img/button_vg_virtual.png) no-repeat 0 0;
 }
 #video_gallery ul li a span {

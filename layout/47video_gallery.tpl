@@ -61,7 +61,8 @@
 					<li class="supported_learning"><a href="/video_gallery/supported_learning"><span>Supported Learning</span></a></li>
 					<li class="teacher_education"><a href="/video_gallery/teacher_education"><span>Teacher Education</span></a></li>
 					<li class="travel_and_tourism"><a href="/video_gallery/travel_and_tourism"><span>Travel and Tourism</span></a></li>
-					<li class="other"><a href="/video_gallery/other"><span>Other</span></a></li>
+					<li class="other"><a href="/video_gallery/apprenticeships_and_employers"><span>Apprenticeships and Employers</span></a></li>
+					<li class="virtual"><a href="/video_gallery/virtual_tour1"><span>Virtual tour</span></a></li>
 				</ul>
 				<br class="clear_both" />
 		</div>

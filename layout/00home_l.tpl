@@ -7,7 +7,7 @@
 	<meta name="description" content="The College of Haringey, Enfield and North East London" />
 	<meta name="robots" content="index,follow" />
 	<meta name="revisit-after" content="4 DAYS">
-	<link href="/layout/css/styles.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="/layout/css/styles.css?1" rel="stylesheet" type="text/css" media="all" />
 	<link href="/layout/css/rotator.css" rel="stylesheet" type="text/css" media="screen" />{ENFIELD_CSS}
 	<link href="/layout/css/print.css" rel="stylesheet" type="text/css" media="print" />
 	<!--[if lte IE 6]><link href="/layout/css/ie6.css" rel="stylesheet" type="text/css" media="all" /><![endif]-->
