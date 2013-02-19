@@ -92,9 +92,11 @@
 					}				
 				}
 
-				$output['id'] .= '</span></p></li>';
+				$output['id'] .= '</span></p>';
 			}
-			
+
+			$output['id'] .= '<p class="clearfix"><span class="title1"></span><span class="info">Click on the <a href="#apply-now"><img src="/images/apply_now-webBut.gif" style="vertical-align:middle"></a> button at the bottom of this web page to apply for this course.</span></li>';
+				
 			// What qualifications do I need?
 			if (!empty($output['Prerequisites'])) {
 				$output['Prerequisites'] = '<li class="clearfix"><p class="clearfix"><span class="title1">What qualifications do I need?</span><span class="info">'.htmlentities($output['Prerequisites'], ENT_QUOTES,'UTF-8').'</span></p></li>';
@@ -353,7 +355,8 @@
 				
 				if(empty($external_url)) $external_url = "https://apply.conel.ac.uk/Redirect.ashx?Show=UIO&CourseCode=$course_code&CaloccCode=$calocc_code"; 
 
-				$occurrences .= '<p class="clearfix"><span class="title1"></span><span class="info"><a href="'.$external_url.'" class="button_apply_now">Apply Now</a></span></p>';				
+				$occurrences .= '<p class="clearfix"><span class="title1"></span><span class="info"><a name="apply-now" href="'.$external_url.'"><img src="/images/apply_now-webBut.gif"></a></span></p>';				
+				//$occurrences .= '<p class="clearfix"><span class="title1"></span><span class="info"><a name="apply-now" href="'.$external_url.'" class="button_apply_now">Apply Now</a></span></p>';				
 				//$occurrences .= '<p class="clearfix"><span class="title1"></span><span class="info"><a href="https://apply.conel.ac.uk/Redirect.ashx?Show=UIO&CourseCode='.$course_code.'&CaloccCode='.$calocc_code.'" class="button_apply_now">Apply Now</a></span></p>';
 				
 				$year_i = $qual_end . $i;
