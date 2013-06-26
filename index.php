@@ -1,4 +1,5 @@
 <?php
+
 	## =======================================================================
 	##  content.php														
 	## =======================================================================
@@ -8,7 +9,7 @@
 	## =======================================================================
 	
 	error_reporting(0);
-	
+		
 	## first require the configuration
 	require("matrix_engine/config.php");
 	
@@ -132,6 +133,6 @@
 		global $previewMode;
 		$previewMode = true;	
 	}
-	
-	print page_generatePage($page_id,$offset);
+
+	print page_generatePage($page_id,$offset);		
 ?>

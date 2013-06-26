@@ -117,6 +117,9 @@
 	RewriteRule ^thesalon$ /our_college/hair_and_beauty_salons/the_salon_tottenham_centre [R=301,L]
 	RewriteRule ^loans$ /for_learners/financial_support/24_advanced_learning_loans  [R=301,L]
 	RewriteRule ^work$ /for_employers/apprenticeship_vacancies  [R=301,L]
+	RewriteRule ^enfield$ our_college/developments/investing_in_our_enfield_centre [R=301,L]
+	RewriteRule ^test$  [R=301,L]
+	RewriteRule ^funding$ /for_learners/financial_support [R=301,L]
 
 	RewriteRule ^dynamic(.*)$ dynamic.php?url=$1 [QSA,L]
 	RewriteCond %{REQUEST_FILENAME} !-f

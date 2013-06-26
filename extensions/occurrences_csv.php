@@ -115,7 +115,7 @@
 
 	// $filter is an array of occurrence ids to filter by
 	function export_csv($filter='') {
-		
+	
 		$host = 'localhost';
 		$user = 'root';
 		$pass = '1ctsql';
@@ -135,7 +135,7 @@
 				$i++;
 			}
 		}
-		
+			
 		// nkowald - add value for course duration
 		$values[] = '"Duration"';
 
@@ -157,7 +157,9 @@
 		while ($rowr = mysql_fetch_row($values)) {
 			
 			for ($j=0; $j < $i; $j++) {
-		
+				
+				//print "$j -> $value<br>";
+				
 				// check if separator is used in value, if so enclose in quotes
 				$value = '"'.$rowr[$j].'"';
 				
@@ -167,21 +169,36 @@
 					$csv_output .= $value . $separator;	
 				}
 				
-				if ($j == 6) {
+				/*
+				if ($j == 8) {
 					$start_date = $value;
-				} else if ($j == 7) {
+				} else if ($j == 8) {
 					$end_date = $value;
 				}
+				*/
 			}
-
+			
+			//print_r($rowr);
+			
+			$start_date = '"'.$rowr[7].'"';
+			$end_date = '"'.$rowr[8].'"';
+			
+			//print "start_date: $start_date<br>";
+			//print "end_date: $end_date<br>";
+			
+			//exit;
+			
 			// Get duration based on start and end dates
+
+			//$duration = "$start_date - $end_date"; //get_duration($start_date, $end_date);
 			$duration = get_duration($start_date, $end_date);
+			
 			// strip commas
 			//$duration = str_replace(',', ' -', $duration);
 			$duration = '"'.$duration.'"';
 			
 			$csv_output .= "," . $duration;
-
+			
 			$csv_output .= "\n";
 
 		}

@@ -5,8 +5,9 @@
 	//ini_set('display_errors',1);
 	//error_reporting(E_ALL);
 
-	// First make sure this file hasn't been directly accessed and only run if coming from open day page
-	if (isset($_POST['firstname']) && isset($_SERVER['HTTP_REFERER'])) {
+	$table_name = "tbl_science_courses";
+	
+	if (isset($_POST['firstname'])) {
 	
 		// This variable holds whether database input is successful
 		$added = FALSE;
@@ -16,8 +17,7 @@
 		
 		// Required includes
 		include_once('../matrix_engine/config.php');
-		include_once('../matrix_engine/'.CLASSES_DIR.'db_mysql.php');
-		include_once('../matrix_engine/'.CLASSES_DIR.'class_mailer.php');
+		include_once('../matrix_engine/'.CLASSES_DIR.'db_mysql.php');		
 		
 		// what is the current date and time?
 		$date_now_mysql = date('Y-m-d H:i:s'); // "2009-06-21 14:34:04": MySQL timestamp format
@@ -47,9 +47,10 @@
 		$receive_communications = ($receive_communications == 'No') ? 'No' : 'Yes';
 
 		// Build INSERT query
-		$query = "INSERT INTO tbl_pre_apprenticeships_science  
+		$query = "INSERT INTO $table_name  
 		(firstname, surname, date_of_birth, email, telephone_landline, telephone_mobile, address_line_1, address_line_2, address_line_3, postcode, borough_county, what_secondary_school_did_you_attend, how_did_you_hear_about_us, receive_communications, datetime_submitted) 
 		VALUES('$firstname', '$surname', '$date_of_birth', '$email', '$telephone_landline', '$telephone_mobile', '$address_line_1', '$address_line_2', '$address_line_3', '$postcode', '$borough_county', '$what_secondary_school_did_you_attend', '$how_did_you_hear_about_us', '$receive_communications', '$date_now_mysql')";
+		
 		$sql->query($query,$debug);
 
 		if ($sql->num_rows_affected() > 0) {
@@ -58,14 +59,14 @@
 			$added = FALSE;
 		}
 		
-		if ($added) {			
+		if ($added) {
 			header('Location: http://www.conel.ac.uk/registration_successful');
-			exit;
+			exit;			
 		} else {
 			echo '<p>Failed to add info to database</p>';
 			header('Location: http://www.conel.ac.uk/our_courses/pre_apprenticeships_science?registration=failed');
 			exit;
-		}
+		}		
 	} else {
 		header('Location: http://www.conel.ac.uk');
 		exit;

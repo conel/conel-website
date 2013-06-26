@@ -1,0 +1,205 @@
+/* Reset Styles */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	font-family: inherit;
+	vertical-align: baseline;
+}
+/* remember to define focus styles! */
+:focus {
+	outline: 0;
+}
+body {
+	line-height: 1;
+	color: #000;
+	background: #fff;
+}
+ol, ul {
+	list-style: none;
+}
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+	border-collapse: separate;
+	border-spacing: 0;
+}
+caption, th, td {
+	text-align: left;
+	font-weight: normal;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: "";
+}
+blockquote, q {
+	quotes: "" "";
+}
+
+/* Course Application Form Styles */
+body {
+	background-color:#fff;
+	font-family:arial, sans-serif;
+	font-size:0.82em;
+	color:#414141;
+}
+textarea {
+	font-family:arial, sans-serif;
+	font-size:0.95em;
+}
+label {
+	font-weight:bold;
+	line-height:1.5em;
+	/*cursor:inherit;*/
+	cursor:pointer;
+}
+/*
+label[for] {
+	cursor:pointer;
+}
+*/
+input, textarea, select {
+	-moz-border-radius:3px;
+	background-color:#F6F6F6;
+	border-color:#8B9298 #E6E6E6 #E6E6E6 #8B9298;
+	border-style:solid;
+	border-width:1px;
+}
+textarea, select, input.text {
+	padding:3px;
+	width:255px;
+}
+input.text_home {
+	padding:3px;
+	width:230px;
+}
+input.date {
+	padding:3px;
+	width:75px;
+}
+input.radio, input.checkbox {
+	border:none;
+	background-color:#fff;
+}
+.clear_both {
+	clear:both;
+}
+#holder {
+	width:955px;
+	margin:0 auto;
+}
+h1 {
+	color:#00B6DE;
+	font-weight:bolder;
+	font-size:3em;
+	margin-left:15px;
+	margin-top:55px;
+	margin-bottom:30px;
+	width:695px;
+	height:81px;
+	background:transparent url(../images/how-to-apply-online.gif) no-repeat 0 0;
+}
+h1 span {
+	display:none;
+}
+h2 {
+	color:#fff;
+	font-size:1.7em;
+	font-weight:bold;
+	padding-left:52px;
+	padding-top:17px;
+	padding-bottom:10px;
+	margin-bottom:20px;
+}
+#step1, #step2, #step3 {
+	color:#00B5D7;
+	float:left;
+	height:392px;
+}
+#step1 p, #step2 p, #step3 p {
+	margin-bottom:20px;
+	font-size:1.32em;
+	padding-left:18px;
+	padding-right:25px;
+	line-height:1.3em;
+	font-weight:bold;
+}
+#step1 {
+	width:477px;
+	background:transparent url(../images/border-dotted.png) no-repeat 470px 78px;
+}
+#step2 {
+	width:477px;
+	background:transparent url(../images/border-dotted.png) no-repeat 470px 78px;
+}
+#step3 {
+	width:319px;
+}
+h2.step1 {
+	background:#00B5D7 url(../images/1.png) no-repeat 4px 10px;
+}
+h2.step2 {
+	background:#00B5D7 url(../images/2.png) no-repeat 4px 10px;
+}
+h2.step3 {
+	background:#00B5D7 url(../images/3.png) no-repeat 4px 10px;
+}
+#footer {
+	background-color:#B8C44B;
+	color:#fff;
+	padding: 10px 220px;
+}
+#footer p {
+	font-size:1.3em;
+	line-height:1.2em;
+}
+#application_form {
+	position:relative;
+	z-index:23;
+	top:-235px;
+	left:30px;
+	width:160px;
+	height:220px;
+}
+#application_form a img {
+	border:0;
+}
+#reference_form {
+    height: 220px;
+    left: 760px;
+    position: relative;
+    top: -455px;
+    width: 160px;
+    z-index: 23
+}
+#reference_form a img {
+	border:0;
+}
+img#apply_now_button {
+	margin-top:33px;
+	margin-left:26px;
+	border:none;
+}
+a.apply_link {
+	text-decoration:none;
+}
+.apply_now {
+	background-color:#00B5D7;
+	color:#fff;
+	white-space:nowrap;
+	padding:1px 5px;
+}
+.apply_now em {
+	font-size:1.05em;
+	font-style:normal;
+}

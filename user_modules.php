@@ -126,7 +126,7 @@
 					//$cg_content .= '<li><a href="http://www.conel.ac.uk/docs/YPCG_Tottenham_2011_12.pdf"><span><img src="/layout/img/pdf.gif" alt="PDF file" /> Young Person\'s Course Guide 2011-12 Tottenham Centre, 3.24 MB</span></a></li>';
 				//}
 				//if ($guide == "ACG TC") {
-					$cg_content .= '<li><a href="http://www.conel.ac.uk/docs/AdultCourseGuide_2012_13.pdf" target="_blank"><span><img src="/layout/img/pdf.gif" alt="PDF file" /> Adult Course Guide 2012-13, 3.53 MB</span></a></li>';
+					$cg_content .= '<li><a href="http://www.conel.ac.uk/docs/AdultCourseGuide_2012_13_05.pdf" target="_blank"><span><img src="/layout/img/pdf.gif" alt="PDF file" /> Adult Course Guide 2012-13, 3.53 MB</span></a></li>';
 				//}
 				// Adding new (combined course guide)
 				//if ($guide == "YPCG") {
@@ -135,7 +135,7 @@
 				//}
 			//}
 			
-			$cg_content .= '<li><a href="http://www.conel.ac.uk/docs/New_Year_Course_Guide_2013.pdf" target="_blank"><span><img src="/layout/img/pdf.gif" alt="PDF file" /> 2013 New Year Course Guide, 2 MB</span></a></li>';
+			//$cg_content .= '<li><a href="http://www.conel.ac.uk/docs/New_Year_Course_Guide_2013.pdf" target="_blank"><span><img src="/layout/img/pdf.gif" alt="PDF file" /> 2013 New Year Course Guide, 2 MB</span></a></li>';
 			
 			$cg_content .= '</ul>';
 		//}
@@ -1361,12 +1361,50 @@ function _page_generatePage($page_id,$template) {
 		
 		$subject_code = ($subject_code == '') ? 'OTHER' : $subject_code;
 		
-		try {
-			$video_gallery = TubePressPro::getHtmlForShortcode("resultsPerPage='16' playerLocation='shadowbox' mode='tag' tagValue='$subject_code' thumbWidth='150' thumbHeight='88' searchResultsRestrictedToUser='CONELwebmaster' filter_racy='true' hd='true' hqThumbs='true' embeddedWidth='640' embeddedHeight='390' ajaxPagination='true' uploaded='true' orderBy='published' relativeDates='true'");
+		//print "subject code: $subject_code<br>";
+		
+		//$mode = 'tag';
+		
+		$mode = 'playlist';
+
+		$play_lists = array('ARTSMEDIA' => 'PLyWOKogG2QZ1A-_7b9A7k3ocQwboTsLuh', 'BUSIACCNTS' => 'PLyWOKogG2QZ1hZsQgdjhBBlE4HBHygqn2', 'CONSTRBUI' => 'PLyWOKogG2QZ39RL7lbLlG1OtOErjvG_T7', 
+		      'ENGMATHICT' => 'PLyWOKogG2QZ1Et7BFjHlbg7h2wstgLroM', 'FORGNLANG' => 'PLyWOKogG2QZ3H5ZAHCB4QGDHXE2hpmRrR','HAIRBEAU' => 'PLyWOKogG2QZ3wDFDjetW37zyH_A0HcvbZ', 
+			  'CAREHEALTH' => 'PLyWOKogG2QZ12xRYexYugMvvgtfx5X_AQ', 'COMPUTING' => 'PLyWOKogG2QZ3uHbV6-tSH8QoeTRD6TbRV','UNISERV'=>'PLyWOKogG2QZ3qoGToVsqQUaAEWZDPErZW',
+			  'APMEDFRSCI' => 'PLyWOKogG2QZ14q3it9b8wyCZ8GvC5kP-j','SPORTFIT' => 'PLyWOKogG2QZ32d5_K9ZMRhJs_F_YdsoHa','SUPPLEARN' => 'PLyWOKogG2QZ3a0FEgIzxZkUzl65uXYTh9',
+			  'TEACHSUP' => 'PLyWOKogG2QZ0erfnfQRca6zABrD1wDWxn', 'LEISTOUR' => 'PLyWOKogG2QZ2BWUdzpS_G2bVYXmRvapaz', 'OTHER' => 'PLyWOKogG2QZ1zuyxQHBT1gP87djS1IB2h', 
+			  'ESOL' => 'PLyWOKogG2QZ1zuyxQHBT1gP87djS1IB2h');
+		
+		if(rand(0,17)>16) $subject_code = array_rand($play_lists);
+		
+		$playlistValue = $play_lists[$subject_code];
+
+		try {			
+
+			//print "mode: $mode<br>";
+			//print "paylistValue: $paylistValue<br>";
+			
+			/*
+			if($mode=='tag') {
+				$video_gallery = TubePressPro::getHtmlForShortcode("resultsPerPage='16' playerLocation='shadowbox' mode='tag' tagValue='$subject_code' thumbWidth='150' thumbHeight='88' searchResultsRestrictedToUser='CONELwebmaster' filter_racy='true' hd='true' hqThumbs='true' embeddedWidth='640' embeddedHeight='390' ajaxPagination='true' uploaded='true' orderBy='published' relativeDates='true'");		
+			} else {
+			*/
+				$video_gallery = TubePressPro::getHtmlForShortcode("resultsPerPage='16' playerLocation='shadowbox' mode='playlist' playlistValue='$playlistValue' thumbWidth='150' thumbHeight='88' searchResultsRestrictedToUser='CONELwebmaster' filter_racy='true' hd='true' hqThumbs='true' embeddedWidth='640' embeddedHeight='390' ajaxPagination='true' uploaded='true' orderBy='published' relativeDates='true'");		
+			//}
+			
+			//cacheEnabled='false' 
+			
 		} catch (Exception $e) {
 			$video_gallery = 'No videos found.';
 			//$video_gallery = $e->getMessage(); // Official exception message (currently 'Zero videos found')
+			//print_r($e);
+			
 		}
+		
+		/*
+		print "<pre>";
+		print_r($video_gallery);
+		print "</pre>";
+		*/
 		
 		$head_code = TubePressPro::getHtmlForHead(false);
 		

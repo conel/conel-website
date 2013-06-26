@@ -4,6 +4,8 @@ function isValidEmailAddress(emailAddress) {
 }
 $(document).ready(function() {
 	
+	console.log('test');
+	
     function limitChars(textid, limit, infodiv)
 	{
 		var text = $('#'+textid).val();    
@@ -28,14 +30,17 @@ $(document).ready(function() {
 	});
     
 	$("#conel_form").submit(function(e) {
+
+		console.info('submit');
 		
 		// I would like to register my attendance at check
-		var register_attendance = $("#odf_1213_rft_3").is(':checked') || $("#odf_1213_rfe_3").is(':checked');
+		var register_attendance = $("odf_1213_rft_3").attr('checked') || $("odf_1213_rfe_3").attr('checked');
+		
+		console.info(register_attendance);
+		return false;
 		
 		if (register_attendance == false) {
 			alert('"I would like to register my attendance at" is a required field');
-			$("#odf_1213_rft_3").focus();
-			$("#odf_1213_rfe_3").focus();
 			return false;
 		}
 		
@@ -54,7 +59,8 @@ $(document).ready(function() {
 			$("#odf_1213_surname").focus();
 			return false;
 		}
-				 
+		
+		 
 		// check if email is blank
 		var email = $("#odf_1213_email").val();
 		if (email == '') {
@@ -81,7 +87,8 @@ $(document).ready(function() {
 			alert('Email addresses do not match');
 			return false;
 		}
-				
+		
+		
 		return true;
 
 	});
