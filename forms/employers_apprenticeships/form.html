@@ -1,0 +1,71 @@
+<script type="text/javascript" src="/forms/employers_apprenticeships/form-check.js"></script>
+<form action="/forms/employers_apprenticeships/process_form.php" method="post" id="conel_form">
+    <table>
+        <tbody>
+            <tr>
+                <td><label for="fullname">Full Name<span class="required">*</span>:</label></td>
+                <td><input type="text" name="fullname" x-autocompletetype="given-name" autocomplete="OFF" class="textfield" id="fullname" /></td>
+            </tr>
+            <tr>
+                <td><label for="email">Email Address<span class="required">*</span>:</label></td>
+                <td><input type="text" name="email" x-autocomplete="email" autocomplete="OFF" class="textfield" id="email" /></td>
+            </tr>
+            <tr>
+                <td><label for="email_confirm">Confirm email address<span class="required">*</span>:</label></td>
+                <td><input type="text" name="email_confirm" autocomplete="OFF" class="textfield" id="email_confirm" /></td>
+            </tr>
+            <tr>
+                <td><label for="contact_number">Contact number<span class="required">*</span>:</label></td>
+                <td><input type="text" name="contact_number" x-autocomplete="phone-local" autocomplete="OFF" class="textfield" id="contact_number" /></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                <h2>Company Address</h2>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="address_line_1">Address Line 1<span class="required">*</span>:</label></td>
+                <td><input type="text" name="address_line_1" x-autocomplete="address-line1" autocomplete="OFF" class="textfield" id="address_line_1" /></td>
+            </tr>
+            <tr>
+                <td><label for="address_line_2">Address Line 2:</label></td>
+                <td><input type="text" name="address_line_2" x-autocomplete="address-line2" autocomplete="OFF" class="textfield" id="address_line_2" /></td>
+            </tr>
+            <tr>
+                <td><label for="address_line_3">Address Line 3:</label></td>
+                <td><input type="text" name="address_line_3" x-autocomplete="address-line3" autocomplete="OFF" class="textfield" id="address_line_3" /></td>
+            </tr>
+            <tr>
+                <td class="text_label"><label for=postcode">Postcode<span class="required">*</span>:</label></td>
+                <td><input type="text" name="postcode" x-autocomplete="postal-code" autocomplete="OFF" class="text" id="postcode" /></td>
+            </tr>
+            <tr>
+                <td><label for="borough_county">Borough/County:</label></td>
+                <td><input type="text" name="borough_county" autocomplete="OFF" class="textfield" id="borough_county" /></td>
+            </tr>
+            <tr>
+                <td colspan="2"><label for="how_heard">How Did You Hear About Us?<span class="required">*</span>:</label></td>
+            </tr>
+            <tr>
+                <td colspan="2"><textarea name="how_heard" maxlength="500" rows="8" cols="80" class="textfield" id="how_heard"></textarea><br />
+                <span id="charlimitinfo">500 characters left</span></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="checkbox" value="No" name="receive_communications" id="receive_communications" /> &ndash; 
+					<label for="receive_communications" style="font-weight: normal !important">
+						We would like to send you information by email or text message from time to time on new courses or events that may be of interest to you. We will not share your details with any third parties, and you will be able at any time to choose to stop receiving messages from us.<br />
+						If you don't want to receive this information, please check this box.
+					</label>
+				</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td><span class="required">*</span> - Required fields</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td><input type="submit" value="Submit" style="padding-bottom: 3px; padding-left: 3px; padding-right: 3px; padding-top: 3px" /></td>
+            </tr>
+        </tbody>
+    </table>
+</form>

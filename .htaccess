@@ -120,6 +120,9 @@
 	RewriteRule ^enfield$ our_college/developments/investing_in_our_enfield_centre [R=301,L]
 	RewriteRule ^test$  [R=301,L]
 	RewriteRule ^funding$ /for_learners/financial_support [R=301,L]
+	RewriteRule ^publicservices$ /our_courses/public_services_at_enfield [R=301,L]
+	RewriteRule ^sports$ /our_courses/public_services_at_enfield [R=301,L]
+	RewriteRule ^apprentice$ /for_employers/apprenticeships [R=301,L]
 
 	RewriteRule ^dynamic(.*)$ dynamic.php?url=$1 [QSA,L]
 	RewriteCond %{REQUEST_FILENAME} !-f

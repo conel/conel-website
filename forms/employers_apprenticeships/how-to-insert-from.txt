@@ -2,7 +2,7 @@
 <script>
 $(document).ready(
     function(){
-        $.ajax({	url : "../../forms/register_free_army_assault_course_day/form.html",
+        $.ajax({	url : "../../forms/employers_apprenticeships/form.html",
             success:function(data){
                 $("#form").html(data)
             }

@@ -1,4 +1,7 @@
 <?php
+
+	//form url: http://www.conel.ac.uk/our_courses/higher_national_certificates_hncs/applied_chemistry_hnc
+	
 	session_start();
 	
 	// While developing, show errors
@@ -46,7 +49,7 @@
 		$receive_communications = ($receive_communications == 'No') ? 'No' : 'Yes';
 
 		// Build INSERT query
-		$query = "INSERT INTO tbl_free_army_assault_course_day  
+		$query = "INSERT INTO tbl_applied_chemistry_enquiry  
 		(fullname, date_of_birth, email, contact_number, address_line_1, address_line_2, address_line_3, postcode, borough_county, how_heard, receive_communications, datetime_submitted) 
 		VALUES('$fullname', '$date_of_birth', '$email', '$contact_number', '$address_line_1', '$address_line_2', '$address_line_3', '$postcode', '$borough_county', '$how_heard', '$receive_communications', '$date_now_mysql')";
 		$sql->query($query,$debug);
@@ -58,7 +61,7 @@
 		}
 		
 		/*
-		CREATE TABLE  `conel`.`tbl_free_army_assault_course_day` (
+		CREATE TABLE  `conel`.`tbl_applied_chemistry_enquiry` (
 		  `id` int(11) NOT NULL auto_increment,
 		  `fullname` varchar(50) default NULL,
 		  `date_of_birth` varchar(50) default NULL,
@@ -77,73 +80,7 @@
 		*/
 		
 		if ($added) {
-			
-			$date_now = date('d/m/Y, H:i:s');
-			
-			// Create email
-			
-			$body_html = '
-			<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-			<html>
-			<head><title>Free Army Assault Course Day Registration</title>
-			<style type="text/css">
-			body, table td {
-				font-family:Arial, Helvetica, sans-serif;
-				font-size:13px; 
-				line-height:1.3em;
-			}
-			table {
-				width:100%;
-			}
-			table td {
-				vertical-align:top;
-				padding:3px;
-			}
-			</style>
-			</head>
-			<body>';
-			$body_html .= '<p>You have received a new \'Free Army Assault Course Day Registration\' form submission.<br /><br />Submitted: '.$date_now.'</p>';
-			$body_html .= '<table border="1" cellpadding="2" cellspacing="0">';
-			
-			foreach($_POST as $post_var => $value) {
-				if ($post_var != 'email_confirm') {
-					$fieldname = ucfirst(str_replace('_',' ',$post_var));	
-					$body_html .= "<tr><td valign=\"top\"><strong>$fieldname:</strong></td><td valign=\"top\"> $value</td></tr>";
-				}
-			}
-			$body_html .= '</table>';
-			$body_html .= '</body></html>';
-		
-			// If database insert successful, send email:
-			$mail = new phpmailer();
-			$mail->IsHTML(TRUE); // send HTML email
-			$mail->IsSMTP(); // use SMTP to send
-			
-			// Set Recipient
-
-			$mail->AddAddress('BBerry@conel.ac.uk', 'Brendan Berry');
-			$mail->AddAddress('MLevermore@conel.ac.uk', 'Marlese Levermore');
-			$mail->AddAddress('sszabo@conel.ac.uk', 'Szilard Szabo');
-			
-			$mail->Subject = "Free Army Assault Course Day Registration form submission";
-			$mail->From = 'webmaster@staff.conel.ac.uk';
-			$mail->FromName = 'Conel Website Notifications';
-			$mail->Body = $body_html;
-			//$mail->SMTPDebug = TRUE;
-
-			$result = $mail->Send(); // send email notification!
-			
-			/*
-			if ($result) {
-				header('Location: http://conel-dev/email_successfully_sent');
-				exit;
-			} else {
-				echo '<p>Email failed</p>';
-				header('Location: http://conel-dev/news_events/events_calendar/february_2010/open_days_2010?email=failed');
-				exit;
-			}
-			*/
-						
+									
 			header('Location: http://www.conel.ac.uk/registration_successful');
 			exit;
 
