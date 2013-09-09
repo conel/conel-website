@@ -126,7 +126,7 @@
 					//$cg_content .= '<li><a href="http://www.conel.ac.uk/docs/YPCG_Tottenham_2011_12.pdf"><span><img src="/layout/img/pdf.gif" alt="PDF file" /> Young Person\'s Course Guide 2011-12 Tottenham Centre, 3.24 MB</span></a></li>';
 				//}
 				//if ($guide == "ACG TC") {
-					$cg_content .= '<li><a href="http://www.conel.ac.uk/docs/AdultCourseGuide_2012_13_05.pdf" target="_blank"><span><img src="/layout/img/pdf.gif" alt="PDF file" /> Adult Course Guide 2012-13, 3.53 MB</span></a></li>';
+					$cg_content .= '<li><a href="http://www.conel.ac.uk/docs/Adultguide_2012_SEP_13.pdf" target="_blank"><span><img src="/layout/img/pdf.gif" alt="PDF file" /> Adult Course Guide 2013-14, 3.53 MB</span></a></li>';
 				//}
 				// Adding new (combined course guide)
 				//if ($guide == "YPCG") {
@@ -1374,7 +1374,7 @@ function _page_generatePage($page_id,$template) {
 			  'TEACHSUP' => 'PLyWOKogG2QZ0erfnfQRca6zABrD1wDWxn', 'LEISTOUR' => 'PLyWOKogG2QZ2BWUdzpS_G2bVYXmRvapaz', 'OTHER' => 'PLyWOKogG2QZ1zuyxQHBT1gP87djS1IB2h', 
 			  'ESOL' => 'PLyWOKogG2QZ1zuyxQHBT1gP87djS1IB2h');
 		
-		if(rand(0,17)>16) $subject_code = array_rand($play_lists);
+		//if(rand(0,17)>16) $subject_code = array_rand($play_lists);
 		
 		$playlistValue = $play_lists[$subject_code];
 

@@ -2,8 +2,8 @@
 
 session_start();
 
-if(!isset($_SESSION['user'])) {
-
+//if(!isset($_SESSION['user'])) {
+/*
 	if(isset($_POST['username']) && isset($_POST['password'])) {
 		if($_POST['username']=='coneladmin' && $_POST['password']=='conel8') {
 			$_SESSION['user']='admin';
@@ -11,6 +11,7 @@ if(!isset($_SESSION['user'])) {
 			exit;
 		}
 	}
+*/
 ?>
 
 	<form method="post">
@@ -20,7 +21,7 @@ if(!isset($_SESSION['user'])) {
 	</form>
 
 <?php
-} else {
+//} else {
 ?>
 	<form method="get">
 		<label id="logfile">Logfile:</label>
@@ -102,7 +103,7 @@ if(!isset($_SESSION['user'])) {
 		print '</td>';
 	}
 	print '</tr></tbody></table>';
-}
+//}
 
 function debug($v,$n='debug'){
 	print "$n:<pre><br>";

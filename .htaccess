@@ -123,6 +123,9 @@
 	RewriteRule ^publicservices$ /our_courses/public_services_at_enfield [R=301,L]
 	RewriteRule ^sports$ /our_courses/public_services_at_enfield [R=301,L]
 	RewriteRule ^apprentice$ /for_employers/apprenticeships [R=301,L]
+	RewriteRule ^ict$ /our_courses/pre_apprenticeships_it [R=301,L]
+	RewriteRule ^rail$ /our_courses/pre_apprenticeships [R=301,L]
+	RewriteRule ^news_events/news/2013/march_2013/college_football_academy_rising_star_plays_for_the_england_college_team$ http://www.conel.ac.uk/news_events/news/2013/august_2013/college_football_academy_rising_star_plays_for_the_england_college_team?no_cache=8067 [R=301,L]
 
 	RewriteRule ^dynamic(.*)$ dynamic.php?url=$1 [QSA,L]
 	RewriteCond %{REQUEST_FILENAME} !-f
